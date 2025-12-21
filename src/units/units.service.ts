@@ -1,26 +1,38 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateUnitDto } from './dto/create-unit.dto';
 import { UpdateUnitDto } from './dto/update-unit.dto';
 
 @Injectable()
 export class UnitsService {
+  constructor(private readonly prisma: PrismaService) { }
+
   create(createUnitDto: CreateUnitDto) {
-    return 'This action adds a new unit';
+    return this.prisma.unit.create({
+      data: createUnitDto,
+    });
   }
 
   findAll() {
-    return `This action returns all units`;
+    return this.prisma.unit.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} unit`;
+  findOne(id: string) {
+    return this.prisma.unit.findUnique({
+      where: { id },
+    });
   }
 
-  update(id: number, updateUnitDto: UpdateUnitDto) {
-    return `This action updates a #${id} unit`;
+  update(id: string, updateUnitDto: UpdateUnitDto) {
+    return this.prisma.unit.update({
+      where: { id },
+      data: updateUnitDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} unit`;
+  remove(id: string) {
+    return this.prisma.unit.delete({
+      where: { id },
+    });
   }
 }
