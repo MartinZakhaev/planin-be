@@ -1,0 +1,396 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ItemType {
+  MATERIAL
+  MANPOWER
+  TOOL
+
+  @@map("item_type")
+}
+
+enum FileKind {
+  AVATAR
+  IMAGE
+  SITE_PLAN
+  DOCUMENT
+  OTHER
+
+  @@map("file_kind")
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  EXPIRED
+
+  @@map("subscription_status")
+}
+
+model User {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email         String   @unique @db.VarChar(255)
+  passwordHash  String   @map("password_hash")
+  fullName      String?  @map("full_name") @db.VarChar(200)
+  profileFileId String?  @map("profile_file_id") @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  organizationsOwned Organization[]        @relation("OrganizationOwner")
+  memberships        OrganizationMember[]
+  subscriptions      Subscription[]
+  projectsOwned      Project[]             @relation("ProjectOwner")
+  collaborations     ProjectCollaborator[]
+  rabSummaries       RabSummary[]
+  files              File[]
+  auditLogs          AuditLog[]
+  profileFile        File?                 @relation("UserProfile", fields: [profileFileId], references: [id])
+
+  @@map("users")
+}
+
+model Organization {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String   @db.VarChar(200)
+  code        String?  @unique @db.VarChar(80)
+  ownerUserId String   @map("owner_user_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  owner    User                 @relation("OrganizationOwner", fields: [ownerUserId], references: [id])
+  members  OrganizationMember[]
+  projects Project[]
+
+  @@index([ownerUserId])
+  @@map("organizations")
+}
+
+model OrganizationMember {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  role           String?  @default("MEMBER") @db.VarChar(50)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+
+  @@unique([organizationId, userId])
+  @@index([organizationId])
+  @@index([userId])
+  @@map("organization_members")
+}
+
+model Plan {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code        String   @unique @db.VarChar(50)
+  name        String   @db.VarChar(120)
+  priceCents  Int      @map("price_cents")
+  currency    String   @default("IDR") @db.VarChar(10)
+  interval    String   @default("monthly") @db.VarChar(20)
+  maxProjects Int      @default(10) @map("max_projects")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  subscriptions Subscription[]
+
+  @@map("plans")
+}
+
+model Subscription {
+  id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId             String             @map("user_id") @db.Uuid
+  planId             String             @map("plan_id") @db.Uuid
+  status             SubscriptionStatus @default(ACTIVE)
+  trialEndsAt        DateTime?          @map("trial_ends_at") @db.Timestamptz
+  currentPeriodStart DateTime?          @map("current_period_start") @db.Timestamptz
+  currentPeriodEnd   DateTime?          @map("current_period_end") @db.Timestamptz
+  canceledAt         DateTime?          @map("canceled_at") @db.Timestamptz
+  createdAt          DateTime           @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt          DateTime           @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id])
+  plan Plan @relation(fields: [planId], references: [id])
+
+  @@index([userId])
+  @@index([planId])
+  @@map("subscriptions")
+}
+
+model Unit {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code      String   @unique @db.VarChar(20)
+  name      String   @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  items         ItemCatalog[]
+  taskLineItems TaskLineItem[]
+
+  @@map("units")
+}
+
+model WorkDivisionCatalog {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code        String   @unique @db.VarChar(50)
+  name        String   @db.VarChar(200)
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  tasks            TaskCatalog[]
+  projectDivisions ProjectDivision[]
+
+  @@map("work_division_catalog")
+}
+
+model TaskCatalog {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  divisionId  String   @map("division_id") @db.Uuid
+  code        String   @db.VarChar(80)
+  name        String   @db.VarChar(250)
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  division     WorkDivisionCatalog @relation(fields: [divisionId], references: [id])
+  projectTasks ProjectTask[]
+
+  @@unique([divisionId, code])
+  @@index([divisionId])
+  @@map("task_catalog")
+}
+
+model ItemCatalog {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type         ItemType
+  code         String   @unique @db.VarChar(80)
+  name         String   @db.VarChar(250)
+  unitId       String   @map("unit_id") @db.Uuid
+  defaultPrice Decimal  @default(0) @map("default_price") @db.Decimal(18, 2)
+  description  String?  @db.Text
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  unit          Unit           @relation(fields: [unitId], references: [id])
+  taskLineItems TaskLineItem[]
+
+  @@index([type])
+  @@index([unitId])
+  @@map("item_catalog")
+}
+
+model Project {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  ownerUserId    String   @map("owner_user_id") @db.Uuid
+  name           String   @db.VarChar(250)
+  code           String?  @db.VarChar(80)
+  description    String?  @db.Text
+  location       String?  @db.VarChar(250)
+  taxRatePercent Decimal  @default(11.00) @map("tax_rate_percent") @db.Decimal(5, 2)
+  currency       String   @default("IDR") @db.VarChar(10)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  organization  Organization          @relation(fields: [organizationId], references: [id])
+  owner         User                  @relation("ProjectOwner", fields: [ownerUserId], references: [id])
+  collaborators ProjectCollaborator[]
+  divisions     ProjectDivision[]
+  tasks         ProjectTask[]
+  lineItems     TaskLineItem[]
+  rabSummaries  RabSummary[]
+  rabExports    RabExport[]
+  files         File[]
+  auditLogs     AuditLog[]
+
+  @@index([organizationId])
+  @@index([ownerUserId])
+  @@map("projects")
+}
+
+model ProjectCollaborator {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectId String   @map("project_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  role      String?  @default("EDITOR") @db.VarChar(50)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  project Project @relation(fields: [projectId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@unique([projectId, userId])
+  @@index([projectId])
+  @@index([userId])
+  @@map("project_collaborators")
+}
+
+model ProjectDivision {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectId   String   @map("project_id") @db.Uuid
+  divisionId  String   @map("division_id") @db.Uuid
+  displayName String   @map("display_name") @db.VarChar(250)
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  project  Project             @relation(fields: [projectId], references: [id])
+  division WorkDivisionCatalog @relation(fields: [divisionId], references: [id])
+  tasks    ProjectTask[]
+
+  @@unique([projectId, divisionId])
+  @@index([projectId])
+  @@map("project_divisions")
+}
+
+model ProjectTask {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectId         String   @map("project_id") @db.Uuid
+  projectDivisionId String   @map("project_division_id") @db.Uuid
+  taskCatalogId     String   @map("task_catalog_id") @db.Uuid
+  displayName       String   @map("display_name") @db.VarChar(250)
+  sortOrder         Int      @default(0) @map("sort_order")
+  notes             String?  @db.Text
+  rowVersion        BigInt   @default(0) @map("row_version")
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  project         Project         @relation(fields: [projectId], references: [id])
+  projectDivision ProjectDivision @relation(fields: [projectDivisionId], references: [id])
+  taskCatalog     TaskCatalog     @relation(fields: [taskCatalogId], references: [id])
+  lineItems       TaskLineItem[]
+
+  @@index([projectId])
+  @@index([projectDivisionId])
+  @@index([taskCatalogId])
+  @@map("project_tasks")
+}
+
+model TaskLineItem {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectId     String   @map("project_id") @db.Uuid
+  projectTaskId String   @map("project_task_id") @db.Uuid
+  itemCatalogId String   @map("item_catalog_id") @db.Uuid
+  description   String?  @db.VarChar(300)
+  unitId        String   @map("unit_id") @db.Uuid
+  quantity      Decimal  @default(0) @db.Decimal(18, 4)
+  unitPrice     Decimal  @default(0) @map("unit_price") @db.Decimal(18, 2)
+  lineTotal     Decimal  @default(0) @map("line_total") @db.Decimal(18, 2)
+  taxable       Boolean? @default(true)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  project     Project     @relation(fields: [projectId], references: [id])
+  projectTask ProjectTask @relation(fields: [projectTaskId], references: [id])
+  itemCatalog ItemCatalog @relation(fields: [itemCatalogId], references: [id])
+  unit        Unit        @relation(fields: [unitId], references: [id])
+
+  @@index([projectId])
+  @@index([projectTaskId])
+  @@index([itemCatalogId])
+  @@map("task_line_items")
+}
+
+model RabSummary {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectId        String   @map("project_id") @db.Uuid
+  version          Int      @default(1)
+  subtotalMaterial Decimal  @default(0) @map("subtotal_material") @db.Decimal(18, 2)
+  subtotalManpower Decimal  @default(0) @map("subtotal_manpower") @db.Decimal(18, 2)
+  subtotalTools    Decimal  @default(0) @map("subtotal_tools") @db.Decimal(18, 2)
+  taxableSubtotal  Decimal  @default(0) @map("taxable_subtotal") @db.Decimal(18, 2)
+  nontaxSubtotal   Decimal  @default(0) @map("nontax_subtotal") @db.Decimal(18, 2)
+  taxRatePercent   Decimal  @default(11.00) @map("tax_rate_percent") @db.Decimal(5, 2)
+  taxAmount        Decimal  @default(0) @map("tax_amount") @db.Decimal(18, 2)
+  grandTotal       Decimal  @default(0) @map("grand_total") @db.Decimal(18, 2)
+  notes            String?  @db.Text
+  createdBy        String   @map("created_by") @db.Uuid
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  project Project     @relation(fields: [projectId], references: [id])
+  creator User        @relation(fields: [createdBy], references: [id])
+  exports RabExport[]
+
+  @@unique([projectId, version])
+  @@index([projectId])
+  @@map("rab_summaries")
+}
+
+model RabExport {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  rabSummaryId String   @map("rab_summary_id") @db.Uuid
+  projectId    String   @map("project_id") @db.Uuid
+  pdfFileId    String?  @map("pdf_file_id") @db.Uuid
+  xlsxFileId   String?  @map("xlsx_file_id") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  rabSummary RabSummary @relation(fields: [rabSummaryId], references: [id])
+  project    Project    @relation(fields: [projectId], references: [id])
+  pdfFile    File?      @relation("RabExportPdf", fields: [pdfFileId], references: [id])
+  xlsxFile   File?      @relation("RabExportXlsx", fields: [xlsxFileId], references: [id])
+
+  @@index([projectId])
+  @@index([rabSummaryId])
+  @@map("rab_exports")
+}
+
+model File {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ownerUserId String   @map("owner_user_id") @db.Uuid
+  projectId   String?  @map("project_id") @db.Uuid
+  kind        FileKind @default(OTHER)
+  filename    String   @db.VarChar(300)
+  mimeType    String?  @map("mime_type") @db.VarChar(150)
+  sizeBytes   BigInt?  @map("size_bytes")
+  storagePath String   @map("storage_path") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  owner               User        @relation(fields: [ownerUserId], references: [id])
+  project             Project?    @relation(fields: [projectId], references: [id])
+  rabExportPdfs       RabExport[] @relation("RabExportPdf")
+  rabExportXlsxs      RabExport[] @relation("RabExportXlsx")
+  usersUsingAsProfile User[]      @relation("UserProfile")
+
+  @@index([projectId])
+  @@index([ownerUserId])
+  @@index([kind])
+  @@map("files")
+}
+
+model AuditLog {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String?  @map("user_id") @db.Uuid
+  projectId   String?  @map("project_id") @db.Uuid
+  action      String   @db.VarChar(120)
+  entityTable String?  @map("entity_table") @db.VarChar(120)
+  entityId    String?  @map("entity_id") @db.Uuid
+  meta        Json?    @db.JsonB
+  ip          String?  @db.Inet
+  userAgent   String?  @map("user_agent") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  user    User?    @relation(fields: [userId], references: [id])
+  project Project? @relation(fields: [projectId], references: [id])
+
+  @@index([projectId])
+  @@index([userId])
+  @@index([action])
+  @@map("audit_logs")
+}
