@@ -1,26 +1,58 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRabSummaryDto } from './dto/create-rab-summary.dto';
 import { UpdateRabSummaryDto } from './dto/update-rab-summary.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { RabSummaryEntity } from './entities/rab-summary.entity';
 
 @Injectable()
 export class RabSummariesService {
-  create(createRabSummaryDto: CreateRabSummaryDto) {
-    return 'This action adds a new rabSummary';
+  constructor(private readonly prisma: PrismaService) { }
+
+  async create(createRabSummaryDto: CreateRabSummaryDto) {
+    const summary = await this.prisma.rabSummary.create({
+      data: {
+        projectId: createRabSummaryDto.projectId,
+        createdBy: createRabSummaryDto.createdBy,
+        version: createRabSummaryDto.version,
+        subtotalMaterial: createRabSummaryDto.subtotalMaterial,
+        subtotalManpower: createRabSummaryDto.subtotalManpower,
+        subtotalTools: createRabSummaryDto.subtotalTools,
+        taxableSubtotal: createRabSummaryDto.taxableSubtotal,
+        nontaxSubtotal: createRabSummaryDto.nontaxSubtotal,
+        taxRatePercent: createRabSummaryDto.taxRatePercent,
+        taxAmount: createRabSummaryDto.taxAmount,
+        grandTotal: createRabSummaryDto.grandTotal,
+        notes: createRabSummaryDto.notes,
+      },
+    });
+    return new RabSummaryEntity(summary);
   }
 
-  findAll() {
-    return `This action returns all rabSummaries`;
+  async findAll() {
+    const summaries = await this.prisma.rabSummary.findMany();
+    return summaries.map((summary) => new RabSummaryEntity(summary));
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} rabSummary`;
+  async findOne(id: string) {
+    const summary = await this.prisma.rabSummary.findUnique({
+      where: { id },
+    });
+    if (!summary) return null;
+    return new RabSummaryEntity(summary);
   }
 
-  update(id: number, updateRabSummaryDto: UpdateRabSummaryDto) {
-    return `This action updates a #${id} rabSummary`;
+  async update(id: string, updateRabSummaryDto: UpdateRabSummaryDto) {
+    const summary = await this.prisma.rabSummary.update({
+      where: { id },
+      data: updateRabSummaryDto,
+    });
+    return new RabSummaryEntity(summary);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} rabSummary`;
+  async remove(id: string) {
+    const summary = await this.prisma.rabSummary.delete({
+      where: { id },
+    });
+    return new RabSummaryEntity(summary);
   }
 }

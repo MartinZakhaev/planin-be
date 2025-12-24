@@ -1,26 +1,45 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAuditLogDto } from './dto/create-audit-log.dto';
 import { UpdateAuditLogDto } from './dto/update-audit-log.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { AuditLogEntity } from './entities/audit-log.entity';
 
 @Injectable()
 export class AuditLogsService {
-  create(createAuditLogDto: CreateAuditLogDto) {
-    return 'This action adds a new auditLog';
+  constructor(private readonly prisma: PrismaService) { }
+
+  async create(createAuditLogDto: CreateAuditLogDto) {
+    const auditLog = await this.prisma.auditLog.create({
+      data: createAuditLogDto,
+    });
+    return new AuditLogEntity(auditLog);
   }
 
-  findAll() {
-    return `This action returns all auditLogs`;
+  async findAll() {
+    const auditLogs = await this.prisma.auditLog.findMany();
+    return auditLogs.map((auditLog) => new AuditLogEntity(auditLog));
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auditLog`;
+  async findOne(id: string) {
+    const auditLog = await this.prisma.auditLog.findUnique({
+      where: { id },
+    });
+    if (!auditLog) return null;
+    return new AuditLogEntity(auditLog);
   }
 
-  update(id: number, updateAuditLogDto: UpdateAuditLogDto) {
-    return `This action updates a #${id} auditLog`;
+  async update(id: string, updateAuditLogDto: UpdateAuditLogDto) {
+    const auditLog = await this.prisma.auditLog.update({
+      where: { id },
+      data: updateAuditLogDto,
+    });
+    return new AuditLogEntity(auditLog);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} auditLog`;
+  async remove(id: string) {
+    const auditLog = await this.prisma.auditLog.delete({
+      where: { id },
+    });
+    return new AuditLogEntity(auditLog);
   }
 }
