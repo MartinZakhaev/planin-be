@@ -19,6 +19,7 @@ import { TaskLineItemsModule } from './task-line-items/task-line-items.module';
 import { RabSummariesModule } from './rab-summaries/rab-summaries.module';
 import { RabExportsModule } from './rab-exports/rab-exports.module';
 import { FilesModule } from './files/files.module';
+import { AuditLogsModule } from './audit-logs/audit-logs.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { FilesModule } from './files/files.module';
     RabSummariesModule,
     RabExportsModule,
     FilesModule,
+    AuditLogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
