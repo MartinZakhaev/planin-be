@@ -14,6 +14,7 @@ import { ItemCatalogsModule } from './item-catalogs/item-catalogs.module';
 import { ProjectsModule } from './projects/projects.module';
 import { ProjectCollaboratorsModule } from './project-collaborators/project-collaborators.module';
 import { ProjectDivisionsModule } from './project-divisions/project-divisions.module';
+import { ProjectTasksModule } from './project-tasks/project-tasks.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ProjectDivisionsModule } from './project-divisions/project-divisions.mo
     ProjectsModule,
     ProjectCollaboratorsModule,
     ProjectDivisionsModule,
+    ProjectTasksModule,
   ],
   controllers: [AppController],
   providers: [AppService],
