@@ -1,26 +1,45 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOrganizationMemberDto } from './dto/create-organization-member.dto';
 import { UpdateOrganizationMemberDto } from './dto/update-organization-member.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { OrganizationMemberEntity } from './entities/organization-member.entity';
 
 @Injectable()
 export class OrganizationMembersService {
-  create(createOrganizationMemberDto: CreateOrganizationMemberDto) {
-    return 'This action adds a new organizationMember';
+  constructor(private readonly prisma: PrismaService) { }
+
+  async create(createOrganizationMemberDto: CreateOrganizationMemberDto) {
+    const member = await this.prisma.organizationMember.create({
+      data: createOrganizationMemberDto,
+    });
+    return new OrganizationMemberEntity(member);
   }
 
-  findAll() {
-    return `This action returns all organizationMembers`;
+  async findAll() {
+    const members = await this.prisma.organizationMember.findMany();
+    return members.map((member) => new OrganizationMemberEntity(member));
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} organizationMember`;
+  async findOne(id: string) {
+    const member = await this.prisma.organizationMember.findUnique({
+      where: { id },
+    });
+    if (!member) return null;
+    return new OrganizationMemberEntity(member);
   }
 
-  update(id: number, updateOrganizationMemberDto: UpdateOrganizationMemberDto) {
-    return `This action updates a #${id} organizationMember`;
+  async update(id: string, updateOrganizationMemberDto: UpdateOrganizationMemberDto) {
+    const member = await this.prisma.organizationMember.update({
+      where: { id },
+      data: updateOrganizationMemberDto,
+    });
+    return new OrganizationMemberEntity(member);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} organizationMember`;
+  async remove(id: string) {
+    const member = await this.prisma.organizationMember.delete({
+      where: { id },
+    });
+    return new OrganizationMemberEntity(member);
   }
 }
