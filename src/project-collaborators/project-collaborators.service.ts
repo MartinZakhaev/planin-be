@@ -1,26 +1,45 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProjectCollaboratorDto } from './dto/create-project-collaborator.dto';
 import { UpdateProjectCollaboratorDto } from './dto/update-project-collaborator.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { ProjectCollaboratorEntity } from './entities/project-collaborator.entity';
 
 @Injectable()
 export class ProjectCollaboratorsService {
-  create(createProjectCollaboratorDto: CreateProjectCollaboratorDto) {
-    return 'This action adds a new projectCollaborator';
+  constructor(private readonly prisma: PrismaService) { }
+
+  async create(createProjectCollaboratorDto: CreateProjectCollaboratorDto) {
+    const collaborator = await this.prisma.projectCollaborator.create({
+      data: createProjectCollaboratorDto,
+    });
+    return new ProjectCollaboratorEntity(collaborator);
   }
 
-  findAll() {
-    return `This action returns all projectCollaborators`;
+  async findAll() {
+    const collaborators = await this.prisma.projectCollaborator.findMany();
+    return collaborators.map((collaborator) => new ProjectCollaboratorEntity(collaborator));
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} projectCollaborator`;
+  async findOne(id: string) {
+    const collaborator = await this.prisma.projectCollaborator.findUnique({
+      where: { id },
+    });
+    if (!collaborator) return null;
+    return new ProjectCollaboratorEntity(collaborator);
   }
 
-  update(id: number, updateProjectCollaboratorDto: UpdateProjectCollaboratorDto) {
-    return `This action updates a #${id} projectCollaborator`;
+  async update(id: string, updateProjectCollaboratorDto: UpdateProjectCollaboratorDto) {
+    const collaborator = await this.prisma.projectCollaborator.update({
+      where: { id },
+      data: updateProjectCollaboratorDto,
+    });
+    return new ProjectCollaboratorEntity(collaborator);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} projectCollaborator`;
+  async remove(id: string) {
+    const collaborator = await this.prisma.projectCollaborator.delete({
+      where: { id },
+    });
+    return new ProjectCollaboratorEntity(collaborator);
   }
 }

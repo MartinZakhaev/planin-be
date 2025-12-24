@@ -4,7 +4,6 @@ import request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { SubscriptionStatus } from '@prisma/client';
 
 describe('SubscriptionsController (e2e)', () => {
     let app: INestApplication;

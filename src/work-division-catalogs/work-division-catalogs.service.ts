@@ -1,26 +1,45 @@
 import { Injectable } from '@nestjs/common';
 import { CreateWorkDivisionCatalogDto } from './dto/create-work-division-catalog.dto';
 import { UpdateWorkDivisionCatalogDto } from './dto/update-work-division-catalog.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { WorkDivisionCatalogEntity } from './entities/work-division-catalog.entity';
 
 @Injectable()
 export class WorkDivisionCatalogsService {
-  create(createWorkDivisionCatalogDto: CreateWorkDivisionCatalogDto) {
-    return 'This action adds a new workDivisionCatalog';
+  constructor(private readonly prisma: PrismaService) { }
+
+  async create(createWorkDivisionCatalogDto: CreateWorkDivisionCatalogDto) {
+    const catalog = await this.prisma.workDivisionCatalog.create({
+      data: createWorkDivisionCatalogDto,
+    });
+    return new WorkDivisionCatalogEntity(catalog);
   }
 
-  findAll() {
-    return `This action returns all workDivisionCatalogs`;
+  async findAll() {
+    const catalogs = await this.prisma.workDivisionCatalog.findMany();
+    return catalogs.map((catalog) => new WorkDivisionCatalogEntity(catalog));
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} workDivisionCatalog`;
+  async findOne(id: string) {
+    const catalog = await this.prisma.workDivisionCatalog.findUnique({
+      where: { id },
+    });
+    if (!catalog) return null;
+    return new WorkDivisionCatalogEntity(catalog);
   }
 
-  update(id: number, updateWorkDivisionCatalogDto: UpdateWorkDivisionCatalogDto) {
-    return `This action updates a #${id} workDivisionCatalog`;
+  async update(id: string, updateWorkDivisionCatalogDto: UpdateWorkDivisionCatalogDto) {
+    const catalog = await this.prisma.workDivisionCatalog.update({
+      where: { id },
+      data: updateWorkDivisionCatalogDto,
+    });
+    return new WorkDivisionCatalogEntity(catalog);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} workDivisionCatalog`;
+  async remove(id: string) {
+    const catalog = await this.prisma.workDivisionCatalog.delete({
+      where: { id },
+    });
+    return new WorkDivisionCatalogEntity(catalog);
   }
 }

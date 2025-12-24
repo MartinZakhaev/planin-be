@@ -1,26 +1,45 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTaskCatalogDto } from './dto/create-task-catalog.dto';
 import { UpdateTaskCatalogDto } from './dto/update-task-catalog.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { TaskCatalogEntity } from './entities/task-catalog.entity';
 
 @Injectable()
 export class TaskCatalogsService {
-  create(createTaskCatalogDto: CreateTaskCatalogDto) {
-    return 'This action adds a new taskCatalog';
+  constructor(private readonly prisma: PrismaService) { }
+
+  async create(createTaskCatalogDto: CreateTaskCatalogDto) {
+    const catalog = await this.prisma.taskCatalog.create({
+      data: createTaskCatalogDto,
+    });
+    return new TaskCatalogEntity(catalog);
   }
 
-  findAll() {
-    return `This action returns all taskCatalogs`;
+  async findAll() {
+    const catalogs = await this.prisma.taskCatalog.findMany();
+    return catalogs.map((catalog) => new TaskCatalogEntity(catalog));
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} taskCatalog`;
+  async findOne(id: string) {
+    const catalog = await this.prisma.taskCatalog.findUnique({
+      where: { id },
+    });
+    if (!catalog) return null;
+    return new TaskCatalogEntity(catalog);
   }
 
-  update(id: number, updateTaskCatalogDto: UpdateTaskCatalogDto) {
-    return `This action updates a #${id} taskCatalog`;
+  async update(id: string, updateTaskCatalogDto: UpdateTaskCatalogDto) {
+    const catalog = await this.prisma.taskCatalog.update({
+      where: { id },
+      data: updateTaskCatalogDto,
+    });
+    return new TaskCatalogEntity(catalog);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} taskCatalog`;
+  async remove(id: string) {
+    const catalog = await this.prisma.taskCatalog.delete({
+      where: { id },
+    });
+    return new TaskCatalogEntity(catalog);
   }
 }
