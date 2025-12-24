@@ -18,6 +18,7 @@ import { ProjectTasksModule } from './project-tasks/project-tasks.module';
 import { TaskLineItemsModule } from './task-line-items/task-line-items.module';
 import { RabSummariesModule } from './rab-summaries/rab-summaries.module';
 import { RabExportsModule } from './rab-exports/rab-exports.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { RabExportsModule } from './rab-exports/rab-exports.module';
     TaskLineItemsModule,
     RabSummariesModule,
     RabExportsModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
