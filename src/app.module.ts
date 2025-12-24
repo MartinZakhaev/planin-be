@@ -9,6 +9,7 @@ import { OrganizationMembersModule } from './organization-members/organization-m
 import { PlansModule } from './plans/plans.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { WorkDivisionCatalogsModule } from './work-division-catalogs/work-division-catalogs.module';
+import { TaskCatalogsModule } from './task-catalogs/task-catalogs.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { WorkDivisionCatalogsModule } from './work-division-catalogs/work-divisi
     PlansModule,
     SubscriptionsModule,
     WorkDivisionCatalogsModule,
+    TaskCatalogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
