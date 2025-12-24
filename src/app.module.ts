@@ -8,6 +8,7 @@ import { OrganizationsModule } from './organizations/organizations.module';
 import { OrganizationMembersModule } from './organization-members/organization-members.module';
 import { PlansModule } from './plans/plans.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
+import { WorkDivisionCatalogsModule } from './work-division-catalogs/work-division-catalogs.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
     OrganizationMembersModule,
     PlansModule,
     SubscriptionsModule,
+    WorkDivisionCatalogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
