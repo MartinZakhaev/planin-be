@@ -15,6 +15,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { ProjectCollaboratorsModule } from './project-collaborators/project-collaborators.module';
 import { ProjectDivisionsModule } from './project-divisions/project-divisions.module';
 import { ProjectTasksModule } from './project-tasks/project-tasks.module';
+import { TaskLineItemsModule } from './task-line-items/task-line-items.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ProjectTasksModule } from './project-tasks/project-tasks.module';
     ProjectCollaboratorsModule,
     ProjectDivisionsModule,
     ProjectTasksModule,
+    TaskLineItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
