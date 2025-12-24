@@ -10,6 +10,7 @@ import { PlansModule } from './plans/plans.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { WorkDivisionCatalogsModule } from './work-division-catalogs/work-division-catalogs.module';
 import { TaskCatalogsModule } from './task-catalogs/task-catalogs.module';
+import { ItemCatalogsModule } from './item-catalogs/item-catalogs.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { TaskCatalogsModule } from './task-catalogs/task-catalogs.module';
     SubscriptionsModule,
     WorkDivisionCatalogsModule,
     TaskCatalogsModule,
+    ItemCatalogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
