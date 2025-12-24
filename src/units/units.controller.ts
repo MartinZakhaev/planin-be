@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException } from '@nestjs/common';
 import { UnitsService } from './units.service';
 import { CreateUnitDto } from './dto/create-unit.dto';
 import { UpdateUnitDto } from './dto/update-unit.dto';
@@ -30,8 +30,12 @@ export class UnitsController {
   @ApiParam({ name: 'id', description: 'The UUID of the unit' })
   @ApiResponse({ status: 200, description: 'The found unit.' })
   @ApiResponse({ status: 404, description: 'Unit not found.' })
-  findOne(@Param('id') id: string) {
-    return this.unitsService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const unit = await this.unitsService.findOne(id);
+    if (!unit) {
+      throw new NotFoundException(`Unit with ID ${id} not found`);
+    }
+    return unit;
   }
 
   @Patch(':id')
