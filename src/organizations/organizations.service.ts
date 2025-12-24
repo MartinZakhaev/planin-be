@@ -1,26 +1,45 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { OrganizationEntity } from './entities/organization.entity';
 
 @Injectable()
 export class OrganizationsService {
-  create(createOrganizationDto: CreateOrganizationDto) {
-    return 'This action adds a new organization';
+  constructor(private readonly prisma: PrismaService) { }
+
+  async create(createOrganizationDto: CreateOrganizationDto) {
+    const organization = await this.prisma.organization.create({
+      data: createOrganizationDto,
+    });
+    return new OrganizationEntity(organization);
   }
 
-  findAll() {
-    return `This action returns all organizations`;
+  async findAll() {
+    const organizations = await this.prisma.organization.findMany();
+    return organizations.map((org) => new OrganizationEntity(org));
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} organization`;
+  async findOne(id: string) {
+    const organization = await this.prisma.organization.findUnique({
+      where: { id },
+    });
+    if (!organization) return null;
+    return new OrganizationEntity(organization);
   }
 
-  update(id: number, updateOrganizationDto: UpdateOrganizationDto) {
-    return `This action updates a #${id} organization`;
+  async update(id: string, updateOrganizationDto: UpdateOrganizationDto) {
+    const organization = await this.prisma.organization.update({
+      where: { id },
+      data: updateOrganizationDto,
+    });
+    return new OrganizationEntity(organization);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} organization`;
+  async remove(id: string) {
+    const organization = await this.prisma.organization.delete({
+      where: { id },
+    });
+    return new OrganizationEntity(organization);
   }
 }
