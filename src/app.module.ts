@@ -12,6 +12,7 @@ import { WorkDivisionCatalogsModule } from './work-division-catalogs/work-divisi
 import { TaskCatalogsModule } from './task-catalogs/task-catalogs.module';
 import { ItemCatalogsModule } from './item-catalogs/item-catalogs.module';
 import { ProjectsModule } from './projects/projects.module';
+import { ProjectCollaboratorsModule } from './project-collaborators/project-collaborators.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ProjectsModule } from './projects/projects.module';
     TaskCatalogsModule,
     ItemCatalogsModule,
     ProjectsModule,
+    ProjectCollaboratorsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
