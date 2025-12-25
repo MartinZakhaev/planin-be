@@ -7,17 +7,20 @@ import { defaultStatements, adminAc } from 'better-auth/plugins/admin/access';
  */
 export const statement = {
     ...defaultStatements,
-    // Project resource permissions
     project: ['create', 'read', 'update', 'delete', 'share'],
-    // Catalog resource permissions (units, divisions, tasks, items)
-    catalog: ['create', 'read', 'update', 'delete'],
-    // Organization resource permissions
+    // Granular Catalog permissions
+    unit: ['create', 'read', 'update', 'delete'],
+    work_division: ['create', 'read', 'update', 'delete'],
+    task_catalog: ['create', 'read', 'update', 'delete'],
+    item_catalog: ['create', 'read', 'update', 'delete'],
+    // Organization & System permissions
     organization: ['create', 'read', 'update', 'delete', 'manage-members'],
+    audit_log: ['create', 'read', 'update', 'delete'],
+    subscription: ['create', 'read', 'update', 'delete'],
+    plan: ['create', 'read', 'update', 'delete'],
+    user: ['create', 'read', 'update', 'delete'],
 } as const;
 
-/**
- * Create the Access Controller
- */
 export const ac = createAccessControl(statement);
 
 /**
@@ -26,8 +29,16 @@ export const ac = createAccessControl(statement);
 const superadminPermissions = {
     ...adminAc.statements,
     project: ['create', 'read', 'update', 'delete', 'share'],
-    catalog: ['create', 'read', 'update', 'delete'],
     organization: ['create', 'read', 'update', 'delete', 'manage-members'],
+    user: ['create', 'read', 'update', 'delete'],
+    // Full access to everything
+    unit: ['create', 'read', 'update', 'delete'],
+    work_division: ['create', 'read', 'update', 'delete'],
+    task_catalog: ['create', 'read', 'update', 'delete'],
+    item_catalog: ['create', 'read', 'update', 'delete'],
+    audit_log: ['create', 'read', 'update', 'delete'],
+    subscription: ['create', 'read', 'update', 'delete'],
+    plan: ['create', 'read', 'update', 'delete'],
 };
 
 export const superadmin = ac.newRole(superadminPermissions as any);
@@ -38,8 +49,17 @@ export const superadmin = ac.newRole(superadminPermissions as any);
 const adminPermissions = {
     ...adminAc.statements,
     project: ['create', 'read', 'update', 'delete', 'share'],
-    catalog: ['create', 'read', 'update', 'delete'],
     organization: ['read', 'update', 'manage-members'],
+    // Granular catalog access
+    unit: ['create', 'read', 'update', 'delete'],
+    work_division: ['create', 'read', 'update', 'delete'],
+    task_catalog: ['create', 'read', 'update', 'delete'],
+    item_catalog: ['create', 'read', 'update', 'delete'],
+    // System access
+    audit_log: ['read'],
+    subscription: ['read', 'update'],
+    plan: ['read'],
+    user: ['read', 'create', 'update', 'delete'], // Admins manage users
 };
 
 export const adminRole = ac.newRole(adminPermissions as any);
@@ -49,8 +69,13 @@ export const adminRole = ac.newRole(adminPermissions as any);
  */
 const staffPermissions = {
     project: ['create', 'read', 'update'],
-    catalog: ['read'],
     organization: ['read'],
+    // Read-only catalog
+    unit: ['read'],
+    work_division: ['read'],
+    task_catalog: ['read'],
+    item_catalog: ['read'],
+    plan: ['read'],
 };
 
 export const staff = ac.newRole(staffPermissions as any);
@@ -59,9 +84,14 @@ export const staff = ac.newRole(staffPermissions as any);
  * USER Role Permissions
  */
 const userPermissions = {
-    project: ['create', 'read'],
-    catalog: ['read'],
+    project: ['create', 'read', 'update', 'delete'],
     organization: ['read'],
+    // Read-only catalog
+    unit: ['read'],
+    work_division: ['read'],
+    task_catalog: ['read'],
+    item_catalog: ['read'],
+    plan: ['read'],
 };
 
 export const user = ac.newRole(userPermissions as any);

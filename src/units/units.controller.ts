@@ -20,7 +20,7 @@ export class UnitsController {
   @ApiResponse({ status: 201, description: 'The unit has been successfully created.' })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   @ApiResponse({ status: 403, description: 'Forbidden. Insufficient permissions.' })
-  @RequirePermission('catalog', 'create')
+  @RequirePermission('unit', 'create')
   create(@Body() createUnitDto: CreateUnitDto) {
     return this.unitsService.create(createUnitDto);
   }
@@ -28,7 +28,7 @@ export class UnitsController {
   @Get()
   @ApiOperation({ summary: 'Retrieve all units' })
   @ApiResponse({ status: 200, description: 'List of all units.' })
-  @RequirePermission('catalog', 'read')
+  @RequirePermission('unit', 'read')
   findAll() {
     return this.unitsService.findAll();
   }
@@ -38,7 +38,7 @@ export class UnitsController {
   @ApiParam({ name: 'id', description: 'The UUID of the unit' })
   @ApiResponse({ status: 200, description: 'The found unit.' })
   @ApiResponse({ status: 404, description: 'Unit not found.' })
-  @RequirePermission('catalog', 'read')
+  @RequirePermission('unit', 'read')
   async findOne(@Param('id') id: string) {
     const unit = await this.unitsService.findOne(id);
     if (!unit) {
@@ -54,7 +54,7 @@ export class UnitsController {
   @ApiResponse({ status: 200, description: 'The unit has been successfully updated.' })
   @ApiResponse({ status: 404, description: 'Unit not found.' })
   @ApiResponse({ status: 403, description: 'Forbidden. Insufficient permissions.' })
-  @RequirePermission('catalog', 'update')
+  @RequirePermission('unit', 'update')
   update(@Param('id') id: string, @Body() updateUnitDto: UpdateUnitDto) {
     return this.unitsService.update(id, updateUnitDto);
   }
@@ -65,7 +65,7 @@ export class UnitsController {
   @ApiResponse({ status: 200, description: 'The unit has been successfully deleted.' })
   @ApiResponse({ status: 404, description: 'Unit not found.' })
   @ApiResponse({ status: 403, description: 'Forbidden. Insufficient permissions.' })
-  @RequirePermission('catalog', 'delete')
+  @RequirePermission('unit', 'delete')
   remove(@Param('id') id: string) {
     return this.unitsService.remove(id);
   }
