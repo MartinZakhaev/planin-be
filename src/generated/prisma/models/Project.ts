@@ -255,7 +255,7 @@ export type ProjectWhereInput = {
   NOT?: Prisma.ProjectWhereInput | Prisma.ProjectWhereInput[]
   id?: Prisma.UuidFilter<"Project"> | string
   organizationId?: Prisma.UuidFilter<"Project"> | string
-  ownerUserId?: Prisma.UuidFilter<"Project"> | string
+  ownerUserId?: Prisma.StringFilter<"Project"> | string
   name?: Prisma.StringFilter<"Project"> | string
   code?: Prisma.StringNullableFilter<"Project"> | string | null
   description?: Prisma.StringNullableFilter<"Project"> | string | null
@@ -306,7 +306,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ProjectWhereInput[]
   NOT?: Prisma.ProjectWhereInput | Prisma.ProjectWhereInput[]
   organizationId?: Prisma.UuidFilter<"Project"> | string
-  ownerUserId?: Prisma.UuidFilter<"Project"> | string
+  ownerUserId?: Prisma.StringFilter<"Project"> | string
   name?: Prisma.StringFilter<"Project"> | string
   code?: Prisma.StringNullableFilter<"Project"> | string | null
   description?: Prisma.StringNullableFilter<"Project"> | string | null
@@ -352,7 +352,7 @@ export type ProjectScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ProjectScalarWhereWithAggregatesInput | Prisma.ProjectScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"Project"> | string
   organizationId?: Prisma.UuidWithAggregatesFilter<"Project"> | string
-  ownerUserId?: Prisma.UuidWithAggregatesFilter<"Project"> | string
+  ownerUserId?: Prisma.StringWithAggregatesFilter<"Project"> | string
   name?: Prisma.StringWithAggregatesFilter<"Project"> | string
   code?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
@@ -835,7 +835,7 @@ export type ProjectScalarWhereInput = {
   NOT?: Prisma.ProjectScalarWhereInput | Prisma.ProjectScalarWhereInput[]
   id?: Prisma.UuidFilter<"Project"> | string
   organizationId?: Prisma.UuidFilter<"Project"> | string
-  ownerUserId?: Prisma.UuidFilter<"Project"> | string
+  ownerUserId?: Prisma.StringFilter<"Project"> | string
   name?: Prisma.StringFilter<"Project"> | string
   code?: Prisma.StringNullableFilter<"Project"> | string | null
   description?: Prisma.StringNullableFilter<"Project"> | string | null

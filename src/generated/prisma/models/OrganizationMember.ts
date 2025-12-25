@@ -186,7 +186,7 @@ export type OrganizationMemberWhereInput = {
   NOT?: Prisma.OrganizationMemberWhereInput | Prisma.OrganizationMemberWhereInput[]
   id?: Prisma.UuidFilter<"OrganizationMember"> | string
   organizationId?: Prisma.UuidFilter<"OrganizationMember"> | string
-  userId?: Prisma.UuidFilter<"OrganizationMember"> | string
+  userId?: Prisma.StringFilter<"OrganizationMember"> | string
   role?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
   createdAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
@@ -212,7 +212,7 @@ export type OrganizationMemberWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.OrganizationMemberWhereInput[]
   NOT?: Prisma.OrganizationMemberWhereInput | Prisma.OrganizationMemberWhereInput[]
   organizationId?: Prisma.UuidFilter<"OrganizationMember"> | string
-  userId?: Prisma.UuidFilter<"OrganizationMember"> | string
+  userId?: Prisma.StringFilter<"OrganizationMember"> | string
   role?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
   createdAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
@@ -238,7 +238,7 @@ export type OrganizationMemberScalarWhereWithAggregatesInput = {
   NOT?: Prisma.OrganizationMemberScalarWhereWithAggregatesInput | Prisma.OrganizationMemberScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"OrganizationMember"> | string
   organizationId?: Prisma.UuidWithAggregatesFilter<"OrganizationMember"> | string
-  userId?: Prisma.UuidWithAggregatesFilter<"OrganizationMember"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"OrganizationMember"> | string
   role?: Prisma.StringNullableWithAggregatesFilter<"OrganizationMember"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"OrganizationMember"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"OrganizationMember"> | Date | string
@@ -479,7 +479,7 @@ export type OrganizationMemberScalarWhereInput = {
   NOT?: Prisma.OrganizationMemberScalarWhereInput | Prisma.OrganizationMemberScalarWhereInput[]
   id?: Prisma.UuidFilter<"OrganizationMember"> | string
   organizationId?: Prisma.UuidFilter<"OrganizationMember"> | string
-  userId?: Prisma.UuidFilter<"OrganizationMember"> | string
+  userId?: Prisma.StringFilter<"OrganizationMember"> | string
   role?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
   createdAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string

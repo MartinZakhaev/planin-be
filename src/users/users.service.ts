@@ -2,23 +2,32 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import * as bcrypt from 'bcrypt';
 import { UserEntity } from './entities/user.entity';
+import { randomUUID } from 'crypto';
 
+/**
+ * Users Service
+ * 
+ * Note: User creation with password should be done through Better Auth's
+ * sign-up endpoints (/api/auth/sign-up/email). This service is for
+ * administrative user management.
+ */
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) { }
 
+  /**
+   * Create a user (administrative - without password)
+   * For user registration with password, use Better Auth sign-up endpoints
+   */
   async create(createUserDto: CreateUserDto) {
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(createUserDto.password, salt);
-
-    const { password, ...userData } = createUserDto;
-
     const user = await this.prisma.user.create({
       data: {
-        ...userData,
-        passwordHash,
+        id: randomUUID(),
+        email: createUserDto.email,
+        fullName: createUserDto.fullName,
+        profileFileId: createUserDto.profileFileId,
+        role: createUserDto.role ?? 'user',
       },
     });
 
@@ -38,17 +47,18 @@ export class UsersService {
     return new UserEntity(user);
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    if (updateUserDto.password) {
-      const salt = await bcrypt.genSalt();
-      const passwordHash = await bcrypt.hash(updateUserDto.password, salt);
-      delete updateUserDto.password;
-      (updateUserDto as any).passwordHash = passwordHash;
-    }
+  async findByEmail(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+    if (!user) return null;
+    return new UserEntity(user);
+  }
 
+  async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.prisma.user.update({
       where: { id },
-      data: updateUserDto as any,
+      data: updateUserDto,
     });
     return new UserEntity(user);
   }
@@ -56,6 +66,47 @@ export class UsersService {
   async remove(id: string) {
     const user = await this.prisma.user.delete({
       where: { id },
+    });
+    return new UserEntity(user);
+  }
+
+  /**
+   * Ban a user
+   */
+  async banUser(id: string, reason?: string, expiresAt?: Date) {
+    const user = await this.prisma.user.update({
+      where: { id },
+      data: {
+        banned: true,
+        banReason: reason,
+        banExpires: expiresAt,
+      },
+    });
+    return new UserEntity(user);
+  }
+
+  /**
+   * Unban a user
+   */
+  async unbanUser(id: string) {
+    const user = await this.prisma.user.update({
+      where: { id },
+      data: {
+        banned: false,
+        banReason: null,
+        banExpires: null,
+      },
+    });
+    return new UserEntity(user);
+  }
+
+  /**
+   * Set user role
+   */
+  async setRole(id: string, role: string) {
+    const user = await this.prisma.user.update({
+      where: { id },
+      data: { role },
     });
     return new UserEntity(user);
   }

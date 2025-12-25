@@ -43,14 +43,21 @@ enum SubscriptionStatus {
 }
 
 model User {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  email         String   @unique @db.VarChar(255)
-  passwordHash  String   @map("password_hash")
-  fullName      String?  @map("full_name") @db.VarChar(200)
-  profileFileId String?  @map("profile_file_id") @db.Uuid
-  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  id            String    @id @db.VarChar(36)
+  email         String    @unique @db.VarChar(255)
+  emailVerified Boolean   @default(false) @map("email_verified")
+  fullName      String?   @map("full_name") @db.VarChar(200)
+  image         String?   @db.Text
+  profileFileId String?   @map("profile_file_id") @db.Uuid
+  role          String    @default("user") @db.VarChar(50)
+  banned        Boolean   @default(false)
+  banReason     String?   @map("ban_reason") @db.Text
+  banExpires    DateTime? @map("ban_expires") @db.Timestamptz
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
+  sessions           Session[]
+  accounts           Account[]
   organizationsOwned Organization[]        @relation("OrganizationOwner")
   memberships        OrganizationMember[]
   subscriptions      Subscription[]
@@ -64,11 +71,60 @@ model User {
   @@map("users")
 }
 
+model Session {
+  id             String    @id @db.VarChar(36)
+  userId         String    @map("user_id") @db.VarChar(36)
+  token          String    @unique
+  expiresAt      DateTime  @map("expires_at") @db.Timestamptz
+  ipAddress      String?   @map("ip_address") @db.VarChar(100)
+  userAgent      String?   @map("user_agent") @db.Text
+  impersonatedBy String?   @map("impersonated_by") @db.VarChar(36)
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id @db.VarChar(36)
+  userId                String    @map("user_id") @db.VarChar(36)
+  accountId             String    @map("account_id")
+  providerId            String    @map("provider_id")
+  accessToken           String?   @map("access_token") @db.Text
+  refreshToken          String?   @map("refresh_token") @db.Text
+  accessTokenExpiresAt  DateTime? @map("access_token_expires_at") @db.Timestamptz
+  refreshTokenExpiresAt DateTime? @map("refresh_token_expires_at") @db.Timestamptz
+  scope                 String?   @db.Text
+  idToken               String?   @map("id_token") @db.Text
+  password              String?   @db.Text
+  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt             DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id @db.VarChar(36)
+  identifier String
+  value      String
+  expiresAt  DateTime @map("expires_at") @db.Timestamptz
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("verifications")
+}
+
 model Organization {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String   @db.VarChar(200)
   code        String?  @unique @db.VarChar(80)
-  ownerUserId String   @map("owner_user_id") @db.Uuid
+  ownerUserId String   @map("owner_user_id") @db.VarChar(36)
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
@@ -83,7 +139,7 @@ model Organization {
 model OrganizationMember {
   id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   organizationId String   @map("organization_id") @db.Uuid
-  userId         String   @map("user_id") @db.Uuid
+  userId         String   @map("user_id") @db.VarChar(36)
   role           String?  @default("MEMBER") @db.VarChar(50)
   createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt      DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
@@ -115,7 +171,7 @@ model Plan {
 
 model Subscription {
   id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId             String             @map("user_id") @db.Uuid
+  userId             String             @map("user_id") @db.VarChar(36)
   planId             String             @map("plan_id") @db.Uuid
   status             SubscriptionStatus @default(ACTIVE)
   trialEndsAt        DateTime?          @map("trial_ends_at") @db.Timestamptz
@@ -199,7 +255,7 @@ model ItemCatalog {
 model Project {
   id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   organizationId String   @map("organization_id") @db.Uuid
-  ownerUserId    String   @map("owner_user_id") @db.Uuid
+  ownerUserId    String   @map("owner_user_id") @db.VarChar(36)
   name           String   @db.VarChar(250)
   code           String?  @db.VarChar(80)
   description    String?  @db.Text
@@ -228,7 +284,7 @@ model Project {
 model ProjectCollaborator {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   projectId String   @map("project_id") @db.Uuid
-  userId    String   @map("user_id") @db.Uuid
+  userId    String   @map("user_id") @db.VarChar(36)
   role      String?  @default("EDITOR") @db.VarChar(50)
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
@@ -321,7 +377,7 @@ model RabSummary {
   taxAmount        Decimal  @default(0) @map("tax_amount") @db.Decimal(18, 2)
   grandTotal       Decimal  @default(0) @map("grand_total") @db.Decimal(18, 2)
   notes            String?  @db.Text
-  createdBy        String   @map("created_by") @db.Uuid
+  createdBy        String   @map("created_by") @db.VarChar(36)
   createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz
 
   project Project     @relation(fields: [projectId], references: [id])
@@ -353,7 +409,7 @@ model RabExport {
 
 model File {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  ownerUserId String   @map("owner_user_id") @db.Uuid
+  ownerUserId String   @map("owner_user_id") @db.VarChar(36)
   projectId   String?  @map("project_id") @db.Uuid
   kind        FileKind @default(OTHER)
   filename    String   @db.VarChar(300)
@@ -376,7 +432,7 @@ model File {
 
 model AuditLog {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId      String?  @map("user_id") @db.Uuid
+  userId      String?  @map("user_id") @db.VarChar(36)
   projectId   String?  @map("project_id") @db.Uuid
   action      String   @db.VarChar(120)
   entityTable String?  @map("entity_table") @db.VarChar(120)

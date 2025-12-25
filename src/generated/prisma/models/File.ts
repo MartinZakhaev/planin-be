@@ -240,7 +240,7 @@ export type FileWhereInput = {
   OR?: Prisma.FileWhereInput[]
   NOT?: Prisma.FileWhereInput | Prisma.FileWhereInput[]
   id?: Prisma.UuidFilter<"File"> | string
-  ownerUserId?: Prisma.UuidFilter<"File"> | string
+  ownerUserId?: Prisma.StringFilter<"File"> | string
   projectId?: Prisma.UuidNullableFilter<"File"> | string | null
   kind?: Prisma.EnumFileKindFilter<"File"> | $Enums.FileKind
   filename?: Prisma.StringFilter<"File"> | string
@@ -277,7 +277,7 @@ export type FileWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.FileWhereInput | Prisma.FileWhereInput[]
   OR?: Prisma.FileWhereInput[]
   NOT?: Prisma.FileWhereInput | Prisma.FileWhereInput[]
-  ownerUserId?: Prisma.UuidFilter<"File"> | string
+  ownerUserId?: Prisma.StringFilter<"File"> | string
   projectId?: Prisma.UuidNullableFilter<"File"> | string | null
   kind?: Prisma.EnumFileKindFilter<"File"> | $Enums.FileKind
   filename?: Prisma.StringFilter<"File"> | string
@@ -314,7 +314,7 @@ export type FileScalarWhereWithAggregatesInput = {
   OR?: Prisma.FileScalarWhereWithAggregatesInput[]
   NOT?: Prisma.FileScalarWhereWithAggregatesInput | Prisma.FileScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"File"> | string
-  ownerUserId?: Prisma.UuidWithAggregatesFilter<"File"> | string
+  ownerUserId?: Prisma.StringWithAggregatesFilter<"File"> | string
   projectId?: Prisma.UuidNullableWithAggregatesFilter<"File"> | string | null
   kind?: Prisma.EnumFileKindWithAggregatesFilter<"File"> | $Enums.FileKind
   filename?: Prisma.StringWithAggregatesFilter<"File"> | string
@@ -713,7 +713,7 @@ export type FileScalarWhereInput = {
   OR?: Prisma.FileScalarWhereInput[]
   NOT?: Prisma.FileScalarWhereInput | Prisma.FileScalarWhereInput[]
   id?: Prisma.UuidFilter<"File"> | string
-  ownerUserId?: Prisma.UuidFilter<"File"> | string
+  ownerUserId?: Prisma.StringFilter<"File"> | string
   projectId?: Prisma.UuidNullableFilter<"File"> | string | null
   kind?: Prisma.EnumFileKindFilter<"File"> | $Enums.FileKind
   filename?: Prisma.StringFilter<"File"> | string

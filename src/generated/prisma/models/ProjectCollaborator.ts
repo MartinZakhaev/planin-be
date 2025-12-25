@@ -186,7 +186,7 @@ export type ProjectCollaboratorWhereInput = {
   NOT?: Prisma.ProjectCollaboratorWhereInput | Prisma.ProjectCollaboratorWhereInput[]
   id?: Prisma.UuidFilter<"ProjectCollaborator"> | string
   projectId?: Prisma.UuidFilter<"ProjectCollaborator"> | string
-  userId?: Prisma.UuidFilter<"ProjectCollaborator"> | string
+  userId?: Prisma.StringFilter<"ProjectCollaborator"> | string
   role?: Prisma.StringNullableFilter<"ProjectCollaborator"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ProjectCollaborator"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ProjectCollaborator"> | Date | string
@@ -212,7 +212,7 @@ export type ProjectCollaboratorWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ProjectCollaboratorWhereInput[]
   NOT?: Prisma.ProjectCollaboratorWhereInput | Prisma.ProjectCollaboratorWhereInput[]
   projectId?: Prisma.UuidFilter<"ProjectCollaborator"> | string
-  userId?: Prisma.UuidFilter<"ProjectCollaborator"> | string
+  userId?: Prisma.StringFilter<"ProjectCollaborator"> | string
   role?: Prisma.StringNullableFilter<"ProjectCollaborator"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ProjectCollaborator"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ProjectCollaborator"> | Date | string
@@ -238,7 +238,7 @@ export type ProjectCollaboratorScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ProjectCollaboratorScalarWhereWithAggregatesInput | Prisma.ProjectCollaboratorScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"ProjectCollaborator"> | string
   projectId?: Prisma.UuidWithAggregatesFilter<"ProjectCollaborator"> | string
-  userId?: Prisma.UuidWithAggregatesFilter<"ProjectCollaborator"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"ProjectCollaborator"> | string
   role?: Prisma.StringNullableWithAggregatesFilter<"ProjectCollaborator"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ProjectCollaborator"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ProjectCollaborator"> | Date | string
@@ -479,7 +479,7 @@ export type ProjectCollaboratorScalarWhereInput = {
   NOT?: Prisma.ProjectCollaboratorScalarWhereInput | Prisma.ProjectCollaboratorScalarWhereInput[]
   id?: Prisma.UuidFilter<"ProjectCollaborator"> | string
   projectId?: Prisma.UuidFilter<"ProjectCollaborator"> | string
-  userId?: Prisma.UuidFilter<"ProjectCollaborator"> | string
+  userId?: Prisma.StringFilter<"ProjectCollaborator"> | string
   role?: Prisma.StringNullableFilter<"ProjectCollaborator"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ProjectCollaborator"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ProjectCollaborator"> | Date | string

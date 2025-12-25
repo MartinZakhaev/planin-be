@@ -213,7 +213,7 @@ export type SubscriptionWhereInput = {
   OR?: Prisma.SubscriptionWhereInput[]
   NOT?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
   id?: Prisma.UuidFilter<"Subscription"> | string
-  userId?: Prisma.UuidFilter<"Subscription"> | string
+  userId?: Prisma.StringFilter<"Subscription"> | string
   planId?: Prisma.UuidFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
   trialEndsAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
@@ -246,7 +246,7 @@ export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
   OR?: Prisma.SubscriptionWhereInput[]
   NOT?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
-  userId?: Prisma.UuidFilter<"Subscription"> | string
+  userId?: Prisma.StringFilter<"Subscription"> | string
   planId?: Prisma.UuidFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
   trialEndsAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
@@ -280,7 +280,7 @@ export type SubscriptionScalarWhereWithAggregatesInput = {
   OR?: Prisma.SubscriptionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SubscriptionScalarWhereWithAggregatesInput | Prisma.SubscriptionScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"Subscription"> | string
-  userId?: Prisma.UuidWithAggregatesFilter<"Subscription"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
   planId?: Prisma.UuidWithAggregatesFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusWithAggregatesFilter<"Subscription"> | $Enums.SubscriptionStatus
   trialEndsAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
@@ -517,10 +517,6 @@ export type EnumSubscriptionStatusFieldUpdateOperationsInput = {
   set?: $Enums.SubscriptionStatus
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type SubscriptionCreateWithoutUserInput = {
   id?: string
   status?: $Enums.SubscriptionStatus
@@ -576,7 +572,7 @@ export type SubscriptionScalarWhereInput = {
   OR?: Prisma.SubscriptionScalarWhereInput[]
   NOT?: Prisma.SubscriptionScalarWhereInput | Prisma.SubscriptionScalarWhereInput[]
   id?: Prisma.UuidFilter<"Subscription"> | string
-  userId?: Prisma.UuidFilter<"Subscription"> | string
+  userId?: Prisma.StringFilter<"Subscription"> | string
   planId?: Prisma.UuidFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
   trialEndsAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null

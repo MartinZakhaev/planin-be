@@ -318,7 +318,7 @@ export type RabSummaryWhereInput = {
   taxAmount?: Prisma.DecimalFilter<"RabSummary"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   grandTotal?: Prisma.DecimalFilter<"RabSummary"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   notes?: Prisma.StringNullableFilter<"RabSummary"> | string | null
-  createdBy?: Prisma.UuidFilter<"RabSummary"> | string
+  createdBy?: Prisma.StringFilter<"RabSummary"> | string
   createdAt?: Prisma.DateTimeFilter<"RabSummary"> | Date | string
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -362,7 +362,7 @@ export type RabSummaryWhereUniqueInput = Prisma.AtLeast<{
   taxAmount?: Prisma.DecimalFilter<"RabSummary"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   grandTotal?: Prisma.DecimalFilter<"RabSummary"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   notes?: Prisma.StringNullableFilter<"RabSummary"> | string | null
-  createdBy?: Prisma.UuidFilter<"RabSummary"> | string
+  createdBy?: Prisma.StringFilter<"RabSummary"> | string
   createdAt?: Prisma.DateTimeFilter<"RabSummary"> | Date | string
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -407,7 +407,7 @@ export type RabSummaryScalarWhereWithAggregatesInput = {
   taxAmount?: Prisma.DecimalWithAggregatesFilter<"RabSummary"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   grandTotal?: Prisma.DecimalWithAggregatesFilter<"RabSummary"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   notes?: Prisma.StringNullableWithAggregatesFilter<"RabSummary"> | string | null
-  createdBy?: Prisma.UuidWithAggregatesFilter<"RabSummary"> | string
+  createdBy?: Prisma.StringWithAggregatesFilter<"RabSummary"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"RabSummary"> | Date | string
 }
 
@@ -801,7 +801,7 @@ export type RabSummaryScalarWhereInput = {
   taxAmount?: Prisma.DecimalFilter<"RabSummary"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   grandTotal?: Prisma.DecimalFilter<"RabSummary"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   notes?: Prisma.StringNullableFilter<"RabSummary"> | string | null
-  createdBy?: Prisma.UuidFilter<"RabSummary"> | string
+  createdBy?: Prisma.StringFilter<"RabSummary"> | string
   createdAt?: Prisma.DateTimeFilter<"RabSummary"> | Date | string
 }
 
