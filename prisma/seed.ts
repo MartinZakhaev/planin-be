@@ -78,7 +78,58 @@ async function main() {
         });
     }
 
+
+
     console.log('Units seeding completed.');
+
+    // Superadmin Seeding
+    console.log('Seeding Superadmin...');
+    const superAdminEmail = 'superadmin@planin.com';
+
+    try {
+        const existingSuperAdmin = await prisma.user.findFirst({
+            where: { email: superAdminEmail }
+        });
+
+        if (!existingSuperAdmin) {
+            // Using Better Auth API to ensure password hashing and correct account creation
+            // We need to import the auth instance
+            const { auth } = await import('../src/auth/auth.js');
+
+            // Generate a random mocked request context if needed, but the server API might not strict check origin for local calls
+            // Note: signUpEmail returns a promise resolving to the response
+            const res = await auth.api.signUpEmail({
+                body: {
+                    email: superAdminEmail,
+                    password: 'password123', // Default password
+                    name: 'Super Admin',
+                }
+            });
+
+            if (res && res.user) {
+                // Update role to superadmin (by default it's 'user')
+                await prisma.user.update({
+                    where: { id: res.user.id },
+                    data: { role: 'superadmin' }
+                });
+                console.log(`Superadmin created: ${superAdminEmail} / password123`);
+            } else {
+                console.error('Failed to create superadmin: No user data returned from Auth API');
+            }
+        } else {
+            console.log('Superadmin already exists. Skipping creation.');
+            // Ensure role is superadmin just in case
+            if (existingSuperAdmin.role !== 'superadmin') {
+                await prisma.user.update({
+                    where: { id: existingSuperAdmin.id },
+                    data: { role: 'superadmin' }
+                });
+                console.log('Updated existing superadmin user role to superadmin.');
+            }
+        }
+    } catch (error) {
+        console.error('Error seeding superadmin:', error);
+    }
 }
 
 main()
