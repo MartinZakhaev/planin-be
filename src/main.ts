@@ -3,15 +3,28 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { toNodeHandler } from 'better-auth/node';
 import { auth } from './auth/auth';
+import cors from 'cors';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bodyParser: false,
   });
 
+  const express = app.getHttpAdapter().getInstance();
+
+  // CORS configuration - MUST be before Better Auth handler
+  const corsOptions = {
+    origin: 'http://localhost:3000', // Your Next.js frontend URL
+    credentials: true, // Required for cookies/session
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+  };
+
+  // Apply CORS to all routes including Better Auth
+  express.use(cors(corsOptions));
+
   // Better Auth 1.4.7+ route handler workaround
   // This ensures requests to /api/auth/* are routed correctly
-  const express = app.getHttpAdapter().getInstance();
   express.all(/^\/api\/auth\/.*$/, toNodeHandler(auth));
 
   const config = new DocumentBuilder()
@@ -31,7 +44,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  app.enableCors();
   await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();

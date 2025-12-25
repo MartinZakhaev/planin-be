@@ -67,7 +67,10 @@ export const auth = betterAuth({
         }),
     ],
     hooks: {},
-    trustedOrigins: [process.env.BETTER_AUTH_URL || 'http://localhost:3001'],
+    trustedOrigins: [
+        'http://localhost:3000', // Next.js frontend
+        process.env.BETTER_AUTH_URL || 'http://localhost:3001',
+    ],
 });
 
 export type Auth = typeof auth;
