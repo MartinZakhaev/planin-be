@@ -21,46 +21,50 @@ export const statement = {
 export const ac = createAccessControl(statement);
 
 /**
- * SUPERADMIN Role
- * Full system access - can do everything including system configuration
+ * SUPERADMIN Role Permissions
  */
-export const superadmin = ac.newRole({
+const superadminPermissions = {
     ...adminAc.statements,
     project: ['create', 'read', 'update', 'delete', 'share'],
     catalog: ['create', 'read', 'update', 'delete'],
     organization: ['create', 'read', 'update', 'delete', 'manage-members'],
-});
+};
+
+export const superadmin = ac.newRole(superadminPermissions as any);
 
 /**
- * ADMIN Role
- * Organization admin - can manage users and all project operations
+ * ADMIN Role Permissions
  */
-export const adminRole = ac.newRole({
+const adminPermissions = {
     ...adminAc.statements,
     project: ['create', 'read', 'update', 'delete', 'share'],
     catalog: ['create', 'read', 'update', 'delete'],
     organization: ['read', 'update', 'manage-members'],
-});
+};
+
+export const adminRole = ac.newRole(adminPermissions as any);
 
 /**
- * STAFF Role
- * Project staff - can work on projects, limited user view
+ * STAFF Role Permissions
  */
-export const staff = ac.newRole({
+const staffPermissions = {
     project: ['create', 'read', 'update'],
     catalog: ['read'],
     organization: ['read'],
-});
+};
+
+export const staff = ac.newRole(staffPermissions as any);
 
 /**
- * USER Role
- * Regular user - can only manage their own projects, read catalogs
+ * USER Role Permissions
  */
-export const user = ac.newRole({
+const userPermissions = {
     project: ['create', 'read'],
     catalog: ['read'],
     organization: ['read'],
-});
+};
+
+export const user = ac.newRole(userPermissions as any);
 
 /**
  * Role names mapping for type safety
@@ -73,3 +77,13 @@ export const ROLES = {
 } as const;
 
 export type RoleName = (typeof ROLES)[keyof typeof ROLES];
+
+/**
+ * Map of role permissions for Guards
+ */
+export const rolePermissions: Record<string, any> = {
+    [ROLES.SUPERADMIN]: superadminPermissions,
+    [ROLES.ADMIN]: adminPermissions,
+    [ROLES.STAFF]: staffPermissions,
+    [ROLES.USER]: userPermissions,
+};
