@@ -19,7 +19,14 @@ async function bootstrap() {
     .setDescription('Planin API for construction project management')
     .setVersion('1.0')
     .addTag('Planin')
+    .addTag('Authentication')
     .addBearerAuth()
+    .addCookieAuth('better-auth.session_token', {
+      type: 'apiKey',
+      in: 'cookie',
+      name: 'better-auth.session_token',
+      description: 'Better Auth session cookie',
+    })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

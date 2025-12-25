@@ -5,6 +5,7 @@ import { UnitsModule } from './units/units.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from '@thallesp/nestjs-better-auth';
 import { auth } from './auth/auth';
+import { LocalAuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { OrganizationsModule } from './organizations/organizations.module';
 import { OrganizationMembersModule } from './organization-members/organization-members.module';
@@ -29,6 +30,7 @@ import { AuditLogsModule } from './audit-logs/audit-logs.module';
       isGlobal: true,
     }),
     AuthModule.forRoot({ auth }),
+    LocalAuthModule,
     UnitsModule,
     UsersModule,
     OrganizationsModule,
