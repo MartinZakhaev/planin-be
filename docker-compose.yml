@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  planin-be:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - dokploy-network
+    environment:
+      - PORT=${PORT}
+      - DATABASE_URL=${DATABASE_URL}
+      - BETTER_AUTH_URL=${BETTER_AUTH_URL}
+      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+      # Add other environment variables as needed
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.planin-be.rule=Host(`${DOMAIN_NAME}`)"
+      - "traefik.http.routers.planin-be.entrypoints=websecure"
+      - "traefik.http.routers.planin-be.tls.certresolver=letsencrypt"
+      - "traefik.http.services.planin-be.loadbalancer.server.port=${PORT}"
+
+networks:
+  dokploy-network:
+    external: true
