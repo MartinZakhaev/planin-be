@@ -1,4 +1,4 @@
-import { PrismaClient } from '../src/generated/prisma/client';
+import { PrismaClient } from './generated/prisma/client';
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from 'pg';
 import * as dotenv from 'dotenv';
@@ -94,7 +94,7 @@ async function main() {
         if (!existingSuperAdmin) {
             // Using Better Auth API to ensure password hashing and correct account creation
             // We need to import the auth instance
-            const { auth } = await import('../src/auth/auth.js');
+            const { auth } = await import('./auth/auth.js');
 
             // Generate a random mocked request context if needed, but the server API might not strict check origin for local calls
             // Note: signUpEmail returns a promise resolving to the response
