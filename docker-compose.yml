@@ -13,6 +13,7 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - BETTER_AUTH_URL=${BETTER_AUTH_URL}
       - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+      - FRONTEND_URL=${FRONTEND_URL}
       # Add other environment variables as needed
     labels:
       - "traefik.enable=true"
