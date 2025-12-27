@@ -14,7 +14,7 @@ async function bootstrap() {
 
   // CORS configuration - MUST be before Better Auth handler
   const corsOptions = {
-    origin: 'http://localhost:3000', // Your Next.js frontend URL
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000', // Your Next.js frontend URL
     credentials: true, // Required for cookies/session
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
