@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { toNodeHandler } from 'better-auth/node';
 import { auth } from './auth/auth';
 import cors from 'cors';
+import { setupSwaggerAuth } from './swagger-auth/swagger-auth.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -26,6 +27,13 @@ async function bootstrap() {
   // Better Auth 1.4.7+ route handler workaround
   // This ensures requests to /api/auth/* are routed correctly
   express.all(/^\/api\/auth\/.*$/, toNodeHandler(auth));
+
+  // Setup Swagger/API docs authentication
+  setupSwaggerAuth(express, {
+    username: process.env.SWAGGER_USERNAME || 'admin',
+    password: process.env.SWAGGER_PASSWORD || 'admin123',
+    sessionSecret: process.env.SESSION_SECRET || 'planin-swagger-secret-change-in-production',
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Planin API Documentation')
