@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   planin-be:
     build:
@@ -9,19 +7,14 @@ services:
     networks:
       - dokploy-network
     environment:
-      - PORT=${PORT}
+      - PORT=${PORT:-3001}
       - DATABASE_URL=${DATABASE_URL}
       - BETTER_AUTH_URL=${BETTER_AUTH_URL}
       - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
       - FRONTEND_URL=${FRONTEND_URL}
-      # Add other environment variables as needed
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.planin-be.rule=Host(`${DOMAIN_NAME}`)"
-      - "traefik.http.routers.planin-be.entrypoints=websecure"
-      - "traefik.http.routers.planin-be.tls.certresolver=letsencrypt"
-      - "traefik.http.services.planin-be.loadbalancer.server.port=${PORT}"
+      - RUN_SEEDS=${RUN_SEEDS:-false}
 
 networks:
   dokploy-network:
     external: true
+

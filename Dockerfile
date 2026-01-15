@@ -27,14 +27,22 @@ FROM node:20-alpine AS runner
 
 WORKDIR /app
 
+# Install Prisma CLI for running migrations
+RUN npm install -g prisma
+
 # Copy necessary files from builder
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/prisma ./prisma
 
+# Copy entrypoint script
+COPY docker-entrypoint.sh ./
+RUN chmod +x docker-entrypoint.sh
+
 # Expose the port
 EXPOSE 3001
 
-# Start the application
-CMD ["npm", "run", "start:prod"]
+# Start the application using entrypoint
+ENTRYPOINT ["./docker-entrypoint.sh"]
+
