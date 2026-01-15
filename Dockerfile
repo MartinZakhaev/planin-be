@@ -27,14 +27,17 @@ FROM node:20-alpine AS runner
 
 WORKDIR /app
 
-# Install Prisma CLI for running migrations
-RUN npm install -g prisma
+# Install Prisma CLI and tsx for running TypeScript config
+RUN npm install -g prisma tsx
 
 # Copy necessary files from builder
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/prisma ./prisma
+
+# Copy prisma.config.ts (required for Prisma 7 migrations)
+COPY --from=builder /app/prisma.config.ts ./
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh ./
@@ -45,4 +48,5 @@ EXPOSE 3001
 
 # Start the application using entrypoint
 ENTRYPOINT ["./docker-entrypoint.sh"]
+
 
