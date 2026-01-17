@@ -3,6 +3,7 @@ import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { OrganizationEntity } from './entities/organization.entity';
+import { ROLES } from '../auth/permissions';
 
 @Injectable()
 export class OrganizationsService {
@@ -13,6 +14,34 @@ export class OrganizationsService {
       data: createOrganizationDto,
     });
     return new OrganizationEntity(organization);
+  }
+
+  /**
+   * Find all organizations accessible to a user
+   * - Superadmins see all organizations
+   * - Other users see: owned or member organizations
+   */
+  async findAllForUser(userId: string, role: string) {
+    // Superadmins see everything
+    if (role === ROLES.SUPERADMIN) {
+      const orgs = await this.prisma.organization.findMany({
+        orderBy: { createdAt: 'desc' },
+      });
+      return orgs.map((o) => new OrganizationEntity(o));
+    }
+
+    // Find organizations where user is owner or member
+    const organizations = await this.prisma.organization.findMany({
+      where: {
+        OR: [
+          { ownerUserId: userId },
+          { members: { some: { userId } } },
+        ],
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return organizations.map((o) => new OrganizationEntity(o));
   }
 
   async findAll() {

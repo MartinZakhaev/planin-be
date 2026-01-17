@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UnitsModule } from './units/units.module';
@@ -23,12 +24,15 @@ import { RabSummariesModule } from './rab-summaries/rab-summaries.module';
 import { RabExportsModule } from './rab-exports/rab-exports.module';
 import { FilesModule } from './files/files.module';
 import { AuditLogsModule } from './audit-logs/audit-logs.module';
+import { AuditLogInterceptor } from './audit-logs/interceptors/audit-log.interceptor';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    PrismaModule,
     AuthModule.forRoot({ auth }),
     LocalAuthModule,
     UnitsModule,
@@ -51,6 +55,13 @@ import { AuditLogsModule } from './audit-logs/audit-logs.module';
     AuditLogsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AuditLogInterceptor,
+    },
+  ],
 })
 export class AppModule { }
+

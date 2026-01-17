@@ -1,10 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 import { AuditLogsService } from './audit-logs.service';
 import { AuditLogsController } from './audit-logs.controller';
-import { PrismaService } from '../prisma/prisma.service';
+import { AuditLogInterceptor } from './interceptors/audit-log.interceptor';
 
+@Global()
 @Module({
   controllers: [AuditLogsController],
-  providers: [AuditLogsService, PrismaService],
+  providers: [AuditLogsService, AuditLogInterceptor],
+  exports: [AuditLogsService, AuditLogInterceptor],
 })
 export class AuditLogsModule { }

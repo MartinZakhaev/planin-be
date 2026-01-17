@@ -16,13 +16,33 @@ export class AuditLogsService {
   }
 
   async findAll() {
-    const auditLogs = await this.prisma.auditLog.findMany();
+    const auditLogs = await this.prisma.auditLog.findMany({
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullName: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
     return auditLogs.map((auditLog) => new AuditLogEntity(auditLog));
   }
 
   async findOne(id: string) {
     const auditLog = await this.prisma.auditLog.findUnique({
       where: { id },
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullName: true,
+            email: true,
+          },
+        },
+      },
     });
     if (!auditLog) return null;
     return new AuditLogEntity(auditLog);
