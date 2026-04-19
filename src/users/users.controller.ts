@@ -10,11 +10,12 @@ import {
   ClassSerializerInterceptor,
   NotFoundException,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiCookieAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiCookieAuth, ApiQuery } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
 import { AuthGuard } from '../auth/guards';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
@@ -43,6 +44,17 @@ export class UsersController {
   @RequirePermission('user', 'read')
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @Get('lookup')
+  @ApiOperation({ summary: 'Look up a user by exact email (auth only, no admin permission required)' })
+  @ApiQuery({ name: 'email', required: true })
+  @ApiResponse({ status: 200, description: 'Return minimal user info.' })
+  @ApiResponse({ status: 404, description: 'User not found.' })
+  async lookupByEmail(@Query('email') email: string) {
+    const user = await this.usersService.findByEmail(email);
+    if (!user) throw new NotFoundException('No account found with that email address');
+    return { id: user.id, fullName: user.fullName, email: user.email };
   }
 
   @Get(':id')

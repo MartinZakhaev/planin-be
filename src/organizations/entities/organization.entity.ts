@@ -20,6 +20,12 @@ export class OrganizationEntity implements Organization {
     @ApiProperty()
     updatedAt: Date;
 
+    @ApiProperty({ required: false })
+    memberCount?: number;
+
+    @ApiProperty({ required: false })
+    projectCount?: number;
+
     constructor(partial: Partial<OrganizationEntity>) {
         Object.assign(this, partial);
     }

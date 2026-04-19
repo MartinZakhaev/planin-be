@@ -29,12 +29,15 @@ export class OrganizationsService {
    * - Other users see: owned or member organizations
    */
   async findAllForUser(userId: string, role: string) {
+    const countInclude = { _count: { select: { members: true, projects: true } } };
+
     // Superadmins see everything
     if (role === ROLES.SUPERADMIN) {
       const orgs = await this.prisma.organization.findMany({
         orderBy: { createdAt: 'desc' },
+        include: countInclude,
       });
-      return orgs.map((o) => new OrganizationEntity(o));
+      return orgs.map((o) => new OrganizationEntity({ ...o, memberCount: o._count.members, projectCount: o._count.projects }));
     }
 
     // Find organizations where user is owner or member
@@ -46,9 +49,10 @@ export class OrganizationsService {
         ],
       },
       orderBy: { createdAt: 'desc' },
+      include: countInclude,
     });
 
-    return organizations.map((o) => new OrganizationEntity(o));
+    return organizations.map((o) => new OrganizationEntity({ ...o, memberCount: o._count.members, projectCount: o._count.projects }));
   }
 
   async findAll() {
