@@ -1,11 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '../../generated/prisma/client';
 
 /**
  * User Entity for API responses
  * Note: Password is now stored in the Account table (managed by Better Auth)
  */
-export class UserEntity implements User {
+export class UserEntity {
     @ApiProperty()
     id: string;
 
@@ -24,8 +23,15 @@ export class UserEntity implements User {
     @ApiProperty({ required: false, nullable: true })
     profileFileId: string | null;
 
-    @ApiProperty({ description: 'User role: superadmin, admin, staff, or user' })
-    role: string;
+    @ApiProperty({ description: 'User role ID', required: false, nullable: true })
+    roleId: string | null;
+
+    @ApiProperty({ description: 'User role details', required: false })
+    role?: {
+        id: string;
+        name: string;
+        displayName: string;
+    } | null;
 
     @ApiProperty()
     banned: boolean;
@@ -46,3 +52,4 @@ export class UserEntity implements User {
         Object.assign(this, partial);
     }
 }
+

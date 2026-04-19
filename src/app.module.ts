@@ -26,6 +26,8 @@ import { FilesModule } from './files/files.module';
 import { AuditLogsModule } from './audit-logs/audit-logs.module';
 import { AuditLogInterceptor } from './audit-logs/interceptors/audit-log.interceptor';
 import { PrismaModule } from './prisma/prisma.module';
+import { RolesModule } from './roles/roles.module';
+import { PermissionsModule } from './permissions/permissions.module';
 
 @Module({
   imports: [
@@ -53,6 +55,8 @@ import { PrismaModule } from './prisma/prisma.module';
     RabExportsModule,
     FilesModule,
     AuditLogsModule,
+    RolesModule,
+    PermissionsModule,
   ],
   controllers: [AppController],
   providers: [

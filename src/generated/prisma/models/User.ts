@@ -31,7 +31,7 @@ export type UserMinAggregateOutputType = {
   fullName: string | null
   image: string | null
   profileFileId: string | null
-  role: string | null
+  roleId: string | null
   banned: boolean | null
   banReason: string | null
   banExpires: Date | null
@@ -46,7 +46,7 @@ export type UserMaxAggregateOutputType = {
   fullName: string | null
   image: string | null
   profileFileId: string | null
-  role: string | null
+  roleId: string | null
   banned: boolean | null
   banReason: string | null
   banExpires: Date | null
@@ -61,7 +61,7 @@ export type UserCountAggregateOutputType = {
   fullName: number
   image: number
   profileFileId: number
-  role: number
+  roleId: number
   banned: number
   banReason: number
   banExpires: number
@@ -78,7 +78,7 @@ export type UserMinAggregateInputType = {
   fullName?: true
   image?: true
   profileFileId?: true
-  role?: true
+  roleId?: true
   banned?: true
   banReason?: true
   banExpires?: true
@@ -93,7 +93,7 @@ export type UserMaxAggregateInputType = {
   fullName?: true
   image?: true
   profileFileId?: true
-  role?: true
+  roleId?: true
   banned?: true
   banReason?: true
   banExpires?: true
@@ -108,7 +108,7 @@ export type UserCountAggregateInputType = {
   fullName?: true
   image?: true
   profileFileId?: true
-  role?: true
+  roleId?: true
   banned?: true
   banReason?: true
   banExpires?: true
@@ -196,7 +196,7 @@ export type UserGroupByOutputType = {
   fullName: string | null
   image: string | null
   profileFileId: string | null
-  role: string
+  roleId: string | null
   banned: boolean
   banReason: string | null
   banExpires: Date | null
@@ -232,12 +232,13 @@ export type UserWhereInput = {
   fullName?: Prisma.StringNullableFilter<"User"> | string | null
   image?: Prisma.StringNullableFilter<"User"> | string | null
   profileFileId?: Prisma.UuidNullableFilter<"User"> | string | null
-  role?: Prisma.StringFilter<"User"> | string
+  roleId?: Prisma.UuidNullableFilter<"User"> | string | null
   banned?: Prisma.BoolFilter<"User"> | boolean
   banReason?: Prisma.StringNullableFilter<"User"> | string | null
   banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  role?: Prisma.XOR<Prisma.RoleNullableScalarRelationFilter, Prisma.RoleWhereInput> | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   organizationsOwned?: Prisma.OrganizationListRelationFilter
@@ -258,12 +259,13 @@ export type UserOrderByWithRelationInput = {
   fullName?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   profileFileId?: Prisma.SortOrderInput | Prisma.SortOrder
-  role?: Prisma.SortOrder
+  roleId?: Prisma.SortOrderInput | Prisma.SortOrder
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrderInput | Prisma.SortOrder
   banExpires?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  role?: Prisma.RoleOrderByWithRelationInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   organizationsOwned?: Prisma.OrganizationOrderByRelationAggregateInput
@@ -287,12 +289,13 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   fullName?: Prisma.StringNullableFilter<"User"> | string | null
   image?: Prisma.StringNullableFilter<"User"> | string | null
   profileFileId?: Prisma.UuidNullableFilter<"User"> | string | null
-  role?: Prisma.StringFilter<"User"> | string
+  roleId?: Prisma.UuidNullableFilter<"User"> | string | null
   banned?: Prisma.BoolFilter<"User"> | boolean
   banReason?: Prisma.StringNullableFilter<"User"> | string | null
   banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  role?: Prisma.XOR<Prisma.RoleNullableScalarRelationFilter, Prisma.RoleWhereInput> | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   organizationsOwned?: Prisma.OrganizationListRelationFilter
@@ -313,7 +316,7 @@ export type UserOrderByWithAggregationInput = {
   fullName?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   profileFileId?: Prisma.SortOrderInput | Prisma.SortOrder
-  role?: Prisma.SortOrder
+  roleId?: Prisma.SortOrderInput | Prisma.SortOrder
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrderInput | Prisma.SortOrder
   banExpires?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -334,7 +337,7 @@ export type UserScalarWhereWithAggregatesInput = {
   fullName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   profileFileId?: Prisma.UuidNullableWithAggregatesFilter<"User"> | string | null
-  role?: Prisma.StringWithAggregatesFilter<"User"> | string
+  roleId?: Prisma.UuidNullableWithAggregatesFilter<"User"> | string | null
   banned?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   banReason?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   banExpires?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
@@ -348,12 +351,12 @@ export type UserCreateInput = {
   emailVerified?: boolean
   fullName?: string | null
   image?: string | null
-  role?: string
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   organizationsOwned?: Prisma.OrganizationCreateNestedManyWithoutOwnerInput
@@ -374,7 +377,7 @@ export type UserUncheckedCreateInput = {
   fullName?: string | null
   image?: string | null
   profileFileId?: string | null
-  role?: string
+  roleId?: string | null
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
@@ -398,12 +401,12 @@ export type UserUpdateInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   organizationsOwned?: Prisma.OrganizationUpdateManyWithoutOwnerNestedInput
@@ -424,7 +427,7 @@ export type UserUncheckedUpdateInput = {
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -449,7 +452,7 @@ export type UserCreateManyInput = {
   fullName?: string | null
   image?: string | null
   profileFileId?: string | null
-  role?: string
+  roleId?: string | null
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
@@ -463,7 +466,6 @@ export type UserUpdateManyMutationInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -478,12 +480,22 @@ export type UserUncheckedUpdateManyInput = {
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type UserListRelationFilter = {
+  every?: Prisma.UserWhereInput
+  some?: Prisma.UserWhereInput
+  none?: Prisma.UserWhereInput
+}
+
+export type UserOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -493,7 +505,7 @@ export type UserCountOrderByAggregateInput = {
   fullName?: Prisma.SortOrder
   image?: Prisma.SortOrder
   profileFileId?: Prisma.SortOrder
-  role?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrder
   banExpires?: Prisma.SortOrder
@@ -508,7 +520,7 @@ export type UserMaxOrderByAggregateInput = {
   fullName?: Prisma.SortOrder
   image?: Prisma.SortOrder
   profileFileId?: Prisma.SortOrder
-  role?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrder
   banExpires?: Prisma.SortOrder
@@ -523,7 +535,7 @@ export type UserMinOrderByAggregateInput = {
   fullName?: Prisma.SortOrder
   image?: Prisma.SortOrder
   profileFileId?: Prisma.SortOrder
-  role?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrder
   banExpires?: Prisma.SortOrder
@@ -536,39 +548,55 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput
 }
 
-export type UserListRelationFilter = {
-  every?: Prisma.UserWhereInput
-  some?: Prisma.UserWhereInput
-  none?: Prisma.UserWhereInput
-}
-
-export type UserOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
 export type UserNullableScalarRelationFilter = {
   is?: Prisma.UserWhereInput | null
   isNot?: Prisma.UserWhereInput | null
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
+export type UserCreateNestedManyWithoutRoleInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRoleInput, Prisma.UserUncheckedCreateWithoutRoleInput> | Prisma.UserCreateWithoutRoleInput[] | Prisma.UserUncheckedCreateWithoutRoleInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRoleInput | Prisma.UserCreateOrConnectWithoutRoleInput[]
+  createMany?: Prisma.UserCreateManyRoleInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
+export type UserUncheckedCreateNestedManyWithoutRoleInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRoleInput, Prisma.UserUncheckedCreateWithoutRoleInput> | Prisma.UserCreateWithoutRoleInput[] | Prisma.UserUncheckedCreateWithoutRoleInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRoleInput | Prisma.UserCreateOrConnectWithoutRoleInput[]
+  createMany?: Prisma.UserCreateManyRoleInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
+export type UserUpdateManyWithoutRoleNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRoleInput, Prisma.UserUncheckedCreateWithoutRoleInput> | Prisma.UserCreateWithoutRoleInput[] | Prisma.UserUncheckedCreateWithoutRoleInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRoleInput | Prisma.UserCreateOrConnectWithoutRoleInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutRoleInput | Prisma.UserUpsertWithWhereUniqueWithoutRoleInput[]
+  createMany?: Prisma.UserCreateManyRoleInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutRoleInput | Prisma.UserUpdateWithWhereUniqueWithoutRoleInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutRoleInput | Prisma.UserUpdateManyWithWhereWithoutRoleInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutRoleNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRoleInput, Prisma.UserUncheckedCreateWithoutRoleInput> | Prisma.UserCreateWithoutRoleInput[] | Prisma.UserUncheckedCreateWithoutRoleInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRoleInput | Prisma.UserCreateOrConnectWithoutRoleInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutRoleInput | Prisma.UserUpsertWithWhereUniqueWithoutRoleInput[]
+  createMany?: Prisma.UserCreateManyRoleInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutRoleInput | Prisma.UserUpdateWithWhereUniqueWithoutRoleInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutRoleInput | Prisma.UserUpdateManyWithWhereWithoutRoleInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
 }
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
 }
 
 export type UserCreateNestedOneWithoutSessionsInput = {
@@ -755,18 +783,110 @@ export type UserUpdateOneWithoutAuditLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuditLogsInput, Prisma.UserUpdateWithoutAuditLogsInput>, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
 }
 
+export type UserCreateWithoutRoleInput = {
+  id: string
+  email: string
+  emailVerified?: boolean
+  fullName?: string | null
+  image?: string | null
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  organizationsOwned?: Prisma.OrganizationCreateNestedManyWithoutOwnerInput
+  memberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  projectsOwned?: Prisma.ProjectCreateNestedManyWithoutOwnerInput
+  collaborations?: Prisma.ProjectCollaboratorCreateNestedManyWithoutUserInput
+  rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
+  files?: Prisma.FileCreateNestedManyWithoutOwnerInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
+}
+
+export type UserUncheckedCreateWithoutRoleInput = {
+  id: string
+  email: string
+  emailVerified?: boolean
+  fullName?: string | null
+  image?: string | null
+  profileFileId?: string | null
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  organizationsOwned?: Prisma.OrganizationUncheckedCreateNestedManyWithoutOwnerInput
+  memberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  projectsOwned?: Prisma.ProjectUncheckedCreateNestedManyWithoutOwnerInput
+  collaborations?: Prisma.ProjectCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
+  files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutRoleInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRoleInput, Prisma.UserUncheckedCreateWithoutRoleInput>
+}
+
+export type UserCreateManyRoleInputEnvelope = {
+  data: Prisma.UserCreateManyRoleInput | Prisma.UserCreateManyRoleInput[]
+  skipDuplicates?: boolean
+}
+
+export type UserUpsertWithWhereUniqueWithoutRoleInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRoleInput, Prisma.UserUncheckedUpdateWithoutRoleInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRoleInput, Prisma.UserUncheckedCreateWithoutRoleInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutRoleInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRoleInput, Prisma.UserUncheckedUpdateWithoutRoleInput>
+}
+
+export type UserUpdateManyWithWhereWithoutRoleInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutRoleInput>
+}
+
+export type UserScalarWhereInput = {
+  AND?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  OR?: Prisma.UserScalarWhereInput[]
+  NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  id?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringFilter<"User"> | string
+  emailVerified?: Prisma.BoolFilter<"User"> | boolean
+  fullName?: Prisma.StringNullableFilter<"User"> | string | null
+  image?: Prisma.StringNullableFilter<"User"> | string | null
+  profileFileId?: Prisma.UuidNullableFilter<"User"> | string | null
+  roleId?: Prisma.UuidNullableFilter<"User"> | string | null
+  banned?: Prisma.BoolFilter<"User"> | boolean
+  banReason?: Prisma.StringNullableFilter<"User"> | string | null
+  banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+}
+
 export type UserCreateWithoutSessionsInput = {
   id: string
   email: string
   emailVerified?: boolean
   fullName?: string | null
   image?: string | null
-  role?: string
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   organizationsOwned?: Prisma.OrganizationCreateNestedManyWithoutOwnerInput
   memberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
@@ -786,7 +906,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   fullName?: string | null
   image?: string | null
   profileFileId?: string | null
-  role?: string
+  roleId?: string | null
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
@@ -825,12 +945,12 @@ export type UserUpdateWithoutSessionsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   organizationsOwned?: Prisma.OrganizationUpdateManyWithoutOwnerNestedInput
   memberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
@@ -850,7 +970,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -873,12 +993,12 @@ export type UserCreateWithoutAccountsInput = {
   emailVerified?: boolean
   fullName?: string | null
   image?: string | null
-  role?: string
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   organizationsOwned?: Prisma.OrganizationCreateNestedManyWithoutOwnerInput
   memberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
@@ -898,7 +1018,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   fullName?: string | null
   image?: string | null
   profileFileId?: string | null
-  role?: string
+  roleId?: string | null
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
@@ -937,12 +1057,12 @@ export type UserUpdateWithoutAccountsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   organizationsOwned?: Prisma.OrganizationUpdateManyWithoutOwnerNestedInput
   memberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
@@ -962,7 +1082,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -985,12 +1105,12 @@ export type UserCreateWithoutOrganizationsOwnedInput = {
   emailVerified?: boolean
   fullName?: string | null
   image?: string | null
-  role?: string
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   memberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
@@ -1010,7 +1130,7 @@ export type UserUncheckedCreateWithoutOrganizationsOwnedInput = {
   fullName?: string | null
   image?: string | null
   profileFileId?: string | null
-  role?: string
+  roleId?: string | null
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
@@ -1049,12 +1169,12 @@ export type UserUpdateWithoutOrganizationsOwnedInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   memberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
@@ -1074,7 +1194,7 @@ export type UserUncheckedUpdateWithoutOrganizationsOwnedInput = {
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1097,12 +1217,12 @@ export type UserCreateWithoutMembershipsInput = {
   emailVerified?: boolean
   fullName?: string | null
   image?: string | null
-  role?: string
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   organizationsOwned?: Prisma.OrganizationCreateNestedManyWithoutOwnerInput
@@ -1122,7 +1242,7 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   fullName?: string | null
   image?: string | null
   profileFileId?: string | null
-  role?: string
+  roleId?: string | null
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
@@ -1161,12 +1281,12 @@ export type UserUpdateWithoutMembershipsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   organizationsOwned?: Prisma.OrganizationUpdateManyWithoutOwnerNestedInput
@@ -1186,7 +1306,7 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1209,12 +1329,12 @@ export type UserCreateWithoutSubscriptionsInput = {
   emailVerified?: boolean
   fullName?: string | null
   image?: string | null
-  role?: string
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   organizationsOwned?: Prisma.OrganizationCreateNestedManyWithoutOwnerInput
@@ -1234,7 +1354,7 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
   fullName?: string | null
   image?: string | null
   profileFileId?: string | null
-  role?: string
+  roleId?: string | null
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
@@ -1273,12 +1393,12 @@ export type UserUpdateWithoutSubscriptionsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   organizationsOwned?: Prisma.OrganizationUpdateManyWithoutOwnerNestedInput
@@ -1298,7 +1418,7 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1321,12 +1441,12 @@ export type UserCreateWithoutProjectsOwnedInput = {
   emailVerified?: boolean
   fullName?: string | null
   image?: string | null
-  role?: string
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   organizationsOwned?: Prisma.OrganizationCreateNestedManyWithoutOwnerInput
@@ -1346,7 +1466,7 @@ export type UserUncheckedCreateWithoutProjectsOwnedInput = {
   fullName?: string | null
   image?: string | null
   profileFileId?: string | null
-  role?: string
+  roleId?: string | null
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
@@ -1385,12 +1505,12 @@ export type UserUpdateWithoutProjectsOwnedInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   organizationsOwned?: Prisma.OrganizationUpdateManyWithoutOwnerNestedInput
@@ -1410,7 +1530,7 @@ export type UserUncheckedUpdateWithoutProjectsOwnedInput = {
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1433,12 +1553,12 @@ export type UserCreateWithoutCollaborationsInput = {
   emailVerified?: boolean
   fullName?: string | null
   image?: string | null
-  role?: string
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   organizationsOwned?: Prisma.OrganizationCreateNestedManyWithoutOwnerInput
@@ -1458,7 +1578,7 @@ export type UserUncheckedCreateWithoutCollaborationsInput = {
   fullName?: string | null
   image?: string | null
   profileFileId?: string | null
-  role?: string
+  roleId?: string | null
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
@@ -1497,12 +1617,12 @@ export type UserUpdateWithoutCollaborationsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   organizationsOwned?: Prisma.OrganizationUpdateManyWithoutOwnerNestedInput
@@ -1522,7 +1642,7 @@ export type UserUncheckedUpdateWithoutCollaborationsInput = {
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1545,12 +1665,12 @@ export type UserCreateWithoutRabSummariesInput = {
   emailVerified?: boolean
   fullName?: string | null
   image?: string | null
-  role?: string
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   organizationsOwned?: Prisma.OrganizationCreateNestedManyWithoutOwnerInput
@@ -1570,7 +1690,7 @@ export type UserUncheckedCreateWithoutRabSummariesInput = {
   fullName?: string | null
   image?: string | null
   profileFileId?: string | null
-  role?: string
+  roleId?: string | null
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
@@ -1609,12 +1729,12 @@ export type UserUpdateWithoutRabSummariesInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   organizationsOwned?: Prisma.OrganizationUpdateManyWithoutOwnerNestedInput
@@ -1634,7 +1754,7 @@ export type UserUncheckedUpdateWithoutRabSummariesInput = {
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1657,12 +1777,12 @@ export type UserCreateWithoutFilesInput = {
   emailVerified?: boolean
   fullName?: string | null
   image?: string | null
-  role?: string
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   organizationsOwned?: Prisma.OrganizationCreateNestedManyWithoutOwnerInput
@@ -1682,7 +1802,7 @@ export type UserUncheckedCreateWithoutFilesInput = {
   fullName?: string | null
   image?: string | null
   profileFileId?: string | null
-  role?: string
+  roleId?: string | null
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
@@ -1710,12 +1830,12 @@ export type UserCreateWithoutProfileFileInput = {
   emailVerified?: boolean
   fullName?: string | null
   image?: string | null
-  role?: string
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   organizationsOwned?: Prisma.OrganizationCreateNestedManyWithoutOwnerInput
@@ -1734,7 +1854,7 @@ export type UserUncheckedCreateWithoutProfileFileInput = {
   emailVerified?: boolean
   fullName?: string | null
   image?: string | null
-  role?: string
+  roleId?: string | null
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
@@ -1779,12 +1899,12 @@ export type UserUpdateWithoutFilesInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   organizationsOwned?: Prisma.OrganizationUpdateManyWithoutOwnerNestedInput
@@ -1804,7 +1924,7 @@ export type UserUncheckedUpdateWithoutFilesInput = {
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1837,36 +1957,18 @@ export type UserUpdateManyWithWhereWithoutProfileFileInput = {
   data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutProfileFileInput>
 }
 
-export type UserScalarWhereInput = {
-  AND?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
-  OR?: Prisma.UserScalarWhereInput[]
-  NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
-  id?: Prisma.StringFilter<"User"> | string
-  email?: Prisma.StringFilter<"User"> | string
-  emailVerified?: Prisma.BoolFilter<"User"> | boolean
-  fullName?: Prisma.StringNullableFilter<"User"> | string | null
-  image?: Prisma.StringNullableFilter<"User"> | string | null
-  profileFileId?: Prisma.UuidNullableFilter<"User"> | string | null
-  role?: Prisma.StringFilter<"User"> | string
-  banned?: Prisma.BoolFilter<"User"> | boolean
-  banReason?: Prisma.StringNullableFilter<"User"> | string | null
-  banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
-  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-}
-
 export type UserCreateWithoutAuditLogsInput = {
   id: string
   email: string
   emailVerified?: boolean
   fullName?: string | null
   image?: string | null
-  role?: string
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   organizationsOwned?: Prisma.OrganizationCreateNestedManyWithoutOwnerInput
@@ -1886,7 +1988,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   fullName?: string | null
   image?: string | null
   profileFileId?: string | null
-  role?: string
+  roleId?: string | null
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
@@ -1925,12 +2027,12 @@ export type UserUpdateWithoutAuditLogsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   organizationsOwned?: Prisma.OrganizationUpdateManyWithoutOwnerNestedInput
@@ -1950,7 +2052,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1967,13 +2069,89 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
+export type UserCreateManyRoleInput = {
+  id: string
+  email: string
+  emailVerified?: boolean
+  fullName?: string | null
+  image?: string | null
+  profileFileId?: string | null
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type UserUpdateWithoutRoleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  organizationsOwned?: Prisma.OrganizationUpdateManyWithoutOwnerNestedInput
+  memberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  projectsOwned?: Prisma.ProjectUpdateManyWithoutOwnerNestedInput
+  collaborations?: Prisma.ProjectCollaboratorUpdateManyWithoutUserNestedInput
+  rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
+  files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRoleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  organizationsOwned?: Prisma.OrganizationUncheckedUpdateManyWithoutOwnerNestedInput
+  memberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  projectsOwned?: Prisma.ProjectUncheckedUpdateManyWithoutOwnerNestedInput
+  collaborations?: Prisma.ProjectCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
+  files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutRoleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type UserCreateManyProfileFileInput = {
   id: string
   email: string
   emailVerified?: boolean
   fullName?: string | null
   image?: string | null
-  role?: string
+  roleId?: string | null
   banned?: boolean
   banReason?: string | null
   banExpires?: Date | string | null
@@ -1987,12 +2165,12 @@ export type UserUpdateWithoutProfileFileInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   organizationsOwned?: Prisma.OrganizationUpdateManyWithoutOwnerNestedInput
@@ -2011,7 +2189,7 @@ export type UserUncheckedUpdateWithoutProfileFileInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2035,7 +2213,7 @@ export type UserUncheckedUpdateManyWithoutProfileFileInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2162,12 +2340,13 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   fullName?: boolean
   image?: boolean
   profileFileId?: boolean
-  role?: boolean
+  roleId?: boolean
   banned?: boolean
   banReason?: boolean
   banExpires?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  role?: boolean | Prisma.User$roleArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   organizationsOwned?: boolean | Prisma.User$organizationsOwnedArgs<ExtArgs>
@@ -2189,12 +2368,13 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   fullName?: boolean
   image?: boolean
   profileFileId?: boolean
-  role?: boolean
+  roleId?: boolean
   banned?: boolean
   banReason?: boolean
   banExpires?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  role?: boolean | Prisma.User$roleArgs<ExtArgs>
   profileFile?: boolean | Prisma.User$profileFileArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2205,12 +2385,13 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   fullName?: boolean
   image?: boolean
   profileFileId?: boolean
-  role?: boolean
+  roleId?: boolean
   banned?: boolean
   banReason?: boolean
   banExpires?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  role?: boolean | Prisma.User$roleArgs<ExtArgs>
   profileFile?: boolean | Prisma.User$profileFileArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2221,7 +2402,7 @@ export type UserSelectScalar = {
   fullName?: boolean
   image?: boolean
   profileFileId?: boolean
-  role?: boolean
+  roleId?: boolean
   banned?: boolean
   banReason?: boolean
   banExpires?: boolean
@@ -2229,8 +2410,9 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "emailVerified" | "fullName" | "image" | "profileFileId" | "role" | "banned" | "banReason" | "banExpires" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "emailVerified" | "fullName" | "image" | "profileFileId" | "roleId" | "banned" | "banReason" | "banExpires" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  role?: boolean | Prisma.User$roleArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   organizationsOwned?: boolean | Prisma.User$organizationsOwnedArgs<ExtArgs>
@@ -2245,15 +2427,18 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  role?: boolean | Prisma.User$roleArgs<ExtArgs>
   profileFile?: boolean | Prisma.User$profileFileArgs<ExtArgs>
 }
 export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  role?: boolean | Prisma.User$roleArgs<ExtArgs>
   profileFile?: boolean | Prisma.User$profileFileArgs<ExtArgs>
 }
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
+    role: Prisma.$RolePayload<ExtArgs> | null
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     organizationsOwned: Prisma.$OrganizationPayload<ExtArgs>[]
@@ -2273,7 +2458,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     fullName: string | null
     image: string | null
     profileFileId: string | null
-    role: string
+    roleId: string | null
     banned: boolean
     banReason: string | null
     banExpires: Date | null
@@ -2673,6 +2858,7 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  role<T extends Prisma.User$roleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$roleArgs<ExtArgs>>): Prisma.Prisma__RoleClient<runtime.Types.Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   organizationsOwned<T extends Prisma.User$organizationsOwnedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$organizationsOwnedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2719,7 +2905,7 @@ export interface UserFieldRefs {
   readonly fullName: Prisma.FieldRef<"User", 'String'>
   readonly image: Prisma.FieldRef<"User", 'String'>
   readonly profileFileId: Prisma.FieldRef<"User", 'String'>
-  readonly role: Prisma.FieldRef<"User", 'String'>
+  readonly roleId: Prisma.FieldRef<"User", 'String'>
   readonly banned: Prisma.FieldRef<"User", 'Boolean'>
   readonly banReason: Prisma.FieldRef<"User", 'String'>
   readonly banExpires: Prisma.FieldRef<"User", 'DateTime'>
@@ -3118,6 +3304,25 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Users to delete.
    */
   limit?: number
+}
+
+/**
+ * User.role
+ */
+export type User$roleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Role
+   */
+  select?: Prisma.RoleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Role
+   */
+  omit?: Prisma.RoleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RoleInclude<ExtArgs> | null
+  where?: Prisma.RoleWhereInput
 }
 
 /**

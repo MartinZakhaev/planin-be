@@ -1,11 +1,14 @@
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { PERMISSIONS_KEY, PermissionRequirement } from '../decorators/require-permission.decorator';
-import { rolePermissions } from '../permissions';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
-    constructor(private reflector: Reflector) { }
+    constructor(
+        private reflector: Reflector,
+        private prisma: PrismaService,
+    ) { }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const requiredPermission = this.reflector.getAllAndOverride<PermissionRequirement>(PERMISSIONS_KEY, [
@@ -25,31 +28,49 @@ export class PermissionsGuard implements CanActivate {
             throw new UnauthorizedException('User not authenticated');
         }
 
-        // Default to 'user' role if none specified
-        const role = (user.role || 'user') as string;
+        // Get user with role and permissions from database
+        const userWithRole = await this.prisma.user.findUnique({
+            where: { id: user.id },
+            include: {
+                role: {
+                    include: {
+                        permissions: {
+                            include: {
+                                permission: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
 
-        // Get permissions for this role
-        const permissions = rolePermissions[role];
-
-        if (!permissions) {
-            // If role is unknown, deny access implicitly
-            console.warn(`Role ${role} is not defined in permissions map`);
-            return false;
+        if (!userWithRole) {
+            throw new UnauthorizedException('User not found');
         }
 
-        const resourcePermissions = permissions[resource];
-
-        // Check if user has permission for this resource
-        if (!resourcePermissions) {
-            // No permissions at all for this resource
-            return false;
+        // If user has no role, deny access
+        if (!userWithRole.role) {
+            throw new ForbiddenException('User has no assigned role');
         }
 
-        // Check specific action
-        if (!resourcePermissions.includes(action)) {
-            throw new ForbiddenException(`User with role ${role} does not have permission to ${action} ${resource}`);
+        const roleName = userWithRole.role.name;
+        const userPermissions = userWithRole.role.permissions.map(rp => ({
+            resource: rp.permission.resource,
+            action: rp.permission.action,
+        }));
+
+        // Check if user has the required permission
+        const hasPermission = userPermissions.some(
+            p => p.resource === resource && p.action === action
+        );
+
+        if (!hasPermission) {
+            throw new ForbiddenException(
+                `User with role ${roleName} does not have permission to ${action} ${resource}`
+            );
         }
 
         return true;
     }
 }
+

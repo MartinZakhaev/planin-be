@@ -42,6 +42,47 @@ enum SubscriptionStatus {
   @@map("subscription_status")
 }
 
+model Role {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String   @unique @db.VarChar(50)
+  displayName String   @map("display_name") @db.VarChar(100)
+  description String?  @db.Text
+  isSystem    Boolean  @default(false) @map("is_system")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  permissions RolePermission[]
+  users       User[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  resource    String   @db.VarChar(50)
+  action      String   @db.VarChar(50)
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  roles RolePermission[]
+
+  @@unique([resource, action])
+  @@map("permissions")
+}
+
+model RolePermission {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  roleId       String   @map("role_id") @db.Uuid
+  permissionId String   @map("permission_id") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@map("role_permissions")
+}
+
 model User {
   id            String    @id @db.VarChar(36)
   email         String    @unique @db.VarChar(255)
@@ -49,13 +90,14 @@ model User {
   fullName      String?   @map("full_name") @db.VarChar(200)
   image         String?   @db.Text
   profileFileId String?   @map("profile_file_id") @db.Uuid
-  role          String    @default("user") @db.VarChar(50)
+  roleId        String?   @map("role_id") @db.Uuid
   banned        Boolean   @default(false)
   banReason     String?   @map("ban_reason") @db.Text
   banExpires    DateTime? @map("ban_expires") @db.Timestamptz
   createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz
   updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
+  role               Role?                 @relation(fields: [roleId], references: [id])
   sessions           Session[]
   accounts           Account[]
   organizationsOwned Organization[]        @relation("OrganizationOwner")
@@ -68,6 +110,7 @@ model User {
   auditLogs          AuditLog[]
   profileFile        File?                 @relation("UserProfile", fields: [profileFileId], references: [id])
 
+  @@index([roleId])
   @@map("users")
 }
 

@@ -3,11 +3,9 @@ import 'dotenv/config';
 
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { admin } from 'better-auth/plugins';
 import { Pool } from 'pg';
 import { PrismaClient } from '../generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { ac, superadmin, adminRole, staff, user } from './permissions';
 
 /**
  * Create a dedicated Prisma client for Better Auth
@@ -25,12 +23,16 @@ const prisma = new PrismaClient({ adapter });
 
 /**
  * Better Auth Configuration
- * 
+ *
  * - basePath: All auth endpoints will be prefixed with /api/auth
  * - database: Uses Prisma with PostgreSQL adapter
  * - emailAndPassword: Enables email/password authentication
- * - plugins: Admin plugin with RBAC configuration
- * - hooks: Empty object required for NestJS hook decorators
+ *
+ * NOTE: Role management is handled separately via our own API/hooks
+ * (use-roles.ts, roles page, etc.) - not through better-auth admin plugin
+ *
+ * When a new user signs up, they get the default 'user' role via
+ * the frontend calling /users/{id}/assign-role after account creation.
  */
 export const auth = betterAuth({
     basePath: '/api/auth',
@@ -55,20 +57,11 @@ export const auth = betterAuth({
         modelName: 'Account',
     },
     plugins: [
-        admin({
-            ac,
-            roles: {
-                superadmin,
-                admin: adminRole,
-                staff,
-                user,
-            },
-            defaultRole: 'user',
-        }),
+        // Admin plugin removed - role management is handled separately
+        // via our own use-roles.ts hook and Role CRUD API
     ],
-    hooks: {},
     trustedOrigins: [
-        process.env.FRONTEND_URL || 'http://localhost:3000', // Next.js frontend
+        process.env.FRONTEND_URL || 'http://localhost:3000',
         process.env.BETTER_AUTH_URL || 'http://localhost:3001',
     ],
 });

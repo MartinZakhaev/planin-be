@@ -80,36 +80,210 @@ async function main() {
     console.log(`   ✅ ${plans.length} plans seeded\n`);
 
     // ==========================================
-    // 3. SEED USERS (via Better Auth)
+    // 3. SEED ROLES & PERMISSIONS (RBAC)
+    // ==========================================
+    console.log('🔐 Seeding Roles & Permissions...');
+
+    // Define all permissions based on the statement in permissions.ts
+    const permissionsData = [
+        // User permissions
+        { resource: 'user', action: 'create', description: 'Create new users' },
+        { resource: 'user', action: 'read', description: 'View user information' },
+        { resource: 'user', action: 'update', description: 'Update user information' },
+        { resource: 'user', action: 'delete', description: 'Delete users' },
+        // Project permissions
+        { resource: 'project', action: 'create', description: 'Create new projects' },
+        { resource: 'project', action: 'read', description: 'View projects' },
+        { resource: 'project', action: 'update', description: 'Edit projects' },
+        { resource: 'project', action: 'delete', description: 'Delete projects' },
+        { resource: 'project', action: 'share', description: 'Share projects with others' },
+        // Organization permissions
+        { resource: 'organization', action: 'create', description: 'Create organizations' },
+        { resource: 'organization', action: 'read', description: 'View organizations' },
+        { resource: 'organization', action: 'update', description: 'Update organizations' },
+        { resource: 'organization', action: 'delete', description: 'Delete organizations' },
+        { resource: 'organization', action: 'manage-members', description: 'Manage organization members' },
+        // Catalog permissions
+        { resource: 'unit', action: 'create', description: 'Create units' },
+        { resource: 'unit', action: 'read', description: 'View units' },
+        { resource: 'unit', action: 'update', description: 'Update units' },
+        { resource: 'unit', action: 'delete', description: 'Delete units' },
+        { resource: 'work_division', action: 'create', description: 'Create work divisions' },
+        { resource: 'work_division', action: 'read', description: 'View work divisions' },
+        { resource: 'work_division', action: 'update', description: 'Update work divisions' },
+        { resource: 'work_division', action: 'delete', description: 'Delete work divisions' },
+        { resource: 'task_catalog', action: 'create', description: 'Create task catalogs' },
+        { resource: 'task_catalog', action: 'read', description: 'View task catalogs' },
+        { resource: 'task_catalog', action: 'update', description: 'Update task catalogs' },
+        { resource: 'task_catalog', action: 'delete', description: 'Delete task catalogs' },
+        { resource: 'item_catalog', action: 'create', description: 'Create item catalogs' },
+        { resource: 'item_catalog', action: 'read', description: 'View item catalogs' },
+        { resource: 'item_catalog', action: 'update', description: 'Update item catalogs' },
+        { resource: 'item_catalog', action: 'delete', description: 'Delete item catalogs' },
+        // System permissions
+        { resource: 'audit_log', action: 'create', description: 'Create audit logs' },
+        { resource: 'audit_log', action: 'read', description: 'View audit logs' },
+        { resource: 'audit_log', action: 'update', description: 'Update audit logs' },
+        { resource: 'audit_log', action: 'delete', description: 'Delete audit logs' },
+        { resource: 'subscription', action: 'create', description: 'Create subscriptions' },
+        { resource: 'subscription', action: 'read', description: 'View subscriptions' },
+        { resource: 'subscription', action: 'update', description: 'Update subscriptions' },
+        { resource: 'subscription', action: 'delete', description: 'Delete subscriptions' },
+        { resource: 'plan', action: 'create', description: 'Create plans' },
+        { resource: 'plan', action: 'read', description: 'View plans' },
+        { resource: 'plan', action: 'update', description: 'Update plans' },
+        { resource: 'plan', action: 'delete', description: 'Delete plans' },
+    ];
+
+    // Create all permissions
+    const permissionMap: Record<string, string> = {};
+    for (const perm of permissionsData) {
+        const key = `${perm.resource}:${perm.action}`;
+        const created = await prisma.permission.upsert({
+            where: { resource_action: { resource: perm.resource, action: perm.action } },
+            update: { description: perm.description },
+            create: perm,
+        });
+        permissionMap[key] = created.id;
+    }
+    console.log(`   ✅ ${permissionsData.length} permissions seeded`);
+
+    // Define roles with their permissions
+    const rolesData = [
+        {
+            name: 'superadmin',
+            displayName: 'Super Administrator',
+            description: 'Full system access with all permissions',
+            isSystem: true,
+            permissions: Object.keys(permissionMap), // All permissions
+        },
+        {
+            name: 'admin',
+            displayName: 'Administrator',
+            description: 'Administrative access for managing users and content',
+            isSystem: true,
+            permissions: [
+                'user:create', 'user:read', 'user:update', 'user:delete',
+                'project:create', 'project:read', 'project:update', 'project:delete', 'project:share',
+                'organization:read', 'organization:update', 'organization:manage-members',
+                'unit:create', 'unit:read', 'unit:update', 'unit:delete',
+                'work_division:create', 'work_division:read', 'work_division:update', 'work_division:delete',
+                'task_catalog:create', 'task_catalog:read', 'task_catalog:update', 'task_catalog:delete',
+                'item_catalog:create', 'item_catalog:read', 'item_catalog:update', 'item_catalog:delete',
+                'audit_log:read',
+                'subscription:read', 'subscription:update',
+                'plan:read',
+            ],
+        },
+        {
+            name: 'staff',
+            displayName: 'Staff',
+            description: 'Staff access for managing projects',
+            isSystem: true,
+            permissions: [
+                'project:create', 'project:read', 'project:update',
+                'organization:read',
+                'unit:read',
+                'work_division:read',
+                'task_catalog:read',
+                'item_catalog:read',
+                'plan:read',
+            ],
+        },
+        {
+            name: 'user',
+            displayName: 'User',
+            description: 'Standard user access',
+            isSystem: true,
+            permissions: [
+                'project:create', 'project:read', 'project:update', 'project:delete',
+                'organization:read',
+                'unit:read',
+                'work_division:read',
+                'task_catalog:read',
+                'item_catalog:read',
+                'plan:read',
+            ],
+        },
+    ];
+
+    const roleMap: Record<string, string> = {};
+    for (const roleData of rolesData) {
+        const { permissions: permKeys, ...roleFields } = roleData;
+
+        // Create or update role
+        let role = await prisma.role.findUnique({ where: { name: roleFields.name } });
+        if (!role) {
+            role = await prisma.role.create({ data: roleFields });
+            console.log(`   ✅ Created role: ${role.displayName}`);
+        } else {
+            role = await prisma.role.update({
+                where: { name: roleFields.name },
+                data: { displayName: roleFields.displayName, description: roleFields.description },
+            });
+            console.log(`   ⏭️  Role exists: ${role.displayName}`);
+        }
+        roleMap[roleFields.name] = role.id;
+
+        // Assign permissions to role
+        for (const permKey of permKeys) {
+            const permId = permissionMap[permKey];
+            if (permId) {
+                await prisma.rolePermission.upsert({
+                    where: { roleId_permissionId: { roleId: role.id, permissionId: permId } },
+                    update: {},
+                    create: { roleId: role.id, permissionId: permId },
+                });
+            }
+        }
+    }
+    console.log(`   ✅ ${rolesData.length} roles seeded with permissions\n`);
+
+    // ==========================================
+    // 4. SEED USERS (via Prisma - bypass Better Auth to avoid role field mismatch)
     // ==========================================
     console.log('👥 Seeding Users...');
-    const { auth } = await import('./auth/auth.js');
+    const { hashPassword } = await import('better-auth/crypto');
 
     const usersToCreate = [
-        { email: 'superadmin@planin.com', password: 'password123', name: 'Super Admin', role: 'superadmin' },
-        { email: 'admin@planin.com', password: 'password123', name: 'Admin User', role: 'admin' },
-        { email: 'user1@planin.com', password: 'password123', name: 'Budi Santoso', role: 'user' },
-        { email: 'user2@planin.com', password: 'password123', name: 'Siti Rahayu', role: 'user' },
+        { email: 'superadmin@planin.com', password: 'password123', name: 'Super Admin', roleName: 'superadmin' },
+        { email: 'admin@planin.com', password: 'password123', name: 'Admin User', roleName: 'admin' },
+        { email: 'user1@planin.com', password: 'password123', name: 'Budi Santoso', roleName: 'user' },
+        { email: 'user2@planin.com', password: 'password123', name: 'Siti Rahayu', roleName: 'user' },
     ];
 
     const userMap: Record<string, string> = {};
     for (const userData of usersToCreate) {
         let user = await prisma.user.findFirst({ where: { email: userData.email } });
+        const roleId = roleMap[userData.roleName];
+        const hashedPassword = await hashPassword(userData.password);
 
         if (!user) {
-            const res = await auth.api.signUpEmail({
-                body: { email: userData.email, password: userData.password, name: userData.name },
+            const { randomBytes } = await import('crypto');
+            const id = randomBytes(16).toString('hex');
+            user = await prisma.user.create({
+                data: {
+                    id,
+                    email: userData.email,
+                    fullName: userData.name,
+                    roleId,
+                    banned: false,
+                },
             });
-            if (res?.user) {
-                await prisma.user.update({
-                    where: { id: res.user.id },
-                    data: { role: userData.role },
-                });
-                userMap[userData.email] = res.user.id;
-                console.log(`   ✅ Created ${userData.role}: ${userData.email}`);
-            }
+            // Create the account with hashed password for better-auth
+            await prisma.account.create({
+                data: {
+                    id: randomBytes(16).toString('hex'),
+                    userId: user.id,
+                    accountId: user.id,
+                    providerId: 'credential',
+                    password: hashedPassword,
+                },
+            });
+            userMap[userData.email] = user.id;
+            console.log(`   ✅ Created ${userData.roleName}: ${userData.email}`);
         } else {
-            await prisma.user.update({ where: { id: user.id }, data: { role: userData.role } });
+            await prisma.user.update({ where: { id: user.id }, data: { roleId } });
             userMap[userData.email] = user.id;
             console.log(`   ⏭️  Exists: ${userData.email}`);
         }
