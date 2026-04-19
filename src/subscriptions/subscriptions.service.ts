@@ -56,8 +56,8 @@ export class SubscriptionsService {
     const grossAmount = Math.round(plan.priceCents / 100);
 
     const existingSub = await this.prisma.subscription.findFirst({ where: { userId } });
-    const refId = existingSub?.id ?? userId;
-    const orderId = `sub_${refId}_${Date.now()}`;
+    // order_id max 50 chars; use short prefix + timestamp + random suffix
+    const orderId = `ord_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
 
     const snap = await this.midtrans.createSnapToken({
       orderId,
