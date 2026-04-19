@@ -13,6 +13,13 @@ export class OrganizationsService {
     const organization = await this.prisma.organization.create({
       data: createOrganizationDto,
     });
+    await this.prisma.organizationMember.create({
+      data: {
+        organizationId: organization.id,
+        userId: createOrganizationDto.ownerUserId,
+        role: 'ADMIN',
+      },
+    });
     return new OrganizationEntity(organization);
   }
 

@@ -85,7 +85,7 @@ export const staff = ac.newRole(staffPermissions as any);
  */
 const userPermissions = {
     project: ['create', 'read', 'update', 'delete'],
-    organization: ['read'],
+    organization: ['create', 'read'],
     // Read-only catalog
     unit: ['read'],
     work_division: ['read'],

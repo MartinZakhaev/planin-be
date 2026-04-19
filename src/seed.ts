@@ -197,7 +197,7 @@ async function main() {
             isSystem: true,
             permissions: [
                 'project:create', 'project:read', 'project:update', 'project:delete',
-                'organization:read',
+                'organization:create', 'organization:read',
                 'unit:read',
                 'work_division:read',
                 'task_catalog:read',
