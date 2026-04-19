@@ -26,6 +26,9 @@ export class SubscriptionEntity implements Subscription {
     @ApiProperty({ required: false, nullable: true })
     canceledAt: Date | null;
 
+    @ApiProperty({ required: false, nullable: true })
+    midtransOrderId: string | null;
+
     @ApiProperty()
     createdAt: Date;
 

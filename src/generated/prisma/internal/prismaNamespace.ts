@@ -2388,6 +2388,7 @@ export const SubscriptionScalarFieldEnum = {
   currentPeriodStart: 'currentPeriodStart',
   currentPeriodEnd: 'currentPeriodEnd',
   canceledAt: 'canceledAt',
+  midtransOrderId: 'midtransOrderId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

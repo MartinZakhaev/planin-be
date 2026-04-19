@@ -1,12 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { SubscriptionEntity } from './entities/subscription.entity';
+import { MidtransService } from './midtrans.service';
 
 @Injectable()
 export class SubscriptionsService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly midtrans: MidtransService,
+  ) { }
 
   async create(createSubscriptionDto: CreateSubscriptionDto) {
     const subscription = await this.prisma.subscription.create({
@@ -26,6 +30,100 @@ export class SubscriptionsService {
     });
     if (!subscription) return null;
     return new SubscriptionEntity(subscription);
+  }
+
+  async findByUser(userId: string) {
+    const sub = await this.prisma.subscription.findFirst({
+      where: { userId },
+      include: { plan: true },
+      orderBy: { createdAt: 'desc' },
+    });
+    return sub;
+  }
+
+  async findAllPlans() {
+    return this.prisma.plan.findMany({ orderBy: { priceCents: 'asc' } });
+  }
+
+  async createCheckout(userId: string, planId: string) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new NotFoundException('User not found');
+
+    const plan = await this.prisma.plan.findUnique({ where: { id: planId } });
+    if (!plan) throw new NotFoundException('Plan not found');
+    if (plan.priceCents === 0) throw new BadRequestException('Cannot checkout a free plan');
+
+    const grossAmount = Math.round(plan.priceCents / 100);
+
+    const existingSub = await this.prisma.subscription.findFirst({ where: { userId } });
+    const refId = existingSub?.id ?? userId;
+    const orderId = `sub_${refId}_${Date.now()}`;
+
+    const snap = await this.midtrans.createSnapToken({
+      orderId,
+      grossAmount,
+      customerDetails: {
+        firstName: user.fullName || user.email,
+        email: user.email,
+      },
+      itemDetails: {
+        id: plan.id,
+        price: grossAmount,
+        quantity: 1,
+        name: plan.name,
+      },
+    });
+
+    if (existingSub) {
+      await this.prisma.subscription.update({
+        where: { id: existingSub.id },
+        data: { midtransOrderId: orderId, planId, status: 'TRIALING' },
+      });
+    } else {
+      await this.prisma.subscription.create({
+        data: { userId, planId, status: 'TRIALING', midtransOrderId: orderId },
+      });
+    }
+
+    return { snapToken: snap.token, redirectUrl: snap.redirect_url };
+  }
+
+  async handleWebhook(notification: any) {
+    const { order_id, transaction_status, fraud_status, gross_amount, status_code, signature_key } = notification;
+
+    if (signature_key) {
+      const isValid = this.midtrans.verifySignature(order_id, status_code, gross_amount, signature_key);
+      if (!isValid) throw new ForbiddenException('Invalid Midtrans signature');
+    }
+
+    const sub = await this.prisma.subscription.findFirst({ where: { midtransOrderId: order_id } });
+    if (!sub) return { received: true };
+
+    const isSuccess =
+      transaction_status === 'settlement' ||
+      (transaction_status === 'capture' && fraud_status === 'accept');
+    const isFailed = ['cancel', 'deny', 'expire'].includes(transaction_status);
+
+    if (isSuccess) {
+      const now = new Date();
+      const periodEnd = new Date(now);
+      periodEnd.setMonth(periodEnd.getMonth() + 1);
+      await this.prisma.subscription.update({
+        where: { id: sub.id },
+        data: {
+          status: 'ACTIVE',
+          currentPeriodStart: now,
+          currentPeriodEnd: periodEnd,
+        },
+      });
+    } else if (isFailed) {
+      await this.prisma.subscription.update({
+        where: { id: sub.id },
+        data: { status: 'CANCELED' },
+      });
+    }
+
+    return { received: true };
   }
 
   async update(id: string, updateSubscriptionDto: UpdateSubscriptionDto) {
