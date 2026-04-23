@@ -4,12 +4,14 @@ import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { SubscriptionEntity } from './entities/subscription.entity';
 import { MidtransService } from './midtrans.service';
+import { DokuService } from './doku.service';
 
 @Injectable()
 export class SubscriptionsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly midtrans: MidtransService,
+    private readonly doku: DokuService,
   ) { }
 
   async create(createSubscriptionDto: CreateSubscriptionDto) {
@@ -124,6 +126,56 @@ export class SubscriptionsService {
     }
 
     return { received: true };
+  }
+
+  async createDokuCheckout(userId: string, planId: string) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new NotFoundException('User not found');
+
+    const plan = await this.prisma.plan.findUnique({ where: { id: planId } });
+    if (!plan) throw new NotFoundException('Plan not found');
+    if (plan.priceCents === 0) throw new BadRequestException('Cannot checkout a free plan');
+
+    const amount = Math.round(plan.priceCents / 100);
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+
+    const invoiceNumber = `INV_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+
+    const existingSub = await this.prisma.subscription.findFirst({ where: { userId } });
+
+    const dokuResponse = await this.doku.createCheckout({
+      order: {
+        amount,
+        invoice_number: invoiceNumber,
+        callback_url: `${frontendUrl}/dashboard/billing/success`,
+      },
+      payment: {
+        payment_due_date: 60,
+        payment_method_types: ['VIRTUAL_ACCOUNT_BNI'],
+      },
+      customer: {
+        name: user.fullName || user.email,
+        email: user.email,
+      },
+    });
+
+    if (existingSub) {
+      await this.prisma.subscription.update({
+        where: { id: existingSub.id },
+        data: { midtransOrderId: invoiceNumber, planId, status: 'TRIALING' },
+      });
+    } else {
+      await this.prisma.subscription.create({
+        data: { userId, planId, status: 'TRIALING', midtransOrderId: invoiceNumber },
+      });
+    }
+
+    return {
+      paymentUrl: dokuResponse.url,
+      tokenId: dokuResponse.token_id,
+      expiredDate: dokuResponse.expired_date,
+      expiredDatetime: dokuResponse.expired_datetime,
+    };
   }
 
   async update(id: string, updateSubscriptionDto: UpdateSubscriptionDto) {

@@ -34,6 +34,13 @@ export class SubscriptionsController {
     return this.subscriptionsService.createCheckout(req.user.id, body.planId);
   }
 
+  @Post('checkout-doku')
+  @ApiOkResponse({ description: 'Doku payment URL and token ID' })
+  @ApiBody({ schema: { type: 'object', properties: { planId: { type: 'string' } }, required: ['planId'] } })
+  checkoutDoku(@Req() req: any, @Body() body: { planId: string }) {
+    return this.subscriptionsService.createDokuCheckout(req.user.id, body.planId);
+  }
+
   @Post()
   @ApiCreatedResponse({ type: SubscriptionEntity })
   @ApiResponse({ status: 403, description: 'Forbidden. Requires subscription create permission.' })
