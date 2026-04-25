@@ -13,3 +13,10 @@ services:
       - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
       - FRONTEND_URL=${FRONTEND_URL}
       - RUN_SEEDS=${RUN_SEEDS:-false}
+      - DOKU_IS_PRODUCTION=${DOKU_IS_PRODUCTION}
+      - DOKU_CLIENT_ID=${DOKU_CLIENT_ID}                                                                                                      
+      - DOKU_CLIENT_SECRET=${DOKU_CLIENT_SECRET}              
+      - SESSION_SECRET=${SESSION_SECRET}
+      - SWAGGER_USERNAME=${SWAGGER_USERNAME}                                                                                                  
+      - SWAGGER_PASSWORD=${SWAGGER_PASSWORD}
+      - MIDTRANS_SERVER_KEY=${MIDTRANS_SERVER_KEY} 
