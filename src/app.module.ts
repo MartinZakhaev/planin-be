@@ -28,6 +28,7 @@ import { AuditLogInterceptor } from './audit-logs/interceptors/audit-log.interce
 import { PrismaModule } from './prisma/prisma.module';
 import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
+import { EmailVerificationModule } from './email-verification/email-verification.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { PermissionsModule } from './permissions/permissions.module';
     AuditLogsModule,
     RolesModule,
     PermissionsModule,
+    EmailVerificationModule,
   ],
   controllers: [AppController],
   providers: [
@@ -68,4 +70,3 @@ import { PermissionsModule } from './permissions/permissions.module';
   ],
 })
 export class AppModule { }
-

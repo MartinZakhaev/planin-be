@@ -41,14 +41,11 @@ export function setupSwaggerAuth(
         },
     });
 
-    // Create a dedicated router for swagger auth routes
-    const swaggerAuthRouter = Router();
+    const loginRouter = Router();
+    const docsRouter = Router();
 
-    // Apply session only to this router
-    swaggerAuthRouter.use(sessionMiddleware);
-
-    // Parse JSON body for login endpoint
-    swaggerAuthRouter.use('/login', (req, res, next) => {
+    // Parse JSON body for login endpoint only.
+    loginRouter.use((req, res, next) => {
         if (req.method === 'POST') {
             let body = '';
             req.on('data', (chunk) => (body += chunk));
@@ -66,7 +63,7 @@ export function setupSwaggerAuth(
     });
 
     // Login page route
-    swaggerAuthRouter.get('/login', (req: Request, res: Response) => {
+    loginRouter.get('/', (req: Request, res: Response) => {
         // If already authenticated, redirect to docs
         if (req.session?.authenticated) {
             return res.redirect('/api');
@@ -84,7 +81,7 @@ export function setupSwaggerAuth(
     });
 
     // Login POST handler
-    swaggerAuthRouter.post('/login', (req: Request, res: Response) => {
+    loginRouter.post('/', (req: Request, res: Response) => {
         const { username, password } = (req as any).body || {};
 
         if (username === config.username && password === config.password) {
@@ -107,8 +104,20 @@ export function setupSwaggerAuth(
         }
     });
 
-    // Logout route
-    swaggerAuthRouter.get('/logout', (req: Request, res: Response) => {
+    // Swagger UI protection - only for the root /api path and swagger assets
+    // Keep this scoped to docs/login URLs so business APIs under /api/* do not
+    // receive express-session. Better Auth also uses req.session semantics, and
+    // mixing both on regular API routes can break express-session's response hook.
+    docsRouter.use((req: Request, res: Response, next: NextFunction) => {
+        if (req.session?.authenticated) {
+            return next();
+        }
+
+        res.redirect('/api/login');
+    });
+
+    app.use('/api/login', sessionMiddleware, loginRouter);
+    app.get('/api/logout', sessionMiddleware, (req: Request, res: Response) => {
         req.session.destroy((err) => {
             if (err) {
                 console.error('Session destroy error:', err);
@@ -116,23 +125,11 @@ export function setupSwaggerAuth(
             res.redirect('/api/login');
         });
     });
-
-    // Swagger UI protection - only for the root /api path and swagger assets
-    // This checks for swagger-specific routes and protects them
-    swaggerAuthRouter.get(
-        ['/', '/-json', '/swagger-ui-init.js', '/swagger-ui.css', '/swagger-ui-bundle.js', '/swagger-ui-standalone-preset.js'],
-        (req: Request, res: Response, next: NextFunction) => {
-            // Check if authenticated
-            if (req.session?.authenticated) {
-                return next();
-            }
-
-            // For browser requests, redirect to login
-            res.redirect('/api/login');
-        },
-    );
-
-    // Mount the swagger auth router on /api
-    app.use('/api', swaggerAuthRouter);
+    app.get('/api', sessionMiddleware, docsRouter);
+    app.get('/api/', sessionMiddleware, docsRouter);
+    app.get('/api/-json', sessionMiddleware, docsRouter);
+    app.get('/api/swagger-ui-init.js', sessionMiddleware, docsRouter);
+    app.get('/api/swagger-ui.css', sessionMiddleware, docsRouter);
+    app.get('/api/swagger-ui-bundle.js', sessionMiddleware, docsRouter);
+    app.get('/api/swagger-ui-standalone-preset.js', sessionMiddleware, docsRouter);
 }
-

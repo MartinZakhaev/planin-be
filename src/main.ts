@@ -5,6 +5,7 @@ import { toNodeHandler } from 'better-auth/node';
 import { auth } from './auth/auth';
 import cors from 'cors';
 import { setupSwaggerAuth } from './swagger-auth/swagger-auth.middleware';
+import { json } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -23,6 +24,7 @@ async function bootstrap() {
 
   // Apply CORS to all routes including Better Auth
   express.use(cors(corsOptions));
+  express.use(/^\/api\/email-verification\/.*$/, json());
 
   // Better Auth 1.4.7+ route handler workaround
   // This ensures requests to /api/auth/* are routed correctly
