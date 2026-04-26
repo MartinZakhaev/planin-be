@@ -234,16 +234,7 @@ export class EmailVerificationService {
     }) {
         const apiKey = process.env.RESEND_API_KEY;
         const from = process.env.RESEND_FROM_EMAIL || 'Planin <onboarding@resend.dev>';
-        const subject = language === 'id' ? 'Kode verifikasi Planin Anda' : 'Your Planin verification code';
-        const greeting = language === 'id'
-            ? `Halo${name ? ` ${name}` : ''},`
-            : `Hi${name ? ` ${name}` : ''},`;
-        const intro = language === 'id'
-            ? 'Gunakan kode berikut untuk memverifikasi alamat email Anda:'
-            : 'Use the code below to verify your email address:';
-        const expiry = language === 'id'
-            ? 'Kode ini berlaku selama 10 menit. Jika Anda tidak meminta kode ini, abaikan email ini.'
-            : 'This code expires in 10 minutes. If you did not request it, you can safely ignore this email.';
+        const content = this.buildVerificationEmail({ name, otp, language });
 
         if (!apiKey) {
             if (process.env.NODE_ENV === 'production') {
@@ -263,15 +254,9 @@ export class EmailVerificationService {
             body: JSON.stringify({
                 from,
                 to,
-                subject,
-                html: `
-                    <div style="font-family:Arial,sans-serif;line-height:1.6;color:#111827">
-                        <p>${greeting}</p>
-                        <p>${intro}</p>
-                        <p style="font-size:32px;font-weight:700;letter-spacing:8px;margin:24px 0">${otp}</p>
-                        <p style="color:#6b7280">${expiry}</p>
-                    </div>
-                `,
+                subject: content.subject,
+                html: content.html,
+                text: content.text,
             }),
         });
 
@@ -280,5 +265,165 @@ export class EmailVerificationService {
             console.error('[EmailVerification] Resend error:', errorBody);
             throw new BadGatewayException('Failed to send verification email.');
         }
+    }
+
+    private buildVerificationEmail({
+        name,
+        otp,
+        language,
+    }: {
+        name: string | null;
+        otp: string;
+        language: Language;
+    }) {
+        const safeName = this.escapeHtml(name?.trim() || '');
+        const displayName = safeName || (language === 'id' ? 'Pengguna Planin' : 'Planin user');
+        const otpDigits = otp.split('');
+
+        const copy = language === 'id'
+            ? {
+                subject: 'Kode verifikasi Planin Anda',
+                eyebrow: 'Verifikasi email',
+                title: 'Selesaikan verifikasi email Anda',
+                greeting: `Halo ${displayName},`,
+                intro: 'Masukkan kode verifikasi berikut untuk mengaktifkan akun Planin Anda.',
+                codeLabel: 'Kode verifikasi',
+                expires: 'Kode ini berlaku selama 10 menit.',
+                securityTitle: 'Catatan keamanan',
+                securityBody: 'Jika Anda tidak meminta kode ini, abaikan email ini. Jangan bagikan kode ini kepada siapa pun, termasuk pihak yang mengaku dari Planin.',
+                footer: 'Email otomatis ini dikirim untuk membantu mengamankan akun Planin Anda.',
+                support: 'Butuh bantuan? Hubungi tim dukungan Planin.',
+                textIntro: 'Masukkan kode berikut untuk mengaktifkan akun Planin Anda.',
+                textSecurity: 'Jangan bagikan kode ini kepada siapa pun. Jika Anda tidak meminta kode ini, abaikan email ini.',
+            }
+            : {
+                subject: 'Your Planin verification code',
+                eyebrow: 'Email verification',
+                title: 'Complete your email verification',
+                greeting: `Hi ${displayName},`,
+                intro: 'Enter the verification code below to activate your Planin account.',
+                codeLabel: 'Verification code',
+                expires: 'This code expires in 10 minutes.',
+                securityTitle: 'Security note',
+                securityBody: 'If you did not request this code, you can safely ignore this email. Never share this code with anyone, including people claiming to be from Planin.',
+                footer: 'This automated email was sent to help secure your Planin account.',
+                support: 'Need help? Contact Planin support.',
+                textIntro: 'Enter the code below to activate your Planin account.',
+                textSecurity: 'Never share this code with anyone. If you did not request it, you can safely ignore this email.',
+            };
+
+        const codeHtml = otpDigits
+            .map((digit) => `
+                <td style="width:44px;height:56px;border:1px solid #D7DEE8;border-radius:10px;background:#FFFFFF;text-align:center;font-size:28px;line-height:56px;font-weight:700;color:#101828;font-family:Inter,Arial,sans-serif;">
+                    ${digit}
+                </td>
+            `)
+            .join('<td style="width:8px;"></td>');
+
+        const html = `
+<!doctype html>
+<html lang="${language}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="x-apple-disable-message-reformatting">
+  <title>${copy.subject}</title>
+</head>
+<body style="margin:0;padding:0;background:#F4F7FB;font-family:Inter,Arial,sans-serif;color:#101828;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;background:#F4F7FB;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;max-width:640px;">
+          <tr>
+            <td style="padding:0 4px 18px;">
+              <table role="presentation" cellspacing="0" cellpadding="0" style="width:100%;">
+                <tr>
+                  <td style="font-size:22px;font-weight:800;letter-spacing:0;color:#101828;">Planin</td>
+                  <td align="right" style="font-size:12px;font-weight:700;color:#475467;text-transform:uppercase;letter-spacing:1.2px;">${copy.eyebrow}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="background:#FFFFFF;border:1px solid #E4EAF2;border-radius:18px;box-shadow:0 18px 48px rgba(16,24,40,0.08);overflow:hidden;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td style="padding:32px 32px 24px;background:#0F172A;">
+                    <div style="font-size:12px;font-weight:700;color:#A7F3D0;text-transform:uppercase;letter-spacing:1.4px;margin-bottom:10px;">Planin secure access</div>
+                    <h1 style="margin:0;font-size:28px;line-height:36px;font-weight:800;color:#FFFFFF;">${copy.title}</h1>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:32px;">
+                    <p style="margin:0 0 12px;font-size:16px;line-height:26px;color:#101828;">${copy.greeting}</p>
+                    <p style="margin:0;font-size:16px;line-height:26px;color:#344054;">${copy.intro}</p>
+
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:28px 0;">
+                      <tr>
+                        <td style="padding:18px;border:1px solid #E4EAF2;border-radius:16px;background:#F8FAFC;">
+                          <div style="font-size:12px;font-weight:700;color:#667085;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:12px;">${copy.codeLabel}</div>
+                          <table role="presentation" cellspacing="0" cellpadding="0" align="center">
+                            <tr>${codeHtml}</tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <p style="margin:0 0 20px;font-size:14px;line-height:22px;color:#475467;">${copy.expires}</p>
+
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border:1px solid #D0D5DD;border-radius:14px;background:#FFFFFF;">
+                      <tr>
+                        <td style="padding:16px 18px;">
+                          <p style="margin:0 0 6px;font-size:14px;line-height:22px;font-weight:700;color:#101828;">${copy.securityTitle}</p>
+                          <p style="margin:0;font-size:13px;line-height:21px;color:#475467;">${copy.securityBody}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:18px 4px 0;text-align:center;">
+              <p style="margin:0 0 6px;font-size:12px;line-height:18px;color:#667085;">${copy.footer}</p>
+              <p style="margin:0;font-size:12px;line-height:18px;color:#98A2B3;">${copy.support}</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+        `.trim();
+
+        const text = [
+            'Planin',
+            copy.title,
+            '',
+            copy.greeting,
+            copy.textIntro,
+            '',
+            `${copy.codeLabel}: ${otp}`,
+            copy.expires,
+            '',
+            copy.textSecurity,
+        ].join('\n');
+
+        return {
+            subject: copy.subject,
+            html,
+            text,
+        };
+    }
+
+    private escapeHtml(value: string) {
+        return value
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
     }
 }
