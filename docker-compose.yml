@@ -20,3 +20,6 @@ services:
       - SWAGGER_USERNAME=${SWAGGER_USERNAME}                                                                                                  
       - SWAGGER_PASSWORD=${SWAGGER_PASSWORD}
       - MIDTRANS_SERVER_KEY=${MIDTRANS_SERVER_KEY} 
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - RESEND_FROM_EMAIL=${RESEND_FROM_EMAIL}
+      - OTP_SECRET=${OTP_SECRET}
