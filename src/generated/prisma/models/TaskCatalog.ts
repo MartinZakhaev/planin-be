@@ -27,6 +27,7 @@ export type AggregateTaskCatalog = {
 export type TaskCatalogMinAggregateOutputType = {
   id: string | null
   divisionId: string | null
+  ownerUserId: string | null
   code: string | null
   name: string | null
   description: string | null
@@ -37,6 +38,7 @@ export type TaskCatalogMinAggregateOutputType = {
 export type TaskCatalogMaxAggregateOutputType = {
   id: string | null
   divisionId: string | null
+  ownerUserId: string | null
   code: string | null
   name: string | null
   description: string | null
@@ -47,6 +49,7 @@ export type TaskCatalogMaxAggregateOutputType = {
 export type TaskCatalogCountAggregateOutputType = {
   id: number
   divisionId: number
+  ownerUserId: number
   code: number
   name: number
   description: number
@@ -59,6 +62,7 @@ export type TaskCatalogCountAggregateOutputType = {
 export type TaskCatalogMinAggregateInputType = {
   id?: true
   divisionId?: true
+  ownerUserId?: true
   code?: true
   name?: true
   description?: true
@@ -69,6 +73,7 @@ export type TaskCatalogMinAggregateInputType = {
 export type TaskCatalogMaxAggregateInputType = {
   id?: true
   divisionId?: true
+  ownerUserId?: true
   code?: true
   name?: true
   description?: true
@@ -79,6 +84,7 @@ export type TaskCatalogMaxAggregateInputType = {
 export type TaskCatalogCountAggregateInputType = {
   id?: true
   divisionId?: true
+  ownerUserId?: true
   code?: true
   name?: true
   description?: true
@@ -162,6 +168,7 @@ export type TaskCatalogGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type TaskCatalogGroupByOutputType = {
   id: string
   divisionId: string
+  ownerUserId: string | null
   code: string
   name: string
   description: string | null
@@ -193,24 +200,28 @@ export type TaskCatalogWhereInput = {
   NOT?: Prisma.TaskCatalogWhereInput | Prisma.TaskCatalogWhereInput[]
   id?: Prisma.UuidFilter<"TaskCatalog"> | string
   divisionId?: Prisma.UuidFilter<"TaskCatalog"> | string
+  ownerUserId?: Prisma.StringNullableFilter<"TaskCatalog"> | string | null
   code?: Prisma.StringFilter<"TaskCatalog"> | string
   name?: Prisma.StringFilter<"TaskCatalog"> | string
   description?: Prisma.StringNullableFilter<"TaskCatalog"> | string | null
   createdAt?: Prisma.DateTimeFilter<"TaskCatalog"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TaskCatalog"> | Date | string
   division?: Prisma.XOR<Prisma.WorkDivisionCatalogScalarRelationFilter, Prisma.WorkDivisionCatalogWhereInput>
+  owner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   projectTasks?: Prisma.ProjectTaskListRelationFilter
 }
 
 export type TaskCatalogOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   divisionId?: Prisma.SortOrder
+  ownerUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   division?: Prisma.WorkDivisionCatalogOrderByWithRelationInput
+  owner?: Prisma.UserOrderByWithRelationInput
   projectTasks?: Prisma.ProjectTaskOrderByRelationAggregateInput
 }
 
@@ -221,18 +232,21 @@ export type TaskCatalogWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.TaskCatalogWhereInput[]
   NOT?: Prisma.TaskCatalogWhereInput | Prisma.TaskCatalogWhereInput[]
   divisionId?: Prisma.UuidFilter<"TaskCatalog"> | string
+  ownerUserId?: Prisma.StringNullableFilter<"TaskCatalog"> | string | null
   code?: Prisma.StringFilter<"TaskCatalog"> | string
   name?: Prisma.StringFilter<"TaskCatalog"> | string
   description?: Prisma.StringNullableFilter<"TaskCatalog"> | string | null
   createdAt?: Prisma.DateTimeFilter<"TaskCatalog"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TaskCatalog"> | Date | string
   division?: Prisma.XOR<Prisma.WorkDivisionCatalogScalarRelationFilter, Prisma.WorkDivisionCatalogWhereInput>
+  owner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   projectTasks?: Prisma.ProjectTaskListRelationFilter
 }, "id" | "divisionId_code">
 
 export type TaskCatalogOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   divisionId?: Prisma.SortOrder
+  ownerUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -249,6 +263,7 @@ export type TaskCatalogScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TaskCatalogScalarWhereWithAggregatesInput | Prisma.TaskCatalogScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"TaskCatalog"> | string
   divisionId?: Prisma.UuidWithAggregatesFilter<"TaskCatalog"> | string
+  ownerUserId?: Prisma.StringNullableWithAggregatesFilter<"TaskCatalog"> | string | null
   code?: Prisma.StringWithAggregatesFilter<"TaskCatalog"> | string
   name?: Prisma.StringWithAggregatesFilter<"TaskCatalog"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"TaskCatalog"> | string | null
@@ -264,12 +279,14 @@ export type TaskCatalogCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   division: Prisma.WorkDivisionCatalogCreateNestedOneWithoutTasksInput
+  owner?: Prisma.UserCreateNestedOneWithoutPersonalTaskCatalogsInput
   projectTasks?: Prisma.ProjectTaskCreateNestedManyWithoutTaskCatalogInput
 }
 
 export type TaskCatalogUncheckedCreateInput = {
   id?: string
   divisionId: string
+  ownerUserId?: string | null
   code: string
   name: string
   description?: string | null
@@ -286,12 +303,14 @@ export type TaskCatalogUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   division?: Prisma.WorkDivisionCatalogUpdateOneRequiredWithoutTasksNestedInput
+  owner?: Prisma.UserUpdateOneWithoutPersonalTaskCatalogsNestedInput
   projectTasks?: Prisma.ProjectTaskUpdateManyWithoutTaskCatalogNestedInput
 }
 
 export type TaskCatalogUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   divisionId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -303,6 +322,7 @@ export type TaskCatalogUncheckedUpdateInput = {
 export type TaskCatalogCreateManyInput = {
   id?: string
   divisionId: string
+  ownerUserId?: string | null
   code: string
   name: string
   description?: string | null
@@ -322,6 +342,7 @@ export type TaskCatalogUpdateManyMutationInput = {
 export type TaskCatalogUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   divisionId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -347,6 +368,7 @@ export type TaskCatalogDivisionIdCodeCompoundUniqueInput = {
 export type TaskCatalogCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   divisionId?: Prisma.SortOrder
+  ownerUserId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -357,6 +379,7 @@ export type TaskCatalogCountOrderByAggregateInput = {
 export type TaskCatalogMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   divisionId?: Prisma.SortOrder
+  ownerUserId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -367,6 +390,7 @@ export type TaskCatalogMaxOrderByAggregateInput = {
 export type TaskCatalogMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   divisionId?: Prisma.SortOrder
+  ownerUserId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -377,6 +401,48 @@ export type TaskCatalogMinOrderByAggregateInput = {
 export type TaskCatalogScalarRelationFilter = {
   is?: Prisma.TaskCatalogWhereInput
   isNot?: Prisma.TaskCatalogWhereInput
+}
+
+export type TaskCatalogCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.TaskCatalogCreateWithoutOwnerInput, Prisma.TaskCatalogUncheckedCreateWithoutOwnerInput> | Prisma.TaskCatalogCreateWithoutOwnerInput[] | Prisma.TaskCatalogUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.TaskCatalogCreateOrConnectWithoutOwnerInput | Prisma.TaskCatalogCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.TaskCatalogCreateManyOwnerInputEnvelope
+  connect?: Prisma.TaskCatalogWhereUniqueInput | Prisma.TaskCatalogWhereUniqueInput[]
+}
+
+export type TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.TaskCatalogCreateWithoutOwnerInput, Prisma.TaskCatalogUncheckedCreateWithoutOwnerInput> | Prisma.TaskCatalogCreateWithoutOwnerInput[] | Prisma.TaskCatalogUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.TaskCatalogCreateOrConnectWithoutOwnerInput | Prisma.TaskCatalogCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.TaskCatalogCreateManyOwnerInputEnvelope
+  connect?: Prisma.TaskCatalogWhereUniqueInput | Prisma.TaskCatalogWhereUniqueInput[]
+}
+
+export type TaskCatalogUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskCatalogCreateWithoutOwnerInput, Prisma.TaskCatalogUncheckedCreateWithoutOwnerInput> | Prisma.TaskCatalogCreateWithoutOwnerInput[] | Prisma.TaskCatalogUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.TaskCatalogCreateOrConnectWithoutOwnerInput | Prisma.TaskCatalogCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.TaskCatalogUpsertWithWhereUniqueWithoutOwnerInput | Prisma.TaskCatalogUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.TaskCatalogCreateManyOwnerInputEnvelope
+  set?: Prisma.TaskCatalogWhereUniqueInput | Prisma.TaskCatalogWhereUniqueInput[]
+  disconnect?: Prisma.TaskCatalogWhereUniqueInput | Prisma.TaskCatalogWhereUniqueInput[]
+  delete?: Prisma.TaskCatalogWhereUniqueInput | Prisma.TaskCatalogWhereUniqueInput[]
+  connect?: Prisma.TaskCatalogWhereUniqueInput | Prisma.TaskCatalogWhereUniqueInput[]
+  update?: Prisma.TaskCatalogUpdateWithWhereUniqueWithoutOwnerInput | Prisma.TaskCatalogUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.TaskCatalogUpdateManyWithWhereWithoutOwnerInput | Prisma.TaskCatalogUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.TaskCatalogScalarWhereInput | Prisma.TaskCatalogScalarWhereInput[]
+}
+
+export type TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskCatalogCreateWithoutOwnerInput, Prisma.TaskCatalogUncheckedCreateWithoutOwnerInput> | Prisma.TaskCatalogCreateWithoutOwnerInput[] | Prisma.TaskCatalogUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.TaskCatalogCreateOrConnectWithoutOwnerInput | Prisma.TaskCatalogCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.TaskCatalogUpsertWithWhereUniqueWithoutOwnerInput | Prisma.TaskCatalogUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.TaskCatalogCreateManyOwnerInputEnvelope
+  set?: Prisma.TaskCatalogWhereUniqueInput | Prisma.TaskCatalogWhereUniqueInput[]
+  disconnect?: Prisma.TaskCatalogWhereUniqueInput | Prisma.TaskCatalogWhereUniqueInput[]
+  delete?: Prisma.TaskCatalogWhereUniqueInput | Prisma.TaskCatalogWhereUniqueInput[]
+  connect?: Prisma.TaskCatalogWhereUniqueInput | Prisma.TaskCatalogWhereUniqueInput[]
+  update?: Prisma.TaskCatalogUpdateWithWhereUniqueWithoutOwnerInput | Prisma.TaskCatalogUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.TaskCatalogUpdateManyWithWhereWithoutOwnerInput | Prisma.TaskCatalogUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.TaskCatalogScalarWhereInput | Prisma.TaskCatalogScalarWhereInput[]
 }
 
 export type TaskCatalogCreateNestedManyWithoutDivisionInput = {
@@ -435,6 +501,68 @@ export type TaskCatalogUpdateOneRequiredWithoutProjectTasksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TaskCatalogUpdateToOneWithWhereWithoutProjectTasksInput, Prisma.TaskCatalogUpdateWithoutProjectTasksInput>, Prisma.TaskCatalogUncheckedUpdateWithoutProjectTasksInput>
 }
 
+export type TaskCatalogCreateWithoutOwnerInput = {
+  id?: string
+  code: string
+  name: string
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  division: Prisma.WorkDivisionCatalogCreateNestedOneWithoutTasksInput
+  projectTasks?: Prisma.ProjectTaskCreateNestedManyWithoutTaskCatalogInput
+}
+
+export type TaskCatalogUncheckedCreateWithoutOwnerInput = {
+  id?: string
+  divisionId: string
+  code: string
+  name: string
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  projectTasks?: Prisma.ProjectTaskUncheckedCreateNestedManyWithoutTaskCatalogInput
+}
+
+export type TaskCatalogCreateOrConnectWithoutOwnerInput = {
+  where: Prisma.TaskCatalogWhereUniqueInput
+  create: Prisma.XOR<Prisma.TaskCatalogCreateWithoutOwnerInput, Prisma.TaskCatalogUncheckedCreateWithoutOwnerInput>
+}
+
+export type TaskCatalogCreateManyOwnerInputEnvelope = {
+  data: Prisma.TaskCatalogCreateManyOwnerInput | Prisma.TaskCatalogCreateManyOwnerInput[]
+  skipDuplicates?: boolean
+}
+
+export type TaskCatalogUpsertWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.TaskCatalogWhereUniqueInput
+  update: Prisma.XOR<Prisma.TaskCatalogUpdateWithoutOwnerInput, Prisma.TaskCatalogUncheckedUpdateWithoutOwnerInput>
+  create: Prisma.XOR<Prisma.TaskCatalogCreateWithoutOwnerInput, Prisma.TaskCatalogUncheckedCreateWithoutOwnerInput>
+}
+
+export type TaskCatalogUpdateWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.TaskCatalogWhereUniqueInput
+  data: Prisma.XOR<Prisma.TaskCatalogUpdateWithoutOwnerInput, Prisma.TaskCatalogUncheckedUpdateWithoutOwnerInput>
+}
+
+export type TaskCatalogUpdateManyWithWhereWithoutOwnerInput = {
+  where: Prisma.TaskCatalogScalarWhereInput
+  data: Prisma.XOR<Prisma.TaskCatalogUpdateManyMutationInput, Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerInput>
+}
+
+export type TaskCatalogScalarWhereInput = {
+  AND?: Prisma.TaskCatalogScalarWhereInput | Prisma.TaskCatalogScalarWhereInput[]
+  OR?: Prisma.TaskCatalogScalarWhereInput[]
+  NOT?: Prisma.TaskCatalogScalarWhereInput | Prisma.TaskCatalogScalarWhereInput[]
+  id?: Prisma.UuidFilter<"TaskCatalog"> | string
+  divisionId?: Prisma.UuidFilter<"TaskCatalog"> | string
+  ownerUserId?: Prisma.StringNullableFilter<"TaskCatalog"> | string | null
+  code?: Prisma.StringFilter<"TaskCatalog"> | string
+  name?: Prisma.StringFilter<"TaskCatalog"> | string
+  description?: Prisma.StringNullableFilter<"TaskCatalog"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"TaskCatalog"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"TaskCatalog"> | Date | string
+}
+
 export type TaskCatalogCreateWithoutDivisionInput = {
   id?: string
   code: string
@@ -442,11 +570,13 @@ export type TaskCatalogCreateWithoutDivisionInput = {
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  owner?: Prisma.UserCreateNestedOneWithoutPersonalTaskCatalogsInput
   projectTasks?: Prisma.ProjectTaskCreateNestedManyWithoutTaskCatalogInput
 }
 
 export type TaskCatalogUncheckedCreateWithoutDivisionInput = {
   id?: string
+  ownerUserId?: string | null
   code: string
   name: string
   description?: string | null
@@ -481,19 +611,6 @@ export type TaskCatalogUpdateManyWithWhereWithoutDivisionInput = {
   data: Prisma.XOR<Prisma.TaskCatalogUpdateManyMutationInput, Prisma.TaskCatalogUncheckedUpdateManyWithoutDivisionInput>
 }
 
-export type TaskCatalogScalarWhereInput = {
-  AND?: Prisma.TaskCatalogScalarWhereInput | Prisma.TaskCatalogScalarWhereInput[]
-  OR?: Prisma.TaskCatalogScalarWhereInput[]
-  NOT?: Prisma.TaskCatalogScalarWhereInput | Prisma.TaskCatalogScalarWhereInput[]
-  id?: Prisma.UuidFilter<"TaskCatalog"> | string
-  divisionId?: Prisma.UuidFilter<"TaskCatalog"> | string
-  code?: Prisma.StringFilter<"TaskCatalog"> | string
-  name?: Prisma.StringFilter<"TaskCatalog"> | string
-  description?: Prisma.StringNullableFilter<"TaskCatalog"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"TaskCatalog"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"TaskCatalog"> | Date | string
-}
-
 export type TaskCatalogCreateWithoutProjectTasksInput = {
   id?: string
   code: string
@@ -502,11 +619,13 @@ export type TaskCatalogCreateWithoutProjectTasksInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   division: Prisma.WorkDivisionCatalogCreateNestedOneWithoutTasksInput
+  owner?: Prisma.UserCreateNestedOneWithoutPersonalTaskCatalogsInput
 }
 
 export type TaskCatalogUncheckedCreateWithoutProjectTasksInput = {
   id?: string
   divisionId: string
+  ownerUserId?: string | null
   code: string
   name: string
   description?: string | null
@@ -538,9 +657,53 @@ export type TaskCatalogUpdateWithoutProjectTasksInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   division?: Prisma.WorkDivisionCatalogUpdateOneRequiredWithoutTasksNestedInput
+  owner?: Prisma.UserUpdateOneWithoutPersonalTaskCatalogsNestedInput
 }
 
 export type TaskCatalogUncheckedUpdateWithoutProjectTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  divisionId?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TaskCatalogCreateManyOwnerInput = {
+  id?: string
+  divisionId: string
+  code: string
+  name: string
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TaskCatalogUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  division?: Prisma.WorkDivisionCatalogUpdateOneRequiredWithoutTasksNestedInput
+  projectTasks?: Prisma.ProjectTaskUpdateManyWithoutTaskCatalogNestedInput
+}
+
+export type TaskCatalogUncheckedUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  divisionId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  projectTasks?: Prisma.ProjectTaskUncheckedUpdateManyWithoutTaskCatalogNestedInput
+}
+
+export type TaskCatalogUncheckedUpdateManyWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   divisionId?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
@@ -552,6 +715,7 @@ export type TaskCatalogUncheckedUpdateWithoutProjectTasksInput = {
 
 export type TaskCatalogCreateManyDivisionInput = {
   id?: string
+  ownerUserId?: string | null
   code: string
   name: string
   description?: string | null
@@ -566,11 +730,13 @@ export type TaskCatalogUpdateWithoutDivisionInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneWithoutPersonalTaskCatalogsNestedInput
   projectTasks?: Prisma.ProjectTaskUpdateManyWithoutTaskCatalogNestedInput
 }
 
 export type TaskCatalogUncheckedUpdateWithoutDivisionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -581,6 +747,7 @@ export type TaskCatalogUncheckedUpdateWithoutDivisionInput = {
 
 export type TaskCatalogUncheckedUpdateManyWithoutDivisionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -622,12 +789,14 @@ export type TaskCatalogCountOutputTypeCountProjectTasksArgs<ExtArgs extends runt
 export type TaskCatalogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   divisionId?: boolean
+  ownerUserId?: boolean
   code?: boolean
   name?: boolean
   description?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   division?: boolean | Prisma.WorkDivisionCatalogDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.TaskCatalog$ownerArgs<ExtArgs>
   projectTasks?: boolean | Prisma.TaskCatalog$projectTasksArgs<ExtArgs>
   _count?: boolean | Prisma.TaskCatalogCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["taskCatalog"]>
@@ -635,28 +804,33 @@ export type TaskCatalogSelect<ExtArgs extends runtime.Types.Extensions.InternalA
 export type TaskCatalogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   divisionId?: boolean
+  ownerUserId?: boolean
   code?: boolean
   name?: boolean
   description?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   division?: boolean | Prisma.WorkDivisionCatalogDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.TaskCatalog$ownerArgs<ExtArgs>
 }, ExtArgs["result"]["taskCatalog"]>
 
 export type TaskCatalogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   divisionId?: boolean
+  ownerUserId?: boolean
   code?: boolean
   name?: boolean
   description?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   division?: boolean | Prisma.WorkDivisionCatalogDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.TaskCatalog$ownerArgs<ExtArgs>
 }, ExtArgs["result"]["taskCatalog"]>
 
 export type TaskCatalogSelectScalar = {
   id?: boolean
   divisionId?: boolean
+  ownerUserId?: boolean
   code?: boolean
   name?: boolean
   description?: boolean
@@ -664,28 +838,33 @@ export type TaskCatalogSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TaskCatalogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "divisionId" | "code" | "name" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["taskCatalog"]>
+export type TaskCatalogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "divisionId" | "ownerUserId" | "code" | "name" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["taskCatalog"]>
 export type TaskCatalogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   division?: boolean | Prisma.WorkDivisionCatalogDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.TaskCatalog$ownerArgs<ExtArgs>
   projectTasks?: boolean | Prisma.TaskCatalog$projectTasksArgs<ExtArgs>
   _count?: boolean | Prisma.TaskCatalogCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TaskCatalogIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   division?: boolean | Prisma.WorkDivisionCatalogDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.TaskCatalog$ownerArgs<ExtArgs>
 }
 export type TaskCatalogIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   division?: boolean | Prisma.WorkDivisionCatalogDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.TaskCatalog$ownerArgs<ExtArgs>
 }
 
 export type $TaskCatalogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "TaskCatalog"
   objects: {
     division: Prisma.$WorkDivisionCatalogPayload<ExtArgs>
+    owner: Prisma.$UserPayload<ExtArgs> | null
     projectTasks: Prisma.$ProjectTaskPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     divisionId: string
+    ownerUserId: string | null
     code: string
     name: string
     description: string | null
@@ -1086,6 +1265,7 @@ readonly fields: TaskCatalogFieldRefs;
 export interface Prisma__TaskCatalogClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   division<T extends Prisma.WorkDivisionCatalogDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkDivisionCatalogDefaultArgs<ExtArgs>>): Prisma.Prisma__WorkDivisionCatalogClient<runtime.Types.Result.GetResult<Prisma.$WorkDivisionCatalogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  owner<T extends Prisma.TaskCatalog$ownerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TaskCatalog$ownerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   projectTasks<T extends Prisma.TaskCatalog$projectTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TaskCatalog$projectTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1118,6 +1298,7 @@ export interface Prisma__TaskCatalogClient<T, Null = never, ExtArgs extends runt
 export interface TaskCatalogFieldRefs {
   readonly id: Prisma.FieldRef<"TaskCatalog", 'String'>
   readonly divisionId: Prisma.FieldRef<"TaskCatalog", 'String'>
+  readonly ownerUserId: Prisma.FieldRef<"TaskCatalog", 'String'>
   readonly code: Prisma.FieldRef<"TaskCatalog", 'String'>
   readonly name: Prisma.FieldRef<"TaskCatalog", 'String'>
   readonly description: Prisma.FieldRef<"TaskCatalog", 'String'>
@@ -1516,6 +1697,25 @@ export type TaskCatalogDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many TaskCatalogs to delete.
    */
   limit?: number
+}
+
+/**
+ * TaskCatalog.owner
+ */
+export type TaskCatalog$ownerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

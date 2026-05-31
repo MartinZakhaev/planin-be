@@ -8,6 +8,9 @@ export class ItemCatalogEntity implements ItemCatalog {
     @ApiProperty({ enum: ItemType })
     type: ItemType;
 
+    @ApiProperty({ required: false, nullable: true })
+    ownerUserId: string | null;
+
     @ApiProperty()
     code: string;
 
@@ -33,4 +36,3 @@ export class ItemCatalogEntity implements ItemCatalog {
         Object.assign(this, partial);
     }
 }
-

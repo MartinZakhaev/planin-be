@@ -8,6 +8,9 @@ export class TaskCatalogEntity implements TaskCatalog {
     @ApiProperty()
     divisionId: string;
 
+    @ApiProperty({ required: false, nullable: true })
+    ownerUserId: string | null;
+
     @ApiProperty()
     code: string;
 
@@ -27,4 +30,3 @@ export class TaskCatalogEntity implements TaskCatalog {
         Object.assign(this, partial);
     }
 }
-

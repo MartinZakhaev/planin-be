@@ -37,6 +37,7 @@ export type ItemCatalogSumAggregateOutputType = {
 export type ItemCatalogMinAggregateOutputType = {
   id: string | null
   type: $Enums.ItemType | null
+  ownerUserId: string | null
   code: string | null
   name: string | null
   unitId: string | null
@@ -49,6 +50,7 @@ export type ItemCatalogMinAggregateOutputType = {
 export type ItemCatalogMaxAggregateOutputType = {
   id: string | null
   type: $Enums.ItemType | null
+  ownerUserId: string | null
   code: string | null
   name: string | null
   unitId: string | null
@@ -61,6 +63,7 @@ export type ItemCatalogMaxAggregateOutputType = {
 export type ItemCatalogCountAggregateOutputType = {
   id: number
   type: number
+  ownerUserId: number
   code: number
   name: number
   unitId: number
@@ -83,6 +86,7 @@ export type ItemCatalogSumAggregateInputType = {
 export type ItemCatalogMinAggregateInputType = {
   id?: true
   type?: true
+  ownerUserId?: true
   code?: true
   name?: true
   unitId?: true
@@ -95,6 +99,7 @@ export type ItemCatalogMinAggregateInputType = {
 export type ItemCatalogMaxAggregateInputType = {
   id?: true
   type?: true
+  ownerUserId?: true
   code?: true
   name?: true
   unitId?: true
@@ -107,6 +112,7 @@ export type ItemCatalogMaxAggregateInputType = {
 export type ItemCatalogCountAggregateInputType = {
   id?: true
   type?: true
+  ownerUserId?: true
   code?: true
   name?: true
   unitId?: true
@@ -206,6 +212,7 @@ export type ItemCatalogGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type ItemCatalogGroupByOutputType = {
   id: string
   type: $Enums.ItemType
+  ownerUserId: string | null
   code: string
   name: string
   unitId: string
@@ -241,6 +248,7 @@ export type ItemCatalogWhereInput = {
   NOT?: Prisma.ItemCatalogWhereInput | Prisma.ItemCatalogWhereInput[]
   id?: Prisma.UuidFilter<"ItemCatalog"> | string
   type?: Prisma.EnumItemTypeFilter<"ItemCatalog"> | $Enums.ItemType
+  ownerUserId?: Prisma.StringNullableFilter<"ItemCatalog"> | string | null
   code?: Prisma.StringFilter<"ItemCatalog"> | string
   name?: Prisma.StringFilter<"ItemCatalog"> | string
   unitId?: Prisma.UuidFilter<"ItemCatalog"> | string
@@ -249,12 +257,14 @@ export type ItemCatalogWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"ItemCatalog"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ItemCatalog"> | Date | string
   unit?: Prisma.XOR<Prisma.UnitScalarRelationFilter, Prisma.UnitWhereInput>
+  owner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   taskLineItems?: Prisma.TaskLineItemListRelationFilter
 }
 
 export type ItemCatalogOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  ownerUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   unitId?: Prisma.SortOrder
@@ -263,6 +273,7 @@ export type ItemCatalogOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   unit?: Prisma.UnitOrderByWithRelationInput
+  owner?: Prisma.UserOrderByWithRelationInput
   taskLineItems?: Prisma.TaskLineItemOrderByRelationAggregateInput
 }
 
@@ -273,6 +284,7 @@ export type ItemCatalogWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ItemCatalogWhereInput[]
   NOT?: Prisma.ItemCatalogWhereInput | Prisma.ItemCatalogWhereInput[]
   type?: Prisma.EnumItemTypeFilter<"ItemCatalog"> | $Enums.ItemType
+  ownerUserId?: Prisma.StringNullableFilter<"ItemCatalog"> | string | null
   name?: Prisma.StringFilter<"ItemCatalog"> | string
   unitId?: Prisma.UuidFilter<"ItemCatalog"> | string
   defaultPrice?: Prisma.DecimalFilter<"ItemCatalog"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -280,12 +292,14 @@ export type ItemCatalogWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"ItemCatalog"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ItemCatalog"> | Date | string
   unit?: Prisma.XOR<Prisma.UnitScalarRelationFilter, Prisma.UnitWhereInput>
+  owner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   taskLineItems?: Prisma.TaskLineItemListRelationFilter
 }, "id" | "code">
 
 export type ItemCatalogOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  ownerUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   unitId?: Prisma.SortOrder
@@ -306,6 +320,7 @@ export type ItemCatalogScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ItemCatalogScalarWhereWithAggregatesInput | Prisma.ItemCatalogScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"ItemCatalog"> | string
   type?: Prisma.EnumItemTypeWithAggregatesFilter<"ItemCatalog"> | $Enums.ItemType
+  ownerUserId?: Prisma.StringNullableWithAggregatesFilter<"ItemCatalog"> | string | null
   code?: Prisma.StringWithAggregatesFilter<"ItemCatalog"> | string
   name?: Prisma.StringWithAggregatesFilter<"ItemCatalog"> | string
   unitId?: Prisma.UuidWithAggregatesFilter<"ItemCatalog"> | string
@@ -325,12 +340,14 @@ export type ItemCatalogCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   unit: Prisma.UnitCreateNestedOneWithoutItemsInput
+  owner?: Prisma.UserCreateNestedOneWithoutPersonalItemCatalogsInput
   taskLineItems?: Prisma.TaskLineItemCreateNestedManyWithoutItemCatalogInput
 }
 
 export type ItemCatalogUncheckedCreateInput = {
   id?: string
   type: $Enums.ItemType
+  ownerUserId?: string | null
   code: string
   name: string
   unitId: string
@@ -351,12 +368,14 @@ export type ItemCatalogUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   unit?: Prisma.UnitUpdateOneRequiredWithoutItemsNestedInput
+  owner?: Prisma.UserUpdateOneWithoutPersonalItemCatalogsNestedInput
   taskLineItems?: Prisma.TaskLineItemUpdateManyWithoutItemCatalogNestedInput
 }
 
 export type ItemCatalogUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumItemTypeFieldUpdateOperationsInput | $Enums.ItemType
+  ownerUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   unitId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -370,6 +389,7 @@ export type ItemCatalogUncheckedUpdateInput = {
 export type ItemCatalogCreateManyInput = {
   id?: string
   type: $Enums.ItemType
+  ownerUserId?: string | null
   code: string
   name: string
   unitId: string
@@ -393,6 +413,7 @@ export type ItemCatalogUpdateManyMutationInput = {
 export type ItemCatalogUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumItemTypeFieldUpdateOperationsInput | $Enums.ItemType
+  ownerUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   unitId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -415,6 +436,7 @@ export type ItemCatalogOrderByRelationAggregateInput = {
 export type ItemCatalogCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  ownerUserId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   unitId?: Prisma.SortOrder
@@ -431,6 +453,7 @@ export type ItemCatalogAvgOrderByAggregateInput = {
 export type ItemCatalogMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  ownerUserId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   unitId?: Prisma.SortOrder
@@ -443,6 +466,7 @@ export type ItemCatalogMaxOrderByAggregateInput = {
 export type ItemCatalogMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  ownerUserId?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   unitId?: Prisma.SortOrder
@@ -459,6 +483,48 @@ export type ItemCatalogSumOrderByAggregateInput = {
 export type ItemCatalogScalarRelationFilter = {
   is?: Prisma.ItemCatalogWhereInput
   isNot?: Prisma.ItemCatalogWhereInput
+}
+
+export type ItemCatalogCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.ItemCatalogCreateWithoutOwnerInput, Prisma.ItemCatalogUncheckedCreateWithoutOwnerInput> | Prisma.ItemCatalogCreateWithoutOwnerInput[] | Prisma.ItemCatalogUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.ItemCatalogCreateOrConnectWithoutOwnerInput | Prisma.ItemCatalogCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.ItemCatalogCreateManyOwnerInputEnvelope
+  connect?: Prisma.ItemCatalogWhereUniqueInput | Prisma.ItemCatalogWhereUniqueInput[]
+}
+
+export type ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.ItemCatalogCreateWithoutOwnerInput, Prisma.ItemCatalogUncheckedCreateWithoutOwnerInput> | Prisma.ItemCatalogCreateWithoutOwnerInput[] | Prisma.ItemCatalogUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.ItemCatalogCreateOrConnectWithoutOwnerInput | Prisma.ItemCatalogCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.ItemCatalogCreateManyOwnerInputEnvelope
+  connect?: Prisma.ItemCatalogWhereUniqueInput | Prisma.ItemCatalogWhereUniqueInput[]
+}
+
+export type ItemCatalogUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCatalogCreateWithoutOwnerInput, Prisma.ItemCatalogUncheckedCreateWithoutOwnerInput> | Prisma.ItemCatalogCreateWithoutOwnerInput[] | Prisma.ItemCatalogUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.ItemCatalogCreateOrConnectWithoutOwnerInput | Prisma.ItemCatalogCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.ItemCatalogUpsertWithWhereUniqueWithoutOwnerInput | Prisma.ItemCatalogUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.ItemCatalogCreateManyOwnerInputEnvelope
+  set?: Prisma.ItemCatalogWhereUniqueInput | Prisma.ItemCatalogWhereUniqueInput[]
+  disconnect?: Prisma.ItemCatalogWhereUniqueInput | Prisma.ItemCatalogWhereUniqueInput[]
+  delete?: Prisma.ItemCatalogWhereUniqueInput | Prisma.ItemCatalogWhereUniqueInput[]
+  connect?: Prisma.ItemCatalogWhereUniqueInput | Prisma.ItemCatalogWhereUniqueInput[]
+  update?: Prisma.ItemCatalogUpdateWithWhereUniqueWithoutOwnerInput | Prisma.ItemCatalogUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.ItemCatalogUpdateManyWithWhereWithoutOwnerInput | Prisma.ItemCatalogUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.ItemCatalogScalarWhereInput | Prisma.ItemCatalogScalarWhereInput[]
+}
+
+export type ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.ItemCatalogCreateWithoutOwnerInput, Prisma.ItemCatalogUncheckedCreateWithoutOwnerInput> | Prisma.ItemCatalogCreateWithoutOwnerInput[] | Prisma.ItemCatalogUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.ItemCatalogCreateOrConnectWithoutOwnerInput | Prisma.ItemCatalogCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.ItemCatalogUpsertWithWhereUniqueWithoutOwnerInput | Prisma.ItemCatalogUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.ItemCatalogCreateManyOwnerInputEnvelope
+  set?: Prisma.ItemCatalogWhereUniqueInput | Prisma.ItemCatalogWhereUniqueInput[]
+  disconnect?: Prisma.ItemCatalogWhereUniqueInput | Prisma.ItemCatalogWhereUniqueInput[]
+  delete?: Prisma.ItemCatalogWhereUniqueInput | Prisma.ItemCatalogWhereUniqueInput[]
+  connect?: Prisma.ItemCatalogWhereUniqueInput | Prisma.ItemCatalogWhereUniqueInput[]
+  update?: Prisma.ItemCatalogUpdateWithWhereUniqueWithoutOwnerInput | Prisma.ItemCatalogUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.ItemCatalogUpdateManyWithWhereWithoutOwnerInput | Prisma.ItemCatalogUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.ItemCatalogScalarWhereInput | Prisma.ItemCatalogScalarWhereInput[]
 }
 
 export type ItemCatalogCreateNestedManyWithoutUnitInput = {
@@ -529,6 +595,74 @@ export type ItemCatalogUpdateOneRequiredWithoutTaskLineItemsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ItemCatalogUpdateToOneWithWhereWithoutTaskLineItemsInput, Prisma.ItemCatalogUpdateWithoutTaskLineItemsInput>, Prisma.ItemCatalogUncheckedUpdateWithoutTaskLineItemsInput>
 }
 
+export type ItemCatalogCreateWithoutOwnerInput = {
+  id?: string
+  type: $Enums.ItemType
+  code: string
+  name: string
+  defaultPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  unit: Prisma.UnitCreateNestedOneWithoutItemsInput
+  taskLineItems?: Prisma.TaskLineItemCreateNestedManyWithoutItemCatalogInput
+}
+
+export type ItemCatalogUncheckedCreateWithoutOwnerInput = {
+  id?: string
+  type: $Enums.ItemType
+  code: string
+  name: string
+  unitId: string
+  defaultPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  taskLineItems?: Prisma.TaskLineItemUncheckedCreateNestedManyWithoutItemCatalogInput
+}
+
+export type ItemCatalogCreateOrConnectWithoutOwnerInput = {
+  where: Prisma.ItemCatalogWhereUniqueInput
+  create: Prisma.XOR<Prisma.ItemCatalogCreateWithoutOwnerInput, Prisma.ItemCatalogUncheckedCreateWithoutOwnerInput>
+}
+
+export type ItemCatalogCreateManyOwnerInputEnvelope = {
+  data: Prisma.ItemCatalogCreateManyOwnerInput | Prisma.ItemCatalogCreateManyOwnerInput[]
+  skipDuplicates?: boolean
+}
+
+export type ItemCatalogUpsertWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.ItemCatalogWhereUniqueInput
+  update: Prisma.XOR<Prisma.ItemCatalogUpdateWithoutOwnerInput, Prisma.ItemCatalogUncheckedUpdateWithoutOwnerInput>
+  create: Prisma.XOR<Prisma.ItemCatalogCreateWithoutOwnerInput, Prisma.ItemCatalogUncheckedCreateWithoutOwnerInput>
+}
+
+export type ItemCatalogUpdateWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.ItemCatalogWhereUniqueInput
+  data: Prisma.XOR<Prisma.ItemCatalogUpdateWithoutOwnerInput, Prisma.ItemCatalogUncheckedUpdateWithoutOwnerInput>
+}
+
+export type ItemCatalogUpdateManyWithWhereWithoutOwnerInput = {
+  where: Prisma.ItemCatalogScalarWhereInput
+  data: Prisma.XOR<Prisma.ItemCatalogUpdateManyMutationInput, Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerInput>
+}
+
+export type ItemCatalogScalarWhereInput = {
+  AND?: Prisma.ItemCatalogScalarWhereInput | Prisma.ItemCatalogScalarWhereInput[]
+  OR?: Prisma.ItemCatalogScalarWhereInput[]
+  NOT?: Prisma.ItemCatalogScalarWhereInput | Prisma.ItemCatalogScalarWhereInput[]
+  id?: Prisma.UuidFilter<"ItemCatalog"> | string
+  type?: Prisma.EnumItemTypeFilter<"ItemCatalog"> | $Enums.ItemType
+  ownerUserId?: Prisma.StringNullableFilter<"ItemCatalog"> | string | null
+  code?: Prisma.StringFilter<"ItemCatalog"> | string
+  name?: Prisma.StringFilter<"ItemCatalog"> | string
+  unitId?: Prisma.UuidFilter<"ItemCatalog"> | string
+  defaultPrice?: Prisma.DecimalFilter<"ItemCatalog"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  description?: Prisma.StringNullableFilter<"ItemCatalog"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"ItemCatalog"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ItemCatalog"> | Date | string
+}
+
 export type ItemCatalogCreateWithoutUnitInput = {
   id?: string
   type: $Enums.ItemType
@@ -538,12 +672,14 @@ export type ItemCatalogCreateWithoutUnitInput = {
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  owner?: Prisma.UserCreateNestedOneWithoutPersonalItemCatalogsInput
   taskLineItems?: Prisma.TaskLineItemCreateNestedManyWithoutItemCatalogInput
 }
 
 export type ItemCatalogUncheckedCreateWithoutUnitInput = {
   id?: string
   type: $Enums.ItemType
+  ownerUserId?: string | null
   code: string
   name: string
   defaultPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -579,21 +715,6 @@ export type ItemCatalogUpdateManyWithWhereWithoutUnitInput = {
   data: Prisma.XOR<Prisma.ItemCatalogUpdateManyMutationInput, Prisma.ItemCatalogUncheckedUpdateManyWithoutUnitInput>
 }
 
-export type ItemCatalogScalarWhereInput = {
-  AND?: Prisma.ItemCatalogScalarWhereInput | Prisma.ItemCatalogScalarWhereInput[]
-  OR?: Prisma.ItemCatalogScalarWhereInput[]
-  NOT?: Prisma.ItemCatalogScalarWhereInput | Prisma.ItemCatalogScalarWhereInput[]
-  id?: Prisma.UuidFilter<"ItemCatalog"> | string
-  type?: Prisma.EnumItemTypeFilter<"ItemCatalog"> | $Enums.ItemType
-  code?: Prisma.StringFilter<"ItemCatalog"> | string
-  name?: Prisma.StringFilter<"ItemCatalog"> | string
-  unitId?: Prisma.UuidFilter<"ItemCatalog"> | string
-  defaultPrice?: Prisma.DecimalFilter<"ItemCatalog"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  description?: Prisma.StringNullableFilter<"ItemCatalog"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"ItemCatalog"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"ItemCatalog"> | Date | string
-}
-
 export type ItemCatalogCreateWithoutTaskLineItemsInput = {
   id?: string
   type: $Enums.ItemType
@@ -604,11 +725,13 @@ export type ItemCatalogCreateWithoutTaskLineItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   unit: Prisma.UnitCreateNestedOneWithoutItemsInput
+  owner?: Prisma.UserCreateNestedOneWithoutPersonalItemCatalogsInput
 }
 
 export type ItemCatalogUncheckedCreateWithoutTaskLineItemsInput = {
   id?: string
   type: $Enums.ItemType
+  ownerUserId?: string | null
   code: string
   name: string
   unitId: string
@@ -644,9 +767,61 @@ export type ItemCatalogUpdateWithoutTaskLineItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   unit?: Prisma.UnitUpdateOneRequiredWithoutItemsNestedInput
+  owner?: Prisma.UserUpdateOneWithoutPersonalItemCatalogsNestedInput
 }
 
 export type ItemCatalogUncheckedUpdateWithoutTaskLineItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumItemTypeFieldUpdateOperationsInput | $Enums.ItemType
+  ownerUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  unitId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ItemCatalogCreateManyOwnerInput = {
+  id?: string
+  type: $Enums.ItemType
+  code: string
+  name: string
+  unitId: string
+  defaultPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ItemCatalogUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumItemTypeFieldUpdateOperationsInput | $Enums.ItemType
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  unit?: Prisma.UnitUpdateOneRequiredWithoutItemsNestedInput
+  taskLineItems?: Prisma.TaskLineItemUpdateManyWithoutItemCatalogNestedInput
+}
+
+export type ItemCatalogUncheckedUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumItemTypeFieldUpdateOperationsInput | $Enums.ItemType
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  unitId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  taskLineItems?: Prisma.TaskLineItemUncheckedUpdateManyWithoutItemCatalogNestedInput
+}
+
+export type ItemCatalogUncheckedUpdateManyWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumItemTypeFieldUpdateOperationsInput | $Enums.ItemType
   code?: Prisma.StringFieldUpdateOperationsInput | string
@@ -661,6 +836,7 @@ export type ItemCatalogUncheckedUpdateWithoutTaskLineItemsInput = {
 export type ItemCatalogCreateManyUnitInput = {
   id?: string
   type: $Enums.ItemType
+  ownerUserId?: string | null
   code: string
   name: string
   defaultPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -678,12 +854,14 @@ export type ItemCatalogUpdateWithoutUnitInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneWithoutPersonalItemCatalogsNestedInput
   taskLineItems?: Prisma.TaskLineItemUpdateManyWithoutItemCatalogNestedInput
 }
 
 export type ItemCatalogUncheckedUpdateWithoutUnitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumItemTypeFieldUpdateOperationsInput | $Enums.ItemType
+  ownerUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   defaultPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -696,6 +874,7 @@ export type ItemCatalogUncheckedUpdateWithoutUnitInput = {
 export type ItemCatalogUncheckedUpdateManyWithoutUnitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumItemTypeFieldUpdateOperationsInput | $Enums.ItemType
+  ownerUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   defaultPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -738,6 +917,7 @@ export type ItemCatalogCountOutputTypeCountTaskLineItemsArgs<ExtArgs extends run
 export type ItemCatalogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   type?: boolean
+  ownerUserId?: boolean
   code?: boolean
   name?: boolean
   unitId?: boolean
@@ -746,6 +926,7 @@ export type ItemCatalogSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   createdAt?: boolean
   updatedAt?: boolean
   unit?: boolean | Prisma.UnitDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.ItemCatalog$ownerArgs<ExtArgs>
   taskLineItems?: boolean | Prisma.ItemCatalog$taskLineItemsArgs<ExtArgs>
   _count?: boolean | Prisma.ItemCatalogCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["itemCatalog"]>
@@ -753,6 +934,7 @@ export type ItemCatalogSelect<ExtArgs extends runtime.Types.Extensions.InternalA
 export type ItemCatalogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   type?: boolean
+  ownerUserId?: boolean
   code?: boolean
   name?: boolean
   unitId?: boolean
@@ -761,11 +943,13 @@ export type ItemCatalogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   createdAt?: boolean
   updatedAt?: boolean
   unit?: boolean | Prisma.UnitDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.ItemCatalog$ownerArgs<ExtArgs>
 }, ExtArgs["result"]["itemCatalog"]>
 
 export type ItemCatalogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   type?: boolean
+  ownerUserId?: boolean
   code?: boolean
   name?: boolean
   unitId?: boolean
@@ -774,11 +958,13 @@ export type ItemCatalogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   createdAt?: boolean
   updatedAt?: boolean
   unit?: boolean | Prisma.UnitDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.ItemCatalog$ownerArgs<ExtArgs>
 }, ExtArgs["result"]["itemCatalog"]>
 
 export type ItemCatalogSelectScalar = {
   id?: boolean
   type?: boolean
+  ownerUserId?: boolean
   code?: boolean
   name?: boolean
   unitId?: boolean
@@ -788,28 +974,33 @@ export type ItemCatalogSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ItemCatalogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "code" | "name" | "unitId" | "defaultPrice" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["itemCatalog"]>
+export type ItemCatalogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "ownerUserId" | "code" | "name" | "unitId" | "defaultPrice" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["itemCatalog"]>
 export type ItemCatalogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   unit?: boolean | Prisma.UnitDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.ItemCatalog$ownerArgs<ExtArgs>
   taskLineItems?: boolean | Prisma.ItemCatalog$taskLineItemsArgs<ExtArgs>
   _count?: boolean | Prisma.ItemCatalogCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ItemCatalogIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   unit?: boolean | Prisma.UnitDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.ItemCatalog$ownerArgs<ExtArgs>
 }
 export type ItemCatalogIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   unit?: boolean | Prisma.UnitDefaultArgs<ExtArgs>
+  owner?: boolean | Prisma.ItemCatalog$ownerArgs<ExtArgs>
 }
 
 export type $ItemCatalogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ItemCatalog"
   objects: {
     unit: Prisma.$UnitPayload<ExtArgs>
+    owner: Prisma.$UserPayload<ExtArgs> | null
     taskLineItems: Prisma.$TaskLineItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     type: $Enums.ItemType
+    ownerUserId: string | null
     code: string
     name: string
     unitId: string
@@ -1212,6 +1403,7 @@ readonly fields: ItemCatalogFieldRefs;
 export interface Prisma__ItemCatalogClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   unit<T extends Prisma.UnitDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UnitDefaultArgs<ExtArgs>>): Prisma.Prisma__UnitClient<runtime.Types.Result.GetResult<Prisma.$UnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  owner<T extends Prisma.ItemCatalog$ownerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ItemCatalog$ownerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   taskLineItems<T extends Prisma.ItemCatalog$taskLineItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ItemCatalog$taskLineItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskLineItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1244,6 +1436,7 @@ export interface Prisma__ItemCatalogClient<T, Null = never, ExtArgs extends runt
 export interface ItemCatalogFieldRefs {
   readonly id: Prisma.FieldRef<"ItemCatalog", 'String'>
   readonly type: Prisma.FieldRef<"ItemCatalog", 'ItemType'>
+  readonly ownerUserId: Prisma.FieldRef<"ItemCatalog", 'String'>
   readonly code: Prisma.FieldRef<"ItemCatalog", 'String'>
   readonly name: Prisma.FieldRef<"ItemCatalog", 'String'>
   readonly unitId: Prisma.FieldRef<"ItemCatalog", 'String'>
@@ -1644,6 +1837,25 @@ export type ItemCatalogDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many ItemCatalogs to delete.
    */
   limit?: number
+}
+
+/**
+ * ItemCatalog.owner
+ */
+export type ItemCatalog$ownerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

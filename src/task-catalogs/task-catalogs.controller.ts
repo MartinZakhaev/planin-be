@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, UseGuards, Req } from '@nestjs/common';
 import { TaskCatalogsService } from './task-catalogs.service';
 import { CreateTaskCatalogDto } from './dto/create-task-catalog.dto';
+import { CreatePersonalTaskCatalogDto } from './dto/create-personal-task-catalog.dto';
 import { UpdateTaskCatalogDto } from './dto/update-task-catalog.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags, ApiCookieAuth, ApiResponse } from '@nestjs/swagger';
 import { TaskCatalogEntity } from './entities/task-catalog.entity';
@@ -23,11 +24,17 @@ export class TaskCatalogsController {
     return this.taskCatalogsService.create(createTaskCatalogDto);
   }
 
+  @Post('personal')
+  @ApiCreatedResponse({ type: TaskCatalogEntity })
+  createPersonal(@Body() createTaskCatalogDto: CreatePersonalTaskCatalogDto, @Req() req: any) {
+    return this.taskCatalogsService.createPersonal(req.user.id, createTaskCatalogDto);
+  }
+
   @Get()
   @ApiOkResponse({ type: TaskCatalogEntity, isArray: true })
   @RequirePermission('task_catalog', 'read')
-  findAll() {
-    return this.taskCatalogsService.findAll();
+  findAll(@Req() req: any) {
+    return this.taskCatalogsService.findAll(req.user.id);
   }
 
   @Get(':id')

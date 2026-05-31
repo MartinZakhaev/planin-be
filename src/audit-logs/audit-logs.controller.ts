@@ -30,6 +30,12 @@ export class AuditLogsController {
     return this.auditLogsService.findAll();
   }
 
+  @Get('personal-catalogs')
+  @RequirePermission('audit_log', 'read')
+  findPersonalCatalogSummary() {
+    return this.auditLogsService.findPersonalCatalogSummary();
+  }
+
   @Get(':id')
   @ApiOkResponse({ type: AuditLogEntity })
   @RequirePermission('audit_log', 'read')

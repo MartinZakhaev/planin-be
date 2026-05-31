@@ -249,6 +249,8 @@ export type UserWhereInput = {
   rabSummaries?: Prisma.RabSummaryListRelationFilter
   files?: Prisma.FileListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
+  personalTaskCatalogs?: Prisma.TaskCatalogListRelationFilter
+  personalItemCatalogs?: Prisma.ItemCatalogListRelationFilter
   profileFile?: Prisma.XOR<Prisma.FileNullableScalarRelationFilter, Prisma.FileWhereInput> | null
 }
 
@@ -276,6 +278,8 @@ export type UserOrderByWithRelationInput = {
   rabSummaries?: Prisma.RabSummaryOrderByRelationAggregateInput
   files?: Prisma.FileOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
+  personalTaskCatalogs?: Prisma.TaskCatalogOrderByRelationAggregateInput
+  personalItemCatalogs?: Prisma.ItemCatalogOrderByRelationAggregateInput
   profileFile?: Prisma.FileOrderByWithRelationInput
 }
 
@@ -306,6 +310,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   rabSummaries?: Prisma.RabSummaryListRelationFilter
   files?: Prisma.FileListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
+  personalTaskCatalogs?: Prisma.TaskCatalogListRelationFilter
+  personalItemCatalogs?: Prisma.ItemCatalogListRelationFilter
   profileFile?: Prisma.XOR<Prisma.FileNullableScalarRelationFilter, Prisma.FileWhereInput> | null
 }, "id" | "email">
 
@@ -367,6 +373,8 @@ export type UserCreateInput = {
   rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogCreateNestedManyWithoutOwnerInput
   profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
 }
 
@@ -393,6 +401,8 @@ export type UserUncheckedCreateInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUpdateInput = {
@@ -417,6 +427,8 @@ export type UserUpdateInput = {
   rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUpdateManyWithoutOwnerNestedInput
   profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
 }
 
@@ -443,6 +455,8 @@ export type UserUncheckedUpdateInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -669,6 +683,38 @@ export type UserUpdateOneRequiredWithoutSubscriptionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSubscriptionsInput, Prisma.UserUpdateWithoutSubscriptionsInput>, Prisma.UserUncheckedUpdateWithoutSubscriptionsInput>
 }
 
+export type UserCreateNestedOneWithoutPersonalTaskCatalogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPersonalTaskCatalogsInput, Prisma.UserUncheckedCreateWithoutPersonalTaskCatalogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPersonalTaskCatalogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutPersonalTaskCatalogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPersonalTaskCatalogsInput, Prisma.UserUncheckedCreateWithoutPersonalTaskCatalogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPersonalTaskCatalogsInput
+  upsert?: Prisma.UserUpsertWithoutPersonalTaskCatalogsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPersonalTaskCatalogsInput, Prisma.UserUpdateWithoutPersonalTaskCatalogsInput>, Prisma.UserUncheckedUpdateWithoutPersonalTaskCatalogsInput>
+}
+
+export type UserCreateNestedOneWithoutPersonalItemCatalogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPersonalItemCatalogsInput, Prisma.UserUncheckedCreateWithoutPersonalItemCatalogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPersonalItemCatalogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutPersonalItemCatalogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPersonalItemCatalogsInput, Prisma.UserUncheckedCreateWithoutPersonalItemCatalogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPersonalItemCatalogsInput
+  upsert?: Prisma.UserUpsertWithoutPersonalItemCatalogsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPersonalItemCatalogsInput, Prisma.UserUpdateWithoutPersonalItemCatalogsInput>, Prisma.UserUncheckedUpdateWithoutPersonalItemCatalogsInput>
+}
+
 export type UserCreateNestedOneWithoutProjectsOwnedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutProjectsOwnedInput, Prisma.UserUncheckedCreateWithoutProjectsOwnedInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutProjectsOwnedInput
@@ -804,6 +850,8 @@ export type UserCreateWithoutRoleInput = {
   rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogCreateNestedManyWithoutOwnerInput
   profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
 }
 
@@ -829,6 +877,8 @@ export type UserUncheckedCreateWithoutRoleInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutRoleInput = {
@@ -896,6 +946,8 @@ export type UserCreateWithoutSessionsInput = {
   rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogCreateNestedManyWithoutOwnerInput
   profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
 }
 
@@ -921,6 +973,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -960,6 +1014,8 @@ export type UserUpdateWithoutSessionsInput = {
   rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUpdateManyWithoutOwnerNestedInput
   profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
 }
 
@@ -985,6 +1041,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1008,6 +1066,8 @@ export type UserCreateWithoutAccountsInput = {
   rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogCreateNestedManyWithoutOwnerInput
   profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
 }
 
@@ -1033,6 +1093,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1072,6 +1134,8 @@ export type UserUpdateWithoutAccountsInput = {
   rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUpdateManyWithoutOwnerNestedInput
   profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
 }
 
@@ -1097,6 +1161,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutOrganizationsOwnedInput = {
@@ -1120,6 +1186,8 @@ export type UserCreateWithoutOrganizationsOwnedInput = {
   rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogCreateNestedManyWithoutOwnerInput
   profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
 }
 
@@ -1145,6 +1213,8 @@ export type UserUncheckedCreateWithoutOrganizationsOwnedInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutOrganizationsOwnedInput = {
@@ -1184,6 +1254,8 @@ export type UserUpdateWithoutOrganizationsOwnedInput = {
   rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUpdateManyWithoutOwnerNestedInput
   profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
 }
 
@@ -1209,6 +1281,8 @@ export type UserUncheckedUpdateWithoutOrganizationsOwnedInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutMembershipsInput = {
@@ -1232,6 +1306,8 @@ export type UserCreateWithoutMembershipsInput = {
   rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogCreateNestedManyWithoutOwnerInput
   profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
 }
 
@@ -1257,6 +1333,8 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -1296,6 +1374,8 @@ export type UserUpdateWithoutMembershipsInput = {
   rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUpdateManyWithoutOwnerNestedInput
   profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
 }
 
@@ -1321,6 +1401,8 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutSubscriptionsInput = {
@@ -1344,6 +1426,8 @@ export type UserCreateWithoutSubscriptionsInput = {
   rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogCreateNestedManyWithoutOwnerInput
   profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
 }
 
@@ -1369,6 +1453,8 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -1408,6 +1494,8 @@ export type UserUpdateWithoutSubscriptionsInput = {
   rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUpdateManyWithoutOwnerNestedInput
   profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
 }
 
@@ -1433,6 +1521,248 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutPersonalTaskCatalogsInput = {
+  id: string
+  email: string
+  emailVerified?: boolean
+  fullName?: string | null
+  image?: string | null
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  organizationsOwned?: Prisma.OrganizationCreateNestedManyWithoutOwnerInput
+  memberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  projectsOwned?: Prisma.ProjectCreateNestedManyWithoutOwnerInput
+  collaborations?: Prisma.ProjectCollaboratorCreateNestedManyWithoutUserInput
+  rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
+  files?: Prisma.FileCreateNestedManyWithoutOwnerInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  personalItemCatalogs?: Prisma.ItemCatalogCreateNestedManyWithoutOwnerInput
+  profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
+}
+
+export type UserUncheckedCreateWithoutPersonalTaskCatalogsInput = {
+  id: string
+  email: string
+  emailVerified?: boolean
+  fullName?: string | null
+  image?: string | null
+  profileFileId?: string | null
+  roleId?: string | null
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  organizationsOwned?: Prisma.OrganizationUncheckedCreateNestedManyWithoutOwnerInput
+  memberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  projectsOwned?: Prisma.ProjectUncheckedCreateNestedManyWithoutOwnerInput
+  collaborations?: Prisma.ProjectCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
+  files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutPersonalTaskCatalogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPersonalTaskCatalogsInput, Prisma.UserUncheckedCreateWithoutPersonalTaskCatalogsInput>
+}
+
+export type UserUpsertWithoutPersonalTaskCatalogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPersonalTaskCatalogsInput, Prisma.UserUncheckedUpdateWithoutPersonalTaskCatalogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPersonalTaskCatalogsInput, Prisma.UserUncheckedCreateWithoutPersonalTaskCatalogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPersonalTaskCatalogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPersonalTaskCatalogsInput, Prisma.UserUncheckedUpdateWithoutPersonalTaskCatalogsInput>
+}
+
+export type UserUpdateWithoutPersonalTaskCatalogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  organizationsOwned?: Prisma.OrganizationUpdateManyWithoutOwnerNestedInput
+  memberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  projectsOwned?: Prisma.ProjectUpdateManyWithoutOwnerNestedInput
+  collaborations?: Prisma.ProjectCollaboratorUpdateManyWithoutUserNestedInput
+  rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
+  files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUpdateManyWithoutOwnerNestedInput
+  profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPersonalTaskCatalogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  organizationsOwned?: Prisma.OrganizationUncheckedUpdateManyWithoutOwnerNestedInput
+  memberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  projectsOwned?: Prisma.ProjectUncheckedUpdateManyWithoutOwnerNestedInput
+  collaborations?: Prisma.ProjectCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
+  files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutPersonalItemCatalogsInput = {
+  id: string
+  email: string
+  emailVerified?: boolean
+  fullName?: string | null
+  image?: string | null
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  organizationsOwned?: Prisma.OrganizationCreateNestedManyWithoutOwnerInput
+  memberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+  projectsOwned?: Prisma.ProjectCreateNestedManyWithoutOwnerInput
+  collaborations?: Prisma.ProjectCollaboratorCreateNestedManyWithoutUserInput
+  rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
+  files?: Prisma.FileCreateNestedManyWithoutOwnerInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogCreateNestedManyWithoutOwnerInput
+  profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
+}
+
+export type UserUncheckedCreateWithoutPersonalItemCatalogsInput = {
+  id: string
+  email: string
+  emailVerified?: boolean
+  fullName?: string | null
+  image?: string | null
+  profileFileId?: string | null
+  roleId?: string | null
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  organizationsOwned?: Prisma.OrganizationUncheckedCreateNestedManyWithoutOwnerInput
+  memberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+  projectsOwned?: Prisma.ProjectUncheckedCreateNestedManyWithoutOwnerInput
+  collaborations?: Prisma.ProjectCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
+  files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutPersonalItemCatalogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPersonalItemCatalogsInput, Prisma.UserUncheckedCreateWithoutPersonalItemCatalogsInput>
+}
+
+export type UserUpsertWithoutPersonalItemCatalogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPersonalItemCatalogsInput, Prisma.UserUncheckedUpdateWithoutPersonalItemCatalogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPersonalItemCatalogsInput, Prisma.UserUncheckedCreateWithoutPersonalItemCatalogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPersonalItemCatalogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPersonalItemCatalogsInput, Prisma.UserUncheckedUpdateWithoutPersonalItemCatalogsInput>
+}
+
+export type UserUpdateWithoutPersonalItemCatalogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  organizationsOwned?: Prisma.OrganizationUpdateManyWithoutOwnerNestedInput
+  memberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+  projectsOwned?: Prisma.ProjectUpdateManyWithoutOwnerNestedInput
+  collaborations?: Prisma.ProjectCollaboratorUpdateManyWithoutUserNestedInput
+  rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
+  files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUpdateManyWithoutOwnerNestedInput
+  profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPersonalItemCatalogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileFileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  organizationsOwned?: Prisma.OrganizationUncheckedUpdateManyWithoutOwnerNestedInput
+  memberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  projectsOwned?: Prisma.ProjectUncheckedUpdateManyWithoutOwnerNestedInput
+  collaborations?: Prisma.ProjectCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
+  files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutProjectsOwnedInput = {
@@ -1456,6 +1786,8 @@ export type UserCreateWithoutProjectsOwnedInput = {
   rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogCreateNestedManyWithoutOwnerInput
   profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
 }
 
@@ -1481,6 +1813,8 @@ export type UserUncheckedCreateWithoutProjectsOwnedInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutProjectsOwnedInput = {
@@ -1520,6 +1854,8 @@ export type UserUpdateWithoutProjectsOwnedInput = {
   rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUpdateManyWithoutOwnerNestedInput
   profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
 }
 
@@ -1545,6 +1881,8 @@ export type UserUncheckedUpdateWithoutProjectsOwnedInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutCollaborationsInput = {
@@ -1568,6 +1906,8 @@ export type UserCreateWithoutCollaborationsInput = {
   rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogCreateNestedManyWithoutOwnerInput
   profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
 }
 
@@ -1593,6 +1933,8 @@ export type UserUncheckedCreateWithoutCollaborationsInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutCollaborationsInput = {
@@ -1632,6 +1974,8 @@ export type UserUpdateWithoutCollaborationsInput = {
   rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUpdateManyWithoutOwnerNestedInput
   profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
 }
 
@@ -1657,6 +2001,8 @@ export type UserUncheckedUpdateWithoutCollaborationsInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutRabSummariesInput = {
@@ -1680,6 +2026,8 @@ export type UserCreateWithoutRabSummariesInput = {
   collaborations?: Prisma.ProjectCollaboratorCreateNestedManyWithoutUserInput
   files?: Prisma.FileCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogCreateNestedManyWithoutOwnerInput
   profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
 }
 
@@ -1705,6 +2053,8 @@ export type UserUncheckedCreateWithoutRabSummariesInput = {
   collaborations?: Prisma.ProjectCollaboratorUncheckedCreateNestedManyWithoutUserInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutRabSummariesInput = {
@@ -1744,6 +2094,8 @@ export type UserUpdateWithoutRabSummariesInput = {
   collaborations?: Prisma.ProjectCollaboratorUpdateManyWithoutUserNestedInput
   files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUpdateManyWithoutOwnerNestedInput
   profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
 }
 
@@ -1769,6 +2121,8 @@ export type UserUncheckedUpdateWithoutRabSummariesInput = {
   collaborations?: Prisma.ProjectCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutFilesInput = {
@@ -1792,6 +2146,8 @@ export type UserCreateWithoutFilesInput = {
   collaborations?: Prisma.ProjectCollaboratorCreateNestedManyWithoutUserInput
   rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogCreateNestedManyWithoutOwnerInput
   profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
 }
 
@@ -1817,6 +2173,8 @@ export type UserUncheckedCreateWithoutFilesInput = {
   collaborations?: Prisma.ProjectCollaboratorUncheckedCreateNestedManyWithoutUserInput
   rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutFilesInput = {
@@ -1846,6 +2204,8 @@ export type UserCreateWithoutProfileFileInput = {
   rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutProfileFileInput = {
@@ -1870,6 +2230,8 @@ export type UserUncheckedCreateWithoutProfileFileInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutProfileFileInput = {
@@ -1914,6 +2276,8 @@ export type UserUpdateWithoutFilesInput = {
   collaborations?: Prisma.ProjectCollaboratorUpdateManyWithoutUserNestedInput
   rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUpdateManyWithoutOwnerNestedInput
   profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
 }
 
@@ -1939,6 +2303,8 @@ export type UserUncheckedUpdateWithoutFilesInput = {
   collaborations?: Prisma.ProjectCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUpsertWithWhereUniqueWithoutProfileFileInput = {
@@ -1978,6 +2344,8 @@ export type UserCreateWithoutAuditLogsInput = {
   collaborations?: Prisma.ProjectCollaboratorCreateNestedManyWithoutUserInput
   rabSummaries?: Prisma.RabSummaryCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileCreateNestedManyWithoutOwnerInput
+  personalTaskCatalogs?: Prisma.TaskCatalogCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogCreateNestedManyWithoutOwnerInput
   profileFile?: Prisma.FileCreateNestedOneWithoutUsersUsingAsProfileInput
 }
 
@@ -2003,6 +2371,8 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   collaborations?: Prisma.ProjectCollaboratorUncheckedCreateNestedManyWithoutUserInput
   rabSummaries?: Prisma.RabSummaryUncheckedCreateNestedManyWithoutCreatorInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutOwnerInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedCreateNestedManyWithoutOwnerInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -2042,6 +2412,8 @@ export type UserUpdateWithoutAuditLogsInput = {
   collaborations?: Prisma.ProjectCollaboratorUpdateManyWithoutUserNestedInput
   rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUpdateManyWithoutOwnerNestedInput
   profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
 }
 
@@ -2067,6 +2439,8 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   collaborations?: Prisma.ProjectCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateManyRoleInput = {
@@ -2104,6 +2478,8 @@ export type UserUpdateWithoutRoleInput = {
   rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUpdateManyWithoutOwnerNestedInput
   profileFile?: Prisma.FileUpdateOneWithoutUsersUsingAsProfileNestedInput
 }
 
@@ -2129,6 +2505,8 @@ export type UserUncheckedUpdateWithoutRoleInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutRoleInput = {
@@ -2181,6 +2559,8 @@ export type UserUpdateWithoutProfileFileInput = {
   rabSummaries?: Prisma.RabSummaryUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileFileInput = {
@@ -2205,6 +2585,8 @@ export type UserUncheckedUpdateWithoutProfileFileInput = {
   rabSummaries?: Prisma.RabSummaryUncheckedUpdateManyWithoutCreatorNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutOwnerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  personalTaskCatalogs?: Prisma.TaskCatalogUncheckedUpdateManyWithoutOwnerNestedInput
+  personalItemCatalogs?: Prisma.ItemCatalogUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutProfileFileInput = {
@@ -2237,6 +2619,8 @@ export type UserCountOutputType = {
   rabSummaries: number
   files: number
   auditLogs: number
+  personalTaskCatalogs: number
+  personalItemCatalogs: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2250,6 +2634,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   rabSummaries?: boolean | UserCountOutputTypeCountRabSummariesArgs
   files?: boolean | UserCountOutputTypeCountFilesArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
+  personalTaskCatalogs?: boolean | UserCountOutputTypeCountPersonalTaskCatalogsArgs
+  personalItemCatalogs?: boolean | UserCountOutputTypeCountPersonalItemCatalogsArgs
 }
 
 /**
@@ -2332,6 +2718,20 @@ export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.
   where?: Prisma.AuditLogWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPersonalTaskCatalogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TaskCatalogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPersonalItemCatalogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ItemCatalogWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2357,6 +2757,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   rabSummaries?: boolean | Prisma.User$rabSummariesArgs<ExtArgs>
   files?: boolean | Prisma.User$filesArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  personalTaskCatalogs?: boolean | Prisma.User$personalTaskCatalogsArgs<ExtArgs>
+  personalItemCatalogs?: boolean | Prisma.User$personalItemCatalogsArgs<ExtArgs>
   profileFile?: boolean | Prisma.User$profileFileArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -2423,6 +2825,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   rabSummaries?: boolean | Prisma.User$rabSummariesArgs<ExtArgs>
   files?: boolean | Prisma.User$filesArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  personalTaskCatalogs?: boolean | Prisma.User$personalTaskCatalogsArgs<ExtArgs>
+  personalItemCatalogs?: boolean | Prisma.User$personalItemCatalogsArgs<ExtArgs>
   profileFile?: boolean | Prisma.User$profileFileArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -2449,6 +2853,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     rabSummaries: Prisma.$RabSummaryPayload<ExtArgs>[]
     files: Prisma.$FilePayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+    personalTaskCatalogs: Prisma.$TaskCatalogPayload<ExtArgs>[]
+    personalItemCatalogs: Prisma.$ItemCatalogPayload<ExtArgs>[]
     profileFile: Prisma.$FilePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -2869,6 +3275,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   rabSummaries<T extends Prisma.User$rabSummariesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$rabSummariesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RabSummaryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   files<T extends Prisma.User$filesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$filesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  personalTaskCatalogs<T extends Prisma.User$personalTaskCatalogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$personalTaskCatalogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskCatalogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  personalItemCatalogs<T extends Prisma.User$personalItemCatalogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$personalItemCatalogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ItemCatalogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   profileFile<T extends Prisma.User$profileFileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$profileFileArgs<ExtArgs>>): Prisma.Prisma__FileClient<runtime.Types.Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3563,6 +3971,54 @@ export type User$auditLogsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
+}
+
+/**
+ * User.personalTaskCatalogs
+ */
+export type User$personalTaskCatalogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TaskCatalog
+   */
+  select?: Prisma.TaskCatalogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TaskCatalog
+   */
+  omit?: Prisma.TaskCatalogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TaskCatalogInclude<ExtArgs> | null
+  where?: Prisma.TaskCatalogWhereInput
+  orderBy?: Prisma.TaskCatalogOrderByWithRelationInput | Prisma.TaskCatalogOrderByWithRelationInput[]
+  cursor?: Prisma.TaskCatalogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TaskCatalogScalarFieldEnum | Prisma.TaskCatalogScalarFieldEnum[]
+}
+
+/**
+ * User.personalItemCatalogs
+ */
+export type User$personalItemCatalogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ItemCatalog
+   */
+  select?: Prisma.ItemCatalogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ItemCatalog
+   */
+  omit?: Prisma.ItemCatalogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ItemCatalogInclude<ExtArgs> | null
+  where?: Prisma.ItemCatalogWhereInput
+  orderBy?: Prisma.ItemCatalogOrderByWithRelationInput | Prisma.ItemCatalogOrderByWithRelationInput[]
+  cursor?: Prisma.ItemCatalogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ItemCatalogScalarFieldEnum | Prisma.ItemCatalogScalarFieldEnum[]
 }
 
 /**

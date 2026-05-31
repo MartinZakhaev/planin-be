@@ -273,6 +273,7 @@ export type WorkDivisionCatalogScalarFieldEnum = (typeof WorkDivisionCatalogScal
 export const TaskCatalogScalarFieldEnum = {
   id: 'id',
   divisionId: 'divisionId',
+  ownerUserId: 'ownerUserId',
   code: 'code',
   name: 'name',
   description: 'description',
@@ -286,6 +287,7 @@ export type TaskCatalogScalarFieldEnum = (typeof TaskCatalogScalarFieldEnum)[key
 export const ItemCatalogScalarFieldEnum = {
   id: 'id',
   type: 'type',
+  ownerUserId: 'ownerUserId',
   code: 'code',
   name: 'name',
   unitId: 'unitId',

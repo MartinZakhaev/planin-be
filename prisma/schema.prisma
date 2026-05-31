@@ -108,6 +108,8 @@ model User {
   rabSummaries       RabSummary[]
   files              File[]
   auditLogs          AuditLog[]
+  personalTaskCatalogs TaskCatalog[]       @relation("UserTaskCatalogs")
+  personalItemCatalogs ItemCatalog[]       @relation("UserItemCatalogs")
   profileFile        File?                 @relation("UserProfile", fields: [profileFileId], references: [id])
 
   @@index([roleId])
@@ -263,6 +265,7 @@ model WorkDivisionCatalog {
 model TaskCatalog {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   divisionId  String   @map("division_id") @db.Uuid
+  ownerUserId String?  @map("owner_user_id") @db.VarChar(36)
   code        String   @db.VarChar(80)
   name        String   @db.VarChar(250)
   description String?  @db.Text
@@ -270,16 +273,19 @@ model TaskCatalog {
   updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
   division     WorkDivisionCatalog @relation(fields: [divisionId], references: [id])
+  owner        User?               @relation("UserTaskCatalogs", fields: [ownerUserId], references: [id])
   projectTasks ProjectTask[]
 
   @@unique([divisionId, code])
   @@index([divisionId])
+  @@index([ownerUserId])
   @@map("task_catalog")
 }
 
 model ItemCatalog {
   id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   type         ItemType
+  ownerUserId  String?  @map("owner_user_id") @db.VarChar(36)
   code         String   @unique @db.VarChar(80)
   name         String   @db.VarChar(250)
   unitId       String   @map("unit_id") @db.Uuid
@@ -289,10 +295,12 @@ model ItemCatalog {
   updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
   unit          Unit           @relation(fields: [unitId], references: [id])
+  owner         User?          @relation("UserItemCatalogs", fields: [ownerUserId], references: [id])
   taskLineItems TaskLineItem[]
 
   @@index([type])
   @@index([unitId])
+  @@index([ownerUserId])
   @@map("item_catalog")
 }
 

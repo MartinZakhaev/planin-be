@@ -30,7 +30,7 @@ export class AuditLogInterceptor implements NestInterceptor {
         const user = request.user;
         const ip = this.extractIp(request);
         const userAgent = request.headers['user-agent'] || null;
-        const path = request.route?.path || request.url;
+        const path = request.originalUrl || request.url || request.route?.path;
         const entityTable = this.extractEntityTable(path);
         const action = this.mapMethodToAction(method);
 
@@ -58,7 +58,7 @@ export class AuditLogInterceptor implements NestInterceptor {
                                 action: action,
                                 entityTable: entityTable,
                                 entityId: logEntityId,
-                                meta: this.sanitizeRequestBody(request.body) || undefined,
+                                meta: this.buildMeta(request.body, path, responseData) || undefined,
                                 ip: ip,
                                 userAgent: userAgent,
                             },
@@ -90,12 +90,45 @@ export class AuditLogInterceptor implements NestInterceptor {
         return segments[0] || 'unknown';
     }
 
+    private extractScope(path: string, responseData: any): 'GLOBAL' | 'PERSONAL' | null {
+        if (path.includes('/personal')) {
+            return 'PERSONAL';
+        }
+
+        if (responseData && typeof responseData === 'object' && 'ownerUserId' in responseData) {
+            return responseData.ownerUserId ? 'PERSONAL' : 'GLOBAL';
+        }
+
+        return null;
+    }
+
     private extractIp(request: any): string | null {
         const forwarded = request.headers['x-forwarded-for'];
         if (forwarded) {
             return forwarded.split(',')[0].trim();
         }
         return request.ip || request.connection?.remoteAddress || null;
+    }
+
+    private buildMeta(body: any, path: string, responseData: any): Record<string, any> | null {
+        const requestBody = this.sanitizeRequestBody(body);
+        const result = this.summarizeResponse(responseData);
+        const scope = this.extractScope(path, responseData);
+        const meta: Record<string, any> = {};
+
+        if (requestBody) {
+            meta.request = requestBody;
+        }
+
+        if (scope || result) {
+            meta.catalogContext = {
+                scope,
+                route: path,
+                result,
+            };
+        }
+
+        return Object.keys(meta).length > 0 ? meta : null;
     }
 
     private sanitizeRequestBody(body: any): Record<string, any> | null {
@@ -114,5 +147,22 @@ export class AuditLogInterceptor implements NestInterceptor {
         }
 
         return sanitized;
+    }
+
+    private summarizeResponse(responseData: any): Record<string, any> | null {
+        if (!responseData || typeof responseData !== 'object') {
+            return null;
+        }
+
+        const safeFields = ['id', 'code', 'name', 'type', 'ownerUserId', 'divisionId', 'unitId'];
+        const summary: Record<string, any> = {};
+
+        for (const field of safeFields) {
+            if (field in responseData) {
+                summary[field] = responseData[field];
+            }
+        }
+
+        return Object.keys(summary).length > 0 ? summary : null;
     }
 }
