@@ -45,7 +45,7 @@ export class ChangePasswordDto {
     newPassword: string;
 }
 
-export class UpdateUserDto {
+export class AuthUpdateUserDto {
     @ApiProperty({ example: 'John Doe', description: 'User full name', required: false })
     name?: string;
 

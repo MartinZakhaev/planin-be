@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Role as PrismaRole, Permission as PrismaPermission } from '../../generated/prisma/client';
 
-export class PermissionEntity implements Partial<PrismaPermission> {
+export class RolePermissionEntity implements Partial<PrismaPermission> {
     @ApiProperty({ description: 'Permission ID' })
     id: string;
 
@@ -14,7 +14,7 @@ export class PermissionEntity implements Partial<PrismaPermission> {
     @ApiProperty({ description: 'Permission description', nullable: true })
     description: string | null;
 
-    constructor(partial: Partial<PermissionEntity>) {
+    constructor(partial: Partial<RolePermissionEntity>) {
         Object.assign(this, partial);
     }
 }
@@ -41,8 +41,8 @@ export class RoleEntity implements Partial<PrismaRole> {
     @ApiProperty({ description: 'Updated timestamp' })
     updatedAt: Date;
 
-    @ApiProperty({ description: 'Permissions assigned to this role', type: [PermissionEntity], required: false })
-    permissions?: PermissionEntity[];
+    @ApiProperty({ description: 'Permissions assigned to this role', type: [RolePermissionEntity], required: false })
+    permissions?: RolePermissionEntity[];
 
     @ApiProperty({ description: 'Number of users with this role', required: false })
     userCount?: number;

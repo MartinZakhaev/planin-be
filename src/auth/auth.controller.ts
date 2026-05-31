@@ -6,7 +6,7 @@ import {
     ForgotPasswordDto,
     ResetPasswordDto,
     ChangePasswordDto,
-    UpdateUserDto,
+    AuthUpdateUserDto,
     AuthResponseDto,
     UserResponseDto,
     SessionResponseDto,
@@ -188,10 +188,10 @@ export class AuthController {
         summary: 'Update user profile',
         description: 'Update the current user\'s name and/or image'
     })
-    @ApiBody({ type: UpdateUserDto })
+    @ApiBody({ type: AuthUpdateUserDto })
     @ApiResponse({ status: 200, type: UserResponseDto, description: 'User updated successfully' })
     @ApiResponse({ status: 401, type: ErrorResponseDto, description: 'Not authenticated' })
-    updateUser(@Body() dto: UpdateUserDto): void {
+    updateUser(@Body() dto: AuthUpdateUserDto): void {
         // Handled by Better Auth
     }
 

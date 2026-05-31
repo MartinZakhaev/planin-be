@@ -77,9 +77,16 @@ export class OrganizationsService {
   }
 
   async remove(id: string) {
-    const organization = await this.prisma.organization.delete({
-      where: { id },
+    const organization = await this.prisma.$transaction(async (tx) => {
+      await tx.organizationMember.deleteMany({
+        where: { organizationId: id },
+      });
+
+      return tx.organization.delete({
+        where: { id },
+      });
     });
+
     return new OrganizationEntity(organization);
   }
 }

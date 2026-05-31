@@ -6,6 +6,7 @@ import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { Pool } from 'pg';
 import { PrismaClient } from '../generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
+import { ROLES } from './permissions';
 
 /**
  * Create a dedicated Prisma client for Better Auth
@@ -29,10 +30,10 @@ const prisma = new PrismaClient({ adapter });
  * - emailAndPassword: Enables email/password authentication
  *
  * NOTE: Role management is handled separately via our own API/hooks
- * (use-roles.ts, roles page, etc.) - not through better-auth admin plugin
+ * (use-roles.ts, roles page, etc.) - not through better-auth admin plugin.
  *
- * When a new user signs up, they get the default 'user' role via
- * the frontend calling /users/{id}/assign-role after account creation.
+ * New signups receive the default app role here so protected APIs can
+ * evaluate permissions immediately after registration.
  */
 export const auth = betterAuth({
     basePath: '/api/auth',
@@ -41,6 +42,30 @@ export const auth = betterAuth({
     }),
     emailAndPassword: {
         enabled: true,
+    },
+    databaseHooks: {
+        user: {
+            create: {
+                async before(user) {
+                    const defaultRoleName = process.env.DEFAULT_SIGNUP_ROLE || ROLES.USER;
+                    const defaultRole = await prisma.role.findUnique({
+                        where: { name: defaultRoleName },
+                        select: { id: true },
+                    });
+
+                    if (!defaultRole) {
+                        throw new Error(`Default signup role "${defaultRoleName}" was not found`);
+                    }
+
+                    return {
+                        data: {
+                            ...user,
+                            roleId: defaultRole.id,
+                        },
+                    };
+                },
+            },
+        },
     },
     user: {
         modelName: 'User',

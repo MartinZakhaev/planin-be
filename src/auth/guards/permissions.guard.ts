@@ -2,6 +2,7 @@ import { Injectable, CanActivate, ExecutionContext, ForbiddenException, Unauthor
 import { Reflector } from '@nestjs/core';
 import { PERMISSIONS_KEY, PermissionRequirement } from '../decorators/require-permission.decorator';
 import { PrismaService } from '../../prisma/prisma.service';
+import { ROLES } from '../permissions';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
@@ -48,13 +49,35 @@ export class PermissionsGuard implements CanActivate {
             throw new UnauthorizedException('User not found');
         }
 
-        // If user has no role, deny access
-        if (!userWithRole.role) {
-            throw new ForbiddenException('User has no assigned role');
+        let role = userWithRole.role;
+
+        // Backfill legacy signups that were created before default role assignment existed.
+        if (!role) {
+            const defaultRoleName = process.env.DEFAULT_SIGNUP_ROLE || ROLES.USER;
+            const defaultRole = await this.prisma.role.findUnique({
+                where: { name: defaultRoleName },
+                include: {
+                    permissions: {
+                        include: {
+                            permission: true,
+                        },
+                    },
+                },
+            });
+
+            if (!defaultRole) {
+                throw new ForbiddenException(`Default signup role "${defaultRoleName}" is not configured`);
+            }
+
+            await this.prisma.user.update({
+                where: { id: userWithRole.id },
+                data: { roleId: defaultRole.id },
+            });
+            role = defaultRole;
         }
 
-        const roleName = userWithRole.role.name;
-        const userPermissions = userWithRole.role.permissions.map(rp => ({
+        const roleName = role.name;
+        const userPermissions = role.permissions.map(rp => ({
             resource: rp.permission.resource,
             action: rp.permission.action,
         }));
@@ -73,4 +96,3 @@ export class PermissionsGuard implements CanActivate {
         return true;
     }
 }
-

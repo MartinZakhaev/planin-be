@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
-import { RoleEntity, PermissionEntity } from './entities/role.entity';
+import { RoleEntity, RolePermissionEntity } from './entities/role.entity';
 
 @Injectable()
 export class RolesService {
@@ -223,7 +223,7 @@ export class RolesService {
     private mapToEntity(role: any): RoleEntity {
         const permissions = role.permissions?.map(
             (rp: any) =>
-                new PermissionEntity({
+                new RolePermissionEntity({
                     id: rp.permission.id,
                     resource: rp.permission.resource,
                     action: rp.permission.action,
