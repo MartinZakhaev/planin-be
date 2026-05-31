@@ -33,17 +33,26 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     // Find the role by name if roleId is not provided but role name is
     let roleId = createUserDto.roleId;
+    let roleName = createUserDto.role;
     if (!roleId && createUserDto.role) {
       const role = await this.prisma.role.findUnique({
         where: { name: createUserDto.role },
       });
       roleId = role?.id;
+      roleName = role?.name;
+    } else if (roleId) {
+      const role = await this.prisma.role.findUnique({
+        where: { id: roleId },
+        select: { name: true },
+      });
+      roleName = role?.name;
     }
 
     const user = await this.prisma.user.create({
       data: {
         id: randomUUID(),
         email: createUserDto.email,
+        emailVerified: roleName === 'superadmin' || roleName === 'admin',
         fullName: createUserDto.fullName,
         profileFileId: createUserDto.profileFileId,
         roleId,
@@ -166,4 +175,3 @@ export class UsersService {
     return this.setRole(id, role.id);
   }
 }
-

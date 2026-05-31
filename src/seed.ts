@@ -265,6 +265,7 @@ async function main() {
                 data: {
                     id,
                     email: userData.email,
+                    emailVerified: ['superadmin', 'admin'].includes(userData.roleName),
                     fullName: userData.name,
                     roleId,
                     banned: false,
@@ -283,7 +284,13 @@ async function main() {
             userMap[userData.email] = user.id;
             console.log(`   ✅ Created ${userData.roleName}: ${userData.email}`);
         } else {
-            await prisma.user.update({ where: { id: user.id }, data: { roleId } });
+            await prisma.user.update({
+                where: { id: user.id },
+                data: {
+                    roleId,
+                    emailVerified: ['superadmin', 'admin'].includes(userData.roleName) ? true : user.emailVerified,
+                },
+            });
             userMap[userData.email] = user.id;
             console.log(`   ⏭️  Exists: ${userData.email}`);
         }
