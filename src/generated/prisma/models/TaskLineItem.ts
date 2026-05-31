@@ -28,12 +28,14 @@ export type AggregateTaskLineItem = {
 
 export type TaskLineItemAvgAggregateOutputType = {
   quantity: runtime.Decimal | null
+  durationDays: runtime.Decimal | null
   unitPrice: runtime.Decimal | null
   lineTotal: runtime.Decimal | null
 }
 
 export type TaskLineItemSumAggregateOutputType = {
   quantity: runtime.Decimal | null
+  durationDays: runtime.Decimal | null
   unitPrice: runtime.Decimal | null
   lineTotal: runtime.Decimal | null
 }
@@ -46,6 +48,7 @@ export type TaskLineItemMinAggregateOutputType = {
   description: string | null
   unitId: string | null
   quantity: runtime.Decimal | null
+  durationDays: runtime.Decimal | null
   unitPrice: runtime.Decimal | null
   lineTotal: runtime.Decimal | null
   taxable: boolean | null
@@ -61,6 +64,7 @@ export type TaskLineItemMaxAggregateOutputType = {
   description: string | null
   unitId: string | null
   quantity: runtime.Decimal | null
+  durationDays: runtime.Decimal | null
   unitPrice: runtime.Decimal | null
   lineTotal: runtime.Decimal | null
   taxable: boolean | null
@@ -76,6 +80,7 @@ export type TaskLineItemCountAggregateOutputType = {
   description: number
   unitId: number
   quantity: number
+  durationDays: number
   unitPrice: number
   lineTotal: number
   taxable: number
@@ -87,12 +92,14 @@ export type TaskLineItemCountAggregateOutputType = {
 
 export type TaskLineItemAvgAggregateInputType = {
   quantity?: true
+  durationDays?: true
   unitPrice?: true
   lineTotal?: true
 }
 
 export type TaskLineItemSumAggregateInputType = {
   quantity?: true
+  durationDays?: true
   unitPrice?: true
   lineTotal?: true
 }
@@ -105,6 +112,7 @@ export type TaskLineItemMinAggregateInputType = {
   description?: true
   unitId?: true
   quantity?: true
+  durationDays?: true
   unitPrice?: true
   lineTotal?: true
   taxable?: true
@@ -120,6 +128,7 @@ export type TaskLineItemMaxAggregateInputType = {
   description?: true
   unitId?: true
   quantity?: true
+  durationDays?: true
   unitPrice?: true
   lineTotal?: true
   taxable?: true
@@ -135,6 +144,7 @@ export type TaskLineItemCountAggregateInputType = {
   description?: true
   unitId?: true
   quantity?: true
+  durationDays?: true
   unitPrice?: true
   lineTotal?: true
   taxable?: true
@@ -237,6 +247,7 @@ export type TaskLineItemGroupByOutputType = {
   description: string | null
   unitId: string
   quantity: runtime.Decimal
+  durationDays: runtime.Decimal
   unitPrice: runtime.Decimal
   lineTotal: runtime.Decimal
   taxable: boolean | null
@@ -275,6 +286,7 @@ export type TaskLineItemWhereInput = {
   description?: Prisma.StringNullableFilter<"TaskLineItem"> | string | null
   unitId?: Prisma.UuidFilter<"TaskLineItem"> | string
   quantity?: Prisma.DecimalFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.BoolNullableFilter<"TaskLineItem"> | boolean | null
@@ -294,6 +306,7 @@ export type TaskLineItemOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   unitId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  durationDays?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   lineTotal?: Prisma.SortOrder
   taxable?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -316,6 +329,7 @@ export type TaskLineItemWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"TaskLineItem"> | string | null
   unitId?: Prisma.UuidFilter<"TaskLineItem"> | string
   quantity?: Prisma.DecimalFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.BoolNullableFilter<"TaskLineItem"> | boolean | null
@@ -335,6 +349,7 @@ export type TaskLineItemOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   unitId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  durationDays?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   lineTotal?: Prisma.SortOrder
   taxable?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -358,6 +373,7 @@ export type TaskLineItemScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"TaskLineItem"> | string | null
   unitId?: Prisma.UuidWithAggregatesFilter<"TaskLineItem"> | string
   quantity?: Prisma.DecimalWithAggregatesFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalWithAggregatesFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalWithAggregatesFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalWithAggregatesFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.BoolNullableWithAggregatesFilter<"TaskLineItem"> | boolean | null
@@ -369,6 +385,7 @@ export type TaskLineItemCreateInput = {
   id?: string
   description?: string | null
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -388,6 +405,7 @@ export type TaskLineItemUncheckedCreateInput = {
   description?: string | null
   unitId: string
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -399,6 +417,7 @@ export type TaskLineItemUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -418,6 +437,7 @@ export type TaskLineItemUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   unitId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -433,6 +453,7 @@ export type TaskLineItemCreateManyInput = {
   description?: string | null
   unitId: string
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -444,6 +465,7 @@ export type TaskLineItemUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -459,6 +481,7 @@ export type TaskLineItemUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   unitId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -484,6 +507,7 @@ export type TaskLineItemCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   unitId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  durationDays?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   lineTotal?: Prisma.SortOrder
   taxable?: Prisma.SortOrder
@@ -493,6 +517,7 @@ export type TaskLineItemCountOrderByAggregateInput = {
 
 export type TaskLineItemAvgOrderByAggregateInput = {
   quantity?: Prisma.SortOrder
+  durationDays?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   lineTotal?: Prisma.SortOrder
 }
@@ -505,6 +530,7 @@ export type TaskLineItemMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   unitId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  durationDays?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   lineTotal?: Prisma.SortOrder
   taxable?: Prisma.SortOrder
@@ -520,6 +546,7 @@ export type TaskLineItemMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   unitId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  durationDays?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   lineTotal?: Prisma.SortOrder
   taxable?: Prisma.SortOrder
@@ -529,6 +556,7 @@ export type TaskLineItemMinOrderByAggregateInput = {
 
 export type TaskLineItemSumOrderByAggregateInput = {
   quantity?: Prisma.SortOrder
+  durationDays?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   lineTotal?: Prisma.SortOrder
 }
@@ -709,6 +737,7 @@ export type TaskLineItemCreateWithoutUnitInput = {
   id?: string
   description?: string | null
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -726,6 +755,7 @@ export type TaskLineItemUncheckedCreateWithoutUnitInput = {
   itemCatalogId: string
   description?: string | null
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -770,6 +800,7 @@ export type TaskLineItemScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"TaskLineItem"> | string | null
   unitId?: Prisma.UuidFilter<"TaskLineItem"> | string
   quantity?: Prisma.DecimalFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFilter<"TaskLineItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.BoolNullableFilter<"TaskLineItem"> | boolean | null
@@ -781,6 +812,7 @@ export type TaskLineItemCreateWithoutItemCatalogInput = {
   id?: string
   description?: string | null
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -798,6 +830,7 @@ export type TaskLineItemUncheckedCreateWithoutItemCatalogInput = {
   description?: string | null
   unitId: string
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -835,6 +868,7 @@ export type TaskLineItemCreateWithoutProjectInput = {
   id?: string
   description?: string | null
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -852,6 +886,7 @@ export type TaskLineItemUncheckedCreateWithoutProjectInput = {
   description?: string | null
   unitId: string
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -889,6 +924,7 @@ export type TaskLineItemCreateWithoutProjectTaskInput = {
   id?: string
   description?: string | null
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -906,6 +942,7 @@ export type TaskLineItemUncheckedCreateWithoutProjectTaskInput = {
   description?: string | null
   unitId: string
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -946,6 +983,7 @@ export type TaskLineItemCreateManyUnitInput = {
   itemCatalogId: string
   description?: string | null
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -957,6 +995,7 @@ export type TaskLineItemUpdateWithoutUnitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -974,6 +1013,7 @@ export type TaskLineItemUncheckedUpdateWithoutUnitInput = {
   itemCatalogId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -988,6 +1028,7 @@ export type TaskLineItemUncheckedUpdateManyWithoutUnitInput = {
   itemCatalogId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1002,6 +1043,7 @@ export type TaskLineItemCreateManyItemCatalogInput = {
   description?: string | null
   unitId: string
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -1013,6 +1055,7 @@ export type TaskLineItemUpdateWithoutItemCatalogInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1030,6 +1073,7 @@ export type TaskLineItemUncheckedUpdateWithoutItemCatalogInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   unitId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1044,6 +1088,7 @@ export type TaskLineItemUncheckedUpdateManyWithoutItemCatalogInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   unitId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1058,6 +1103,7 @@ export type TaskLineItemCreateManyProjectInput = {
   description?: string | null
   unitId: string
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -1069,6 +1115,7 @@ export type TaskLineItemUpdateWithoutProjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1086,6 +1133,7 @@ export type TaskLineItemUncheckedUpdateWithoutProjectInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   unitId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1100,6 +1148,7 @@ export type TaskLineItemUncheckedUpdateManyWithoutProjectInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   unitId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1114,6 +1163,7 @@ export type TaskLineItemCreateManyProjectTaskInput = {
   description?: string | null
   unitId: string
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: boolean | null
@@ -1125,6 +1175,7 @@ export type TaskLineItemUpdateWithoutProjectTaskInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1142,6 +1193,7 @@ export type TaskLineItemUncheckedUpdateWithoutProjectTaskInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   unitId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1156,6 +1208,7 @@ export type TaskLineItemUncheckedUpdateManyWithoutProjectTaskInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   unitId?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   taxable?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -1173,6 +1226,7 @@ export type TaskLineItemSelect<ExtArgs extends runtime.Types.Extensions.Internal
   description?: boolean
   unitId?: boolean
   quantity?: boolean
+  durationDays?: boolean
   unitPrice?: boolean
   lineTotal?: boolean
   taxable?: boolean
@@ -1192,6 +1246,7 @@ export type TaskLineItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   description?: boolean
   unitId?: boolean
   quantity?: boolean
+  durationDays?: boolean
   unitPrice?: boolean
   lineTotal?: boolean
   taxable?: boolean
@@ -1211,6 +1266,7 @@ export type TaskLineItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   description?: boolean
   unitId?: boolean
   quantity?: boolean
+  durationDays?: boolean
   unitPrice?: boolean
   lineTotal?: boolean
   taxable?: boolean
@@ -1230,6 +1286,7 @@ export type TaskLineItemSelectScalar = {
   description?: boolean
   unitId?: boolean
   quantity?: boolean
+  durationDays?: boolean
   unitPrice?: boolean
   lineTotal?: boolean
   taxable?: boolean
@@ -1237,7 +1294,7 @@ export type TaskLineItemSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TaskLineItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "projectId" | "projectTaskId" | "itemCatalogId" | "description" | "unitId" | "quantity" | "unitPrice" | "lineTotal" | "taxable" | "createdAt" | "updatedAt", ExtArgs["result"]["taskLineItem"]>
+export type TaskLineItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "projectId" | "projectTaskId" | "itemCatalogId" | "description" | "unitId" | "quantity" | "durationDays" | "unitPrice" | "lineTotal" | "taxable" | "createdAt" | "updatedAt", ExtArgs["result"]["taskLineItem"]>
 export type TaskLineItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   projectTask?: boolean | Prisma.ProjectTaskDefaultArgs<ExtArgs>
@@ -1273,6 +1330,7 @@ export type $TaskLineItemPayload<ExtArgs extends runtime.Types.Extensions.Intern
     description: string | null
     unitId: string
     quantity: runtime.Decimal
+    durationDays: runtime.Decimal
     unitPrice: runtime.Decimal
     lineTotal: runtime.Decimal
     taxable: boolean | null
@@ -1712,6 +1770,7 @@ export interface TaskLineItemFieldRefs {
   readonly description: Prisma.FieldRef<"TaskLineItem", 'String'>
   readonly unitId: Prisma.FieldRef<"TaskLineItem", 'String'>
   readonly quantity: Prisma.FieldRef<"TaskLineItem", 'Decimal'>
+  readonly durationDays: Prisma.FieldRef<"TaskLineItem", 'Decimal'>
   readonly unitPrice: Prisma.FieldRef<"TaskLineItem", 'Decimal'>
   readonly lineTotal: Prisma.FieldRef<"TaskLineItem", 'Decimal'>
   readonly taxable: Prisma.FieldRef<"TaskLineItem", 'Boolean'>

@@ -391,6 +391,7 @@ model TaskLineItem {
   description   String?  @db.VarChar(300)
   unitId        String   @map("unit_id") @db.Uuid
   quantity      Decimal  @default(0) @db.Decimal(18, 4)
+  durationDays  Decimal  @default(1) @map("duration_days") @db.Decimal(18, 4)
   unitPrice     Decimal  @default(0) @map("unit_price") @db.Decimal(18, 2)
   lineTotal     Decimal  @default(0) @map("line_total") @db.Decimal(18, 2)
   taxable       Boolean? @default(true)

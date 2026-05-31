@@ -364,6 +364,7 @@ export const TaskLineItemScalarFieldEnum = {
   description: 'description',
   unitId: 'unitId',
   quantity: 'quantity',
+  durationDays: 'durationDays',
   unitPrice: 'unitPrice',
   lineTotal: 'lineTotal',
   taxable: 'taxable',

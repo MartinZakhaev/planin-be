@@ -33,6 +33,12 @@ export class CreateTaskLineItemDto {
     @Min(0)
     quantity: number;
 
+    @ApiProperty({ default: 1, description: 'Number of work days/duration used to calculate the line total' })
+    @IsNumber()
+    @Min(0)
+    @IsOptional()
+    durationDays?: number;
+
     @ApiProperty({ default: 0, description: 'Unit price' })
     @IsNumber()
     @Min(0)

@@ -8,9 +8,17 @@ import { TaskLineItemEntity } from './entities/task-line-item.entity';
 export class TaskLineItemsService {
   constructor(private readonly prisma: PrismaService) { }
 
+  private calculateLineTotal(quantity: number, unitPrice: number, durationDays = 1) {
+    return quantity * durationDays * unitPrice;
+  }
+
   async create(createTaskLineItemDto: CreateTaskLineItemDto) {
-    // Calculate lineTotal from quantity * unitPrice
-    const lineTotal = createTaskLineItemDto.quantity * createTaskLineItemDto.unitPrice;
+    const durationDays = createTaskLineItemDto.durationDays ?? 1;
+    const lineTotal = this.calculateLineTotal(
+      createTaskLineItemDto.quantity,
+      createTaskLineItemDto.unitPrice,
+      durationDays,
+    );
 
     const item = await this.prisma.taskLineItem.create({
       data: {
@@ -20,6 +28,7 @@ export class TaskLineItemsService {
         unitId: createTaskLineItemDto.unitId,
         description: createTaskLineItemDto.description,
         quantity: createTaskLineItemDto.quantity,
+        durationDays,
         unitPrice: createTaskLineItemDto.unitPrice,
         lineTotal: lineTotal,
         taxable: createTaskLineItemDto.taxable,
@@ -42,14 +51,19 @@ export class TaskLineItemsService {
   }
 
   async update(id: string, updateTaskLineItemDto: UpdateTaskLineItemDto) {
-    // If quantity or unitPrice is updated, recalculate lineTotal
+    // If pricing inputs are updated, recalculate lineTotal.
     let lineTotal: number | undefined;
-    if (updateTaskLineItemDto.quantity !== undefined || updateTaskLineItemDto.unitPrice !== undefined) {
+    if (
+      updateTaskLineItemDto.quantity !== undefined ||
+      updateTaskLineItemDto.unitPrice !== undefined ||
+      updateTaskLineItemDto.durationDays !== undefined
+    ) {
       const existing = await this.prisma.taskLineItem.findUnique({ where: { id } });
       if (existing) {
         const qty = updateTaskLineItemDto.quantity ?? Number(existing.quantity);
         const price = updateTaskLineItemDto.unitPrice ?? Number(existing.unitPrice);
-        lineTotal = qty * price;
+        const durationDays = updateTaskLineItemDto.durationDays ?? Number(existing.durationDays);
+        lineTotal = this.calculateLineTotal(qty, price, durationDays);
       }
     }
 

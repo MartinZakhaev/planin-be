@@ -24,6 +24,9 @@ export class TaskLineItemEntity implements TaskLineItem {
     quantity: any;
 
     @ApiProperty({ type: Number })
+    durationDays: any;
+
+    @ApiProperty({ type: Number })
     unitPrice: any;
 
     @ApiProperty({ type: Number })
